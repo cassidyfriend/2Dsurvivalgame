@@ -1,0 +1,147 @@
+blocks :{
+amount = 16
+type0 = "bluetree"
+type1 = "stone"
+type2 = "dirt"
+type3 = "grass"
+type4 = "sky"
+type5 = "treeone"
+type6 = "leaves"
+type7 = "wood"
+type8 = "boards"
+type9 = "sky"
+type11 = "backdirt"
+type12 = "backstone"
+type13 = "backgrass"
+type14 = "backsand"
+type15 = "sand"
+type16 = "water"
+}
+bluetree:{
+hasupdate = true
+hastickupdate = true
+needsky = true
+needlevelground = true
+needsolidunderground = true
+needslight = true
+needskyamount = 5
+needlevelgroundamount = 2
+needsolidundergroundamount = 2
+updatesize = 3
+}
+stone:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+dirt:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+grass:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = true
+}
+sky:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+treeone:{
+hasupdate = true
+hastickupdate = true
+needsky = true
+needlevelground = true
+needsolidunderground = true
+needslight = true
+needskyamount = 5
+needlevelgroundamount = 2
+needsolidundergroundamount = 2
+updatesize = 3
+}
+leaves:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = true
+}
+wood:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+boards:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+backdirt:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+backstone:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+backgrass:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+backsand:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+sand:{
+hasupdate = false
+hastickupdate = false
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}
+water:{
+hasupdate = false
+hastickupdate = true
+needsky = false
+needlevelground = false
+needsolidunderground = false
+needslight = false
+}

@@ -1,0 +1,53 @@
+biometypes:{
+type1 = "plains"
+type2 = "forest"
+type3 = "dence_forest"
+type4 = "magic_forest"
+type5 = "dence_magic_forest"
+type6 = "ocean_floor"
+type7 = "deep_ocean_floor"
+}
+plains:{
+sizemax = 300
+sizemin = 150
+}
+forest:{
+sizemax = 250
+sizemin = 150
+}
+dence_forest:{
+sizemax = 200
+sizemin = 150
+}
+magic_forest:{
+sizemax = 250
+sizemin = 150
+}
+dence_magic_forest:{
+sizemax = 200
+sizemin = 150
+}
+ocean_floor:{
+sizemax = 300
+sizemin = 150
+}
+deep_ocean_floor:{
+sizemax = 300
+sizemin = 150
+}
+landspawns:{
+maxsize = 3
+type1 = 1
+type2 = 2
+type3 = 3
+}
+magicspawns:{
+maxsize = 2
+type1 = 4
+type2 = 5
+}
+oceanspawns:{
+maxsize = 2
+type1 = 6
+type2 = 7
+}

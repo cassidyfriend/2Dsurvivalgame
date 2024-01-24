@@ -1,0 +1,10 @@
+tree: {
+firstblock = "treeone"
+numone = 8
+floattest = 3.7568f
+booleantest = true
+chartest = "b"
+}
+treetesting: {
+doubletest = 8.7568d
+}

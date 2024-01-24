@@ -1,0 +1,19 @@
+texturespath:{ 
+amount = 16 
+case1 = "src/testtextures/gamedirt.png" 
+case2 = "src/testtextures/gamedirt.png" 
+case3 = "src/testtextures/grasscopy.png" 
+case4 = "src/testtextures/skyartwork.png" 
+case5 = "src/testtextures/stone.png" 
+case6 = "src/testtextures/leaves.png" 
+case7 = "src/testtextures/wood.png" 
+case8 = "src/testtextures/treetry1.png" 
+case9 = "src/testtextures/boards.png" 
+case10 = "src/testtextures/sand.png" 
+case11 = "src/testtextures/water.png" 
+case12 = "src/testtextures/enity1.png" 
+case13 = "src/testtextures/bluefruittree.png" 
+case14 = "src/testtextures/invintory_slot.png" 
+case15 = "src/testtextures/snow.png" 
+case16 = "src/testtextures/snowoverlay.png" 
+}
