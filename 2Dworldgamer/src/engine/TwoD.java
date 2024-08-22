@@ -1,25 +1,19 @@
 package engine;
 
 
-import generator.buildworld;
-import generator.spawnstructures;
-import datareader.datareadermain;
-import update.Update;
-import loadFiles.LoadTextures;
-import start.main;
+import generator.*;
+import datareader.*;
+import update.*;
+import Files.*;
 import engine.*;
-import datawriter.DataWriter;
-
+import engine.GUI.textbutton;
+import player.*;
 
 import javax.swing.*;
-import java.io.*;
-import java.net.URL;
-import java.util.*;
 import java.awt.*;
-import java.awt.image.*;
-import javax.imageio.*;
-import java.awt.event.*;
-import javax.sound.sampled.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Map;
 
 
 @SuppressWarnings({ "serial", "unused" })
@@ -29,44 +23,68 @@ public class TwoD extends JPanel {
 	static MouseListerner ML = new MouseListerner();
 	static Manager M = new Manager();
 	static BuildButtons BB = new BuildButtons();
-	static DataWriter DW = new DataWriter();
-	static Keylistener KL = new Keylistener();
-	static ScrollingBlocks SB = new ScrollingBlocks();
-	static LoadTextures LT = new LoadTextures();
+	static Keylistener KL;
+	static ScrollingBlocks SB;
+	static Player player = new Player();
+	static GUI gui;
+	LoadTextures LT = null;
 	static int framex, framey,framesizex,framesizey;
+	final static int TARGET_FPS = 80, startingframex = 1280, startingframey = 720;
+    final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+    long lastLoopTime = System.nanoTime();
+    static ArrayList<Map<Integer, BufferedImage>> textures;
+    static MenusAndInterfaces MaI;
+    void print(Object o) {
+    	System.out.println(o);
+    }
 	@SuppressWarnings("static-access")
 	@Override
 	public void paint(Graphics g) {
-		//Graphics2D g2d = (Graphics2D) g;
-		//frame.WIDTH
-		SB.Blocks(g, framesizex, framesizey);
-		g.setColor(Color.white);
-		//g.fillRect(-5, -5, frame.getWidth(), frame.getHeight());
-		M.eachframe();
-		BB.buttoncount = 1;
-		BB.posx.set(0,100);
-		BB.posy.set(0,100);
-		BB.sizex.set(0,300);
-		BB.sizey.set(0,100);
-		BB.buttontext.set(0, "game");
-		BB.Buttons(g);
-		//g.drawImage(LT.textures.get(1), 100, 100, null);
+		long now = System.nanoTime();
+        long updateLength = now - lastLoopTime;
+        lastLoopTime = now;
+        double delta = updateLength / ((double) OPTIMAL_TIME);
 		g.drawRect(ML.mouseonframex, ML.mouseonframey, 1, 1);
+		player.framex = framesizex;
+		player.framey = framesizey;
 		framex = frame.getX();
 		framey = frame.getY();
 		framesizex = frame.getWidth();
 		framesizey = frame.getHeight();
-		
-		repaint();
+        try {
+            long sleepTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
+            if (sleepTime > 0) {
+                Thread.sleep(sleepTime);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        drawingorder(g);
+		frame.repaint();
 	}
-	public static void startframes(String framename) {
+	@SuppressWarnings("static-access")
+	void drawingorder(Graphics g) {
+		textures = LT.textures;
+		Map<Integer, BufferedImage> lightmap = textures.get(20);
+		SB.Blocks(g, framesizex, framesizey);
+		M.eachframe();
+		player.drawplayer(g);
+		MaI.updatemenus();
+		gui.update(frame.getWidth(), frame.getHeight(), KL.lastkeypress);
+		gui.render(g);
+	}
+	public void startframes(String framename, LoadTextures LT) {
+		this.LT = LT;
+		SB = new ScrollingBlocks(LT, startingframex, startingframey);
 		theframename = framename;
-		ML.MouseListerner();
-		KL.Keylistener();
+		//ML.MouseListerner();
+		KL = new Keylistener();
 		frame.add(new TwoD());
-		DW.DataWriter();
-		frame.setSize(1080, 780);
+		frame.setSize(startingframex, startingframey);
+		gui = new GUI(startingframex, startingframey, LT);
 		frame.setVisible(true);
+		frame.setTitle(framename);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
 	}
 }

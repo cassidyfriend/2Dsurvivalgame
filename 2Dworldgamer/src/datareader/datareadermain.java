@@ -1,19 +1,10 @@
 package datareader;
 
-import javax.swing.*;
+
 import java.io.*;
-import java.net.URL;
 import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import javax.imageio.*;
-import java.awt.event.*;
-import javax.sound.sampled.*;
 
-import generator.buildworld;
-import start.main;
 
-@SuppressWarnings("unused")
 public class datareadermain {
 	private static String inputpath;
 	private static String datatoget = null;
@@ -28,19 +19,15 @@ public class datareadermain {
 	static String info = null;
 	static boolean found = false;
 
+	@SuppressWarnings("resource")
 	private void mainreader() {
-		//System.out.println("test");
 		int finder = 1;
-		int partnum = 0;
-		//System.out.println(test);
 			try {
 				FileReader fr;
 				fr = new FileReader(inputpath);
 				Scanner inFile = new Scanner(fr);
 				while(inFile.hasNext()) {
 					info = inFile.next();
-					partnum++;
-					//System.out.println(info);
 					switch(finder) {
 						case 1:
 							if(info.equals(datatogetclass)){
@@ -54,7 +41,6 @@ public class datareadermain {
 							if( info.equals(datatogetclass + ":{")) {
 								finder = 4;
 								break;
-								//System.out.println("found");
 							}
 							break;
 						case 2:
@@ -74,7 +60,6 @@ public class datareadermain {
 							}
 							break;
 						case 4:
-							//System.out.println(info);
 							if(info.contains(datatoget) && (!(info.contains("\"" + datatoget + "\"")))) {
 									finder = 5;
 									break;

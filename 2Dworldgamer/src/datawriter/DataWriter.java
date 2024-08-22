@@ -1,133 +1,234 @@
 package datawriter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DataWriter {
-	static String path = "player/saves/save1/world"+"/";
-	static String setfile;
-	static String currentpath;
-	static int lineplacement = 0;
-	static int inplacement;
-	public static void DataWriter() {
-		//makefile("myfile","firstclass");
-		setfilename("myfile"+".txt");
-		getinfileclassname("secontclass");
-		try {
-			backupfile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	String location;
+	File input;
+	Scanner fr;
+	boolean shouldmessagelog;
+	overheadclass currentclasshandle;
+	ArrayList<overheadclass> classlist = new ArrayList<overheadclass>();
+	
+	class variable {
+		public String name;
+		public String data;
+		variable(String name, String data){
+			this.name = name;
+			this.data = data;
+			hashCode();
+			toString();
 		}
-		//try {
-			//write("myvar = 5");
-		//} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
+		public int hashCode() {
+			return name.hashCode();
+		}
+		public String toString(){
+			return name + " = " + data;
+		}
+		public boolean equals(Object obj) {
+	        if (this == obj)
+	        	return true;
+	        if (!(obj instanceof variable))
+	        	return false;
+	        variable other = (variable) obj;
+	        return this.name.equals(other.name);
+	    }
 	}
-	//player/saves/save1/world/filename.txt
-	@SuppressWarnings("static-access")
-	public void setpath(String path) {
-		this.path = path;
+	class overheadclass {
+		public ArrayList<variable> variablelist = new ArrayList<variable>();
+		String name;
+		overheadclass(String classname){
+			this.name = classname;
+			hashCode();
+		}
 		
-	}
-	public static void makefile(String filename,String mainclassname) {
-		currentpath = path + filename + ".txt";
-		try {
-		      File myObj = new File(currentpath);
-		      if (myObj.createNewFile()) {} else {}
-		      FileWriter myWriter = new FileWriter(currentpath);
-		      myWriter.write(mainclassname + ":{");
-		      myWriter.write("\n}");
-		      myWriter.close();
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    }
-	}
-	public static void setfilename(String filename) {
-		setfile = filename;
-		currentpath = path + filename;
-	}
-	public static void getinfileclassname(String classname) {
-		try {
-		      File myObj = new File(currentpath);
-		      Scanner myReader = new Scanner(myObj);
-		      boolean shouldIstop = false;
-		      int classline = 0;
-		      int caseplacement = 1;
-		      while (myReader.hasNext()) {
-		        String data = myReader.next();
-		        classline++;
-		        switch(caseplacement) {
-		        case 1:
-		        	if(data.equals(classname + ":{")) {
-		        		shouldIstop = true;
-		        	} else 
-		        	if(data.equals(classname + ":")) {
-		        		caseplacement = 3;
-			        } else
-			        if(data.equals(classname)) {
-			        	caseplacement = 2;
-			        }
-		        	break;
-		        case 2:
-		        	if(data.equals(":")) {
-		        		caseplacement = 3;
-			        } else
-			        if(data.equals(":{")) {
-			        	shouldIstop = true;
-			        }
-		        	break;
-		        case 3:
-		        	if(data.equals("{")) {
-		        		shouldIstop = true;
-			        }
-		        	break;
-		        }
-		        //System.out.println(classline);
-		        if(shouldIstop) {
-		        	inplacement = classline;
-		        	myReader.close();
-		        	break;
-		        }
-		        //System.out.println(data);
-		      }
-		      myReader.close();
-		    } catch (FileNotFoundException e) {
-		      System.out.println("An error occurred.");
-		      e.printStackTrace();
-		    }
-	}
-	public static void backupfile() throws IOException {
-		try {
-		      File myObj = new File(currentpath);
-		      Scanner myReader = new Scanner(myObj);
-		      FileWriter myWriter = new FileWriter("src/datawriter/backup.txt");
-		      while (myReader.hasNextLine()) {
-		        String data = myReader.nextLine();
-		        myWriter.write(data + "\n");
-		        //System.out.println("Successfully wrote to the file.");
-		      }
-		      myWriter.close();
-		      myReader.close();
-		    } catch (FileNotFoundException e) {
-		      System.out.println("An error occurred.");
-		      e.printStackTrace();
-		    }
-	}
-	public static void write(String data) throws IOException {
-		FileWriter myWriter = new FileWriter(currentpath);
-		File myObj = new File("src/datawriter/backup.txt");
-	    Scanner myReader = new Scanner(myObj);
-		for (int i = 0; i < inplacement; i++) {
-			String partdata = myReader.nextLine();
-			myWriter.write(partdata); 
+		
+		void add(variable input) {
+			variablelist.add(input);
 		}
-		myWriter.write("\n"+data);
-		myWriter.close();
+		boolean remove(variable input) {
+			if(variablelist.contains(input)) {
+				variablelist.remove(input);
+				return true;
+			}
+			return false;
+		}
+		void set(variable input) {
+			if(variablelist.contains(input)) {
+				variablelist.set(variablelist.indexOf(input), input);
+			}
+		}
+		
+		
+		public int hashCode() {
+			return name.hashCode();
+		}
+		public String toString() {
+			String output = name + ":{\n";
+			for(variable current : variablelist) {
+				output += current.toString() + "\n";
+			}
+			return output + "}\n";
+		}
+		public boolean equals(Object obj) {
+	        if (this == obj)
+	        	return true;
+	        if (!(obj instanceof overheadclass))
+	        	return false;
+	        overheadclass other = (overheadclass) obj;
+	        return this.name.equals(other.name);
+	    }
+	}
+	
+	public DataWriter(boolean messagelog) {
+		shouldmessagelog = messagelog;
+	}
+	void print(Object input) {
+		if(shouldmessagelog)
+			System.out.println(input);
+	}
+	void error(Object input) {
+		if(shouldmessagelog)
+			System.out.println("\u001B[31m"+input+" "+"\u001B[0m");
+	}
+	public boolean loadfile(String location) {
+		this.location = location;
+		try {
+			input = new File(location);
+			unpackfile(input);
+			loadVarsAndClasses(fr);
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			error("could not load file");
+			return false;
+		}
+	}
+	void unpackfile(File input) throws FileNotFoundException {
+		fr = new Scanner(input);
+	}
+	String removechar(String input, int amount) {
+		String output = input;
+		for(int i = 0; i < amount + 1; i++)
+			output = output.substring(0, input.length()-i);
+		return output;
+	}
+	void loadVarsAndClasses(Scanner input) {
+		int type = 1;
+		overheadclass currentclass = null;
+		String currentbestclassname = null;
+		String varname = null;
+		String data = null;
+		while(input.hasNext()) {
+			String current = input.next();
+			switch(type) {
+			case 1:
+				if(current.charAt(current.length()-1) == '{' && current.charAt(current.length()-2) == ':') {
+					currentbestclassname = removechar(current, 2);
+					currentclass = new overheadclass(currentbestclassname);
+					type = 4;
+				} else
+				if(current.charAt(current.length()-1) == ':') {
+					currentbestclassname = removechar(current, 1);
+					type = 3;
+				} else {
+					currentbestclassname = current;
+					type = 2;
+				}
+				break;
+			case 2:
+				if(current.equals(":{")) {
+					currentclass = new overheadclass(currentbestclassname);
+					type = 4;
+				}
+				if(current.equals(":")) {
+					type = 3;
+				}
+				break;
+			case 3:
+				if(current.equals("{")) {
+					currentclass = new overheadclass(currentbestclassname);
+					type = 4;
+				} else {
+					print("Bad syntax! assumed that " + currentbestclassname + " is of type class but is not fallowed by the proper syntax. to do this write it as \"classname:{\"");
+					return;
+				}
+				break;
+			case 4:
+				
+				if(current.equals("}")) {
+					type = 1;
+					classlist.add(currentclass);
+				} else {
+					varname = current;
+					type = 5;
+				}
+				break;
+			case 5:
+				if(current.equals("=")) {
+					type = 6;
+				} else {
+					print("Bad syntax! assumed that " + varname + " is of type variable but does not have a value to set to. this occured in class: " + currentclass.name);
+					return;
+				}
+				break;
+			case 6:
+				data = current;
+				type = 4;
+				variable currentvar = new variable(varname, data);
+				currentclass.add(currentvar);
+				break;
+			}
+		}
+	}
+	public void addclass(String classname) {
+		overheadclass currenrtclass = new overheadclass(classname);
+		classlist.add(currenrtclass);
+	}
+	public boolean removeclass(String classname) {
+	    overheadclass currenrtclass = new overheadclass(classname);
+	    if (classlist.contains(currenrtclass)) {
+	        classlist.remove(currenrtclass);
+	        return true;
+	    }
+	    return false;
+	}
+	public void setclass(String classname) {
+		overheadclass currentclass = new overheadclass(classname);
+		if(classlist.contains(currentclass))
+			currentclasshandle = classlist.get(classlist.indexOf(currentclass));
+	}
+	public void addvariable(String name, String data) {
+		currentclasshandle.add(new variable(name, data));
+	}
+	public boolean removevariable(String name) {
+		variable currentvar = new variable(name, null);
+		return currentclasshandle.remove(currentvar);
+	}
+	public void setvariable(String name, String data) {
+		variable currentvar = new variable(name, data);
+		currentclasshandle.set(currentvar);
+	}
+	public boolean overwrite() {
+		String output = classlist.get(0).toString();
+		Boolean loadedfirst = false;
+		for(overheadclass current : classlist) {
+			if(!loadedfirst) {
+				loadedfirst = true;
+				continue;
+			}
+			output += current.toString();
+		}
+		try {
+			FileWriter fWriter = new FileWriter(location);
+			fWriter.write(output);
+			fWriter.close();
+			return true;
+		}catch (IOException e) {
+			return false;
+		}
 	}
 }

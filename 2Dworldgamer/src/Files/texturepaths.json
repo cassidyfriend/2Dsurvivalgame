@@ -1,0 +1,21 @@
+{
+	"textureslist" : [
+	"src/testtextures/gamedirt.png",
+	"src/testtextures/grasscopy.png",
+	"src/testtextures/skyartwork.png",
+	"src/testtextures/stone.png",
+	"src/testtextures/leaves.png",
+	"src/testtextures/wood.png",
+	"src/testtextures/treetry1.png",
+	"src/testtextures/boards.png",
+	"src/testtextures/sand.png",
+	"src/testtextures/water.png",
+	"src/testtextures/enity1.png",
+	"src/testtextures/bluefruittree.png",
+	"src/testtextures/invintory_slot.png",
+	"src/testtextures/snow.png",
+	"src/testtextures/snowoverlay.png",
+	"src/testtextures/grass1.png",
+	"src/testtextures/grass2.png"
+	]
+}

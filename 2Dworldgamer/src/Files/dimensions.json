@@ -1,0 +1,31 @@
+{
+	"names":["overworld", "caves", "floating plains"],
+	"starting dimension":"overworld",
+	"overworld":{
+		"type":"stack",
+		"seed offset":0,
+		"min Height":0,
+		"max Height":1000,
+		"divider":[1, 70, 240, 30, 10],
+		"scaleoffsets":[0.0001, 0.0005, 0.001, 0.01, 0.03],
+		"fill Block":0,
+		"fill Air":4,
+		"request more info":false
+	},
+	"caves":{
+		"type":"TDnoise",
+		"seed offset":0,
+		"fill block":6,
+		"fill air":7,
+		"noise amount count":3,
+		"noise offset":5
+	},
+	"floating plains":{
+		"type":"islands",
+		"seed offset":2,
+		"fill block":6,
+		"fill air":4,
+		"noise amount count":3,
+		"noise offset":5
+	}
+}

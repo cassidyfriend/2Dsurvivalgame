@@ -7,7 +7,7 @@ import datareader.datareadermain;
 import engine.TwoD;
 import engine.Manager;
 import update.Update;
-import loadFiles.LoadTextures;
+import Files.LoadTextures;
 
 
 import javax.swing.*;
@@ -25,7 +25,7 @@ import javax.sound.sampled.*;
 
 
 @SuppressWarnings({ "serial", "unused" })
-public class main extends JPanel
+public class startgame extends JPanel
 {
 	public static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	
@@ -52,7 +52,6 @@ public class main extends JPanel
 	static JFrame f = new JFrame("Window");
 	static buildworld b = new buildworld();
 	static Update update = new Update();
-	static LoadTextures lt = new LoadTextures();
 	static TwoD TD = new TwoD();
 	static Manager M = new Manager();
 	static boolean up;

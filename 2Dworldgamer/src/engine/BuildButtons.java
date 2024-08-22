@@ -4,8 +4,7 @@ import generator.buildworld;
 import generator.spawnstructures;
 import datareader.datareadermain;
 import update.Update;
-import loadFiles.LoadTextures;
-import start.main;
+import Files.LoadTextures;
 import engine.Keylistener;
 
 import javax.swing.*;
@@ -34,7 +33,6 @@ public class BuildButtons {
 		for (int i = 0; i < buttoncount; i++) {
 			if(ML.mouseonframex > posx.get(i) && ML.mouseonframey > posy.get(i) && ML.mouseonframex < posx.get(i) + sizex.get(i) && ML.mouseonframey < posy.get(i) + sizey.get(i)) {
 				g.setColor(new Color(150,150,150));
-				
 				onbutton = true;
 			} else {
 				g.setColor(new Color(200,200,200));
