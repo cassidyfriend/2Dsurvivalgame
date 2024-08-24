@@ -70,9 +70,6 @@ public class buildworld {
 				return;
 			}
 		}
-		public void print(Object o) {
-			System.out.println(o);
-		}
 		public int getheight(int x) {
 			double output = 0;
 			int i = 0;
