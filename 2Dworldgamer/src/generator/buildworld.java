@@ -30,9 +30,6 @@ public class buildworld {
 	public static int genlenght = 600000;
 	static String savename = "save1";
 	static GameStatusLog gamelog = new GameStatusLog();
-	public static ArrayList<Integer> landorwater = new ArrayList<Integer>();
-	public static ArrayList<Integer> columnheight = new ArrayList<Integer>();
-	public static ArrayList<simnoise> noisedata = new ArrayList<simnoise>();
 	public static dimensionstypes currentdmconstructor = dimensionstypes.stack;
 	public static String currentdmtypeID = "";
 	public static Object currentdm;
