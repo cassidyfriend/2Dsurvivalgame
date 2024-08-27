@@ -56,6 +56,10 @@ public class buildworld {
 		boolean requestmoreinfo;
 		simnoise sn;
 		stack(int seed, int minHeight, int maxHeight, int divider[], double scaleoffsets[], int fillblock, int fillair, boolean requestmoreinfo) {
+			if(divider.length != scaleoffsets.length) {
+				System.out.println("lenghts of divider and scaleoffsets are not equal");
+				return;
+			}
 			this.seed = seed;
 			this.minHeight = minHeight;
 			this.maxHeight = maxHeight;
@@ -65,10 +69,6 @@ public class buildworld {
 			this.fillAir = fillair;
 			this.requestmoreinfo = requestmoreinfo;
 			sn = new simnoise(seed);
-			if(divider.length != scaleoffsets.length) {
-				System.out.println("lenghts of divider and scaleoffsets are not equal");
-				return;
-			}
 		}
 		public int getheight(int x) {
 			double output = 0;

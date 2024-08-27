@@ -1,52 +1,12 @@
 {
-	"biomes":["forest","plains","ocean","desert","mountain","snowfield"],
+	"biomes":["plains"],
 	"defaultbiome":"plains",
-	"forest":{
-		"height":550,
-		"maxadd":100,
-		"temp":5,
-		"temprange":1,
-		"surfaceblockid":1,
-		"fillblockid":0
-	},
 	"plains":{
 		"height":550,
 		"maxadd":100,
 		"temp":7,
 		"temprange":1,
 		"surfaceblockid":1,
-		"fillblockid":0
-	},
-	"ocean":{
-		"height":300,
-		"maxadd":100,
-		"temp":3,
-		"temprange":1,
-		"surfaceblockid":9,
-		"fillblockid":9
-	},
-	"desert":{
-		"height":500,
-		"maxadd":100,
-		"temp":9,
-		"temprange":1,
-		"surfaceblockid":8,
-		"fillblockid":8
-	},
-	"mountain":{
-		"height":550,
-		"maxadd":500,
-		"temp":3,
-		"temprange":1,
-		"surfaceblockid":3,
-		"fillblockid":3
-	},
-	"snowfield":{
-		"height":550,
-		"maxadd":100,
-		"temp":1,
-		"temprange":1,
-		"surfaceblockid":13,
 		"fillblockid":0
 	}
 }
