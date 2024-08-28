@@ -148,7 +148,6 @@ public class ScrollingBlocks {
 		
 		
 		
-		
 		String currentworldpos = Integer.toString(x) + " " + Integer.toString(y);
 		currentoutput =	Manager.overrightblocks.containsKey(currentworldpos) ? Manager.overrightblocks.get(currentworldpos) : currentoutput;
 		currentoutput =	Manager.playeroverrightblocks.containsKey(currentworldpos) ? Manager.playeroverrightblocks.get(currentworldpos) : currentoutput;
