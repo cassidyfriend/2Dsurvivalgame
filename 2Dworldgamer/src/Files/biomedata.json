@@ -2,9 +2,9 @@
 	"biomes":["plains"],
 	"defaultbiome":"plains",
 	"plains":{
-		"height":550,
-		"maxadd":100,
-		"temp":7,
+		"minheight":450,
+		"maxheight":650,
+		"temp":5,
 		"temprange":1,
 		"surfaceblockid":1,
 		"fillblockid":0
