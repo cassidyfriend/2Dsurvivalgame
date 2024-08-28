@@ -124,25 +124,27 @@ public class ScrollingBlocks {
 	}
 	@SuppressWarnings({ "static-access"})
 	int gettexture(int x, int y, int drawx, int drawy, int lastblock) {
+		JSONObject currentbiomedata = null;
+		int currentoutput = y > currentculum.height? currentculum.fillAir : currentculum.fillBlock;
+		//print(currentoutput);
+		try {
+				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid);
+		} catch(Exception e){}
 		
 		if(isInMenu) 
 			return settings.settingsdata.getInt("backgroundblock");
 		
-		int currentoutput = -4;
 		if(y == currentculum.height) {
 			try {
-				JSONObject currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid);
+				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid);
 				currentoutput = (int) currentbiomedata.get("surfaceblockid") * 2;
 			} catch(Exception e){}
 		}
-		if(y < currentculum.height) {
-			try {
-				JSONObject currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid);
-				currentoutput = (int) currentbiomedata.get("fillblockid") * 2;
-			} catch(Exception e){}
+		if(y < currentculum.height && y > currentculum.height - currentbiomedata.getInt("fillheight")) {
+			currentoutput = currentbiomedata.getInt("fillblockid");
 		}
-		if(currentoutput == -4 && y < 450)
-			currentoutput = 18;
+		//if(currentoutput == -4 && y < 450)
+			//currentoutput = 18;
 		
 		
 		

@@ -2,11 +2,13 @@
 	"biomes":["plains"],
 	"defaultbiome":"plains",
 	"plains":{
+		"relivent demension":"overworld",
 		"minheight":450,
 		"maxheight":650,
 		"temp":5,
 		"temprange":1,
 		"surfaceblockid":1,
-		"fillblockid":0
+		"fillblockid":0,
+		"fillheight":10
 	}
 }

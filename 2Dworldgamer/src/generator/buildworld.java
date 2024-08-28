@@ -92,7 +92,7 @@ public class buildworld {
 		output.fillBlock = current.fillBlock;
 		output.fillAir = current.fillAir;
 		output.requestmoreinfo = current.requestmoreinfo;
-		output.biomeid = "plains";
+		output.biomeid = biomedata.getbiometype(0);
 		return output;
 	}
 	@SuppressWarnings("static-access")

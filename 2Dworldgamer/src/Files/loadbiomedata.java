@@ -2,14 +2,17 @@ package Files;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.json.*;
 
+import Files.*;
+
 public class loadbiomedata {
 	
-	public static String tempsorder[][];
 	public static  JSONObject biomedata;
+	public static ArrayList<biomesindemtypes> demtypes = new ArrayList<biomesindemtypes>();
 	
 	public class biomesindemtypes{
 		ArrayList<temperatures> types = new ArrayList<temperatures>();
@@ -25,6 +28,14 @@ public class loadbiomedata {
 				return true;
 			}
 			return false;
+		}
+	}
+	
+	public class heights{
+		int temp;
+		ArrayList<temperatures> weardnesses = new ArrayList<temperatures>();
+		public heights(int temp){
+			this.temp = temp;
 		}
 	}
 	
@@ -49,6 +60,12 @@ public class loadbiomedata {
 	void print(Object o) {
 		System.out.println(o);
 	}
+	public static int findClosest(int[] array, int target) {
+        return Arrays.stream(array)
+                     .boxed() // Converts int to Integer for comparison
+                     .min((a, b) -> Integer.compare(Math.abs(a - target), Math.abs(b - target)))
+                     .orElseThrow(() -> new IllegalArgumentException("Array cannot be empty"));
+    }
 	
 	@SuppressWarnings("resource")
 	public loadbiomedata(){
@@ -60,17 +77,14 @@ public class loadbiomedata {
 		}
 		biomedata = new JSONObject(content);
 		JSONArray biomeslist = biomedata.getJSONArray("biomes");
-		tempsorder = new String[11][biomeslist.length()];
+		//tempsorder = new String[11][biomeslist.length()];
 		JSONObject currentbiome = biomedata.getJSONObject(biomeslist.getString(0));
 		for(int i = 0; i < biomeslist.length(); i++) {
 			currentbiome = biomedata.getJSONObject(biomeslist.getString(i));
-			for(int ix = currentbiome.getInt("temp") - currentbiome.getInt("temprange"); ix < currentbiome.getInt("temp") + currentbiome.getInt("temprange"); ix++) {
-				int iy = 0;
-				while(tempsorder[ix][iy] != null) {
-					iy++;
-				}
-				tempsorder[ix][iy] = biomeslist.getString(i);
-			}
+			
 		}
+	}
+	public String getbiometype(int temp){
+		return "plains";
 	}
 }
