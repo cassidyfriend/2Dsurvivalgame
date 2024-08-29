@@ -27,7 +27,7 @@ public class LoadTextures {
 		}
 		JSONObject texturepaths = new JSONObject(content);
 		JSONArray texturelist = texturepaths.getJSONArray("textureslist");
-		 for (int i = 1; i < texturelist.length(); i++) {
+		 for (int i = 1; i < texturelist.length() + 1; i++) {
 			Map<Integer, BufferedImage> currenttexture = new HashMap<Integer, BufferedImage>();
 			int keydouble = 100;
 			for (int ix = 1; ix < 22; ix++) {

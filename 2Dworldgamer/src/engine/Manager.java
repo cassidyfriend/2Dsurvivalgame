@@ -56,7 +56,7 @@ public class Manager {
                 e.printStackTrace();
             }
 			String currentworldpos = Integer.toString(ScrollingBlocks.x + 64) + " " + Integer.toString(ScrollingBlocks.y - 37);
-			playeroverrightblocks.put(currentworldpos,(short) 16);
+			playeroverrightblocks.put(currentworldpos,(short) 38);
 		}
 		ML.onupdate();
 	}

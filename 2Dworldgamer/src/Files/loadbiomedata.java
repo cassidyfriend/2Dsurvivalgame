@@ -66,6 +66,13 @@ public class loadbiomedata {
                      .min((a, b) -> Integer.compare(Math.abs(a - target), Math.abs(b - target)))
                      .orElseThrow(() -> new IllegalArgumentException("Array cannot be empty"));
     }
+	public static int findClosestFloor(int[] array, int target) {
+        return Arrays.stream(array)
+                     .boxed() // Converts int to Integer
+                     .filter(x -> x <= target) // Only consider values less than or equal to the target
+                     .max(Integer::compare) // Find the maximum value among the remaining ones
+                     .orElseThrow(() -> new IllegalArgumentException("No values less than or equal to target"));
+    }
 	
 	@SuppressWarnings("resource")
 	public loadbiomedata(){

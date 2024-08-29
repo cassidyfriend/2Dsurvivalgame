@@ -16,6 +16,9 @@
 	"src/testtextures/snow.png",
 	"src/testtextures/snowoverlay.png",
 	"src/testtextures/grass1.png",
-	"src/testtextures/grass2.png"
+	"src/testtextures/grass2.png",
+	"src/testtextures/coalstone.png",
+	"src/testtextures/dirtcoal.png",
+	"src/testtextures/stoneiron.png"
 	]
 }
