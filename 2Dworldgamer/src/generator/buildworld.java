@@ -23,7 +23,7 @@ import math.GameMath;
 public class buildworld {
 	static ScrollingBlocks SB = new ScrollingBlocks();
 	static GameMath GM = new GameMath();
-	public static int seed = 346;
+	public static int seed = 205;
 	//205
 	//35360
 	//6465
@@ -92,7 +92,7 @@ public class buildworld {
 		output.fillBlock = current.fillBlock;
 		output.fillAir = current.fillAir;
 		output.requestmoreinfo = current.requestmoreinfo;
-		output.biomeid = biomedata.getbiometype(0);
+		output.biomeid = biomedata.getbiometype(500, 5, 0.5);
 		return output;
 	}
 	@SuppressWarnings("static-access")

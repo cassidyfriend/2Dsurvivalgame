@@ -88,10 +88,9 @@ public class loadbiomedata {
 		JSONObject currentbiome = biomedata.getJSONObject(biomeslist.getString(0));
 		for(int i = 0; i < biomeslist.length(); i++) {
 			currentbiome = biomedata.getJSONObject(biomeslist.getString(i));
-			
 		}
 	}
-	public String getbiometype(int temp){
+	public String getbiometype(int height, int temp, double weardness){
 		return "plains";
 	}
 }

@@ -58,7 +58,8 @@ public class MenusAndInterfaces {
 		}
 		if(gui.getbuttonclickedID("Create World") == 1) {
 			if(gui.stringinnputs.contains(gui.new textstoredininput("seed:", false))) {
-				BW.seed = Math.abs(gui.stringinnputs.get(gui.stringinnputs.indexOf(gui.new textstoredininput("seed:", false))).input.hashCode());
+				BW.seed = Math.abs(gui.stringinnputs.get(gui.stringinnputs.indexOf(gui.new textstoredininput("seed:", false))).input.hashCode())/100000;
+				print(BW.seed);
 				if(BW.seed > 1) {
 					BW.updatenoise();
 				}
