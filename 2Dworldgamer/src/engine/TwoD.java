@@ -64,8 +64,6 @@ public class TwoD extends JPanel {
 	}
 	@SuppressWarnings("static-access")
 	void drawingorder(Graphics g) {
-		textures = LT.textures;
-		Map<Integer, BufferedImage> lightmap = textures.get(20);
 		SB.Blocks(g, framesizex, framesizey);
 		M.eachframe();
 		player.drawplayer(g);

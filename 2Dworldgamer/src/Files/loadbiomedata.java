@@ -16,9 +16,10 @@ public class loadbiomedata {
 	public static  JSONObject biomedata;
 	public static ArrayList<biomesindemtypes> demtypes = new ArrayList<biomesindemtypes>();
 	public static biomesindemtypes biomedemdata;
+	public static heights heightdata;
 	
 	public class biomesindemtypes{
-		Map<String, ArrayList<String>> demandbiomematching = new HashMap<>();
+		static Map<String, ArrayList<String>> demandbiomematching = new HashMap<>();
 		void addbiome(JSONObject currentdata, String name){
 			if(demandbiomematching.containsKey(currentdata.getString("relivent demension"))){
 				demandbiomematching.get(currentdata.getString("relivent demension")).add(name);
@@ -34,10 +35,22 @@ public class loadbiomedata {
 	}
 	
 	public class heights{
-		int temp;
-		ArrayList<temperatures> weardnesses = new ArrayList<temperatures>();
-		public heights(int temp){
-			this.temp = temp;
+		static Map<Integer, ArrayList<String>> heightpackage = new HashMap<>();
+		static int[] heights;
+		void addbiome(JSONObject currentdata, String name){
+			if(heightpackage.containsKey(currentdata.getInt("minheight"))){
+				heightpackage.get(currentdata.getInt("minheight")).add(name);
+			}
+			else{
+				heightpackage.put(currentdata.getInt("minheight"), new ArrayList<String>());
+				heightpackage.get(currentdata.getInt("minheight")).add(name);
+			}
+		}
+		void finished(){
+			heights = heightpackage.keySet().stream().mapToInt(i->i).toArray();
+		}
+		String[] getbiomebydemtype(int height){
+			return heightpackage.get(height).toArray(new String[0]);
 		}
 	}
 	
@@ -89,10 +102,13 @@ public class loadbiomedata {
 		//tempsorder = new String[11][biomeslist.length()];
 		JSONObject currentbiome = biomedata.getJSONObject(biomeslist.getString(0));
 		biomedemdata = new biomesindemtypes();
+		heightdata = new heights();
 		for(int i = 0; i < biomeslist.length(); i++) {
 			currentbiome = biomedata.getJSONObject(biomeslist.getString(i));
 			biomedemdata.addbiome(currentbiome, biomeslist.getString(i));
+			heightdata.addbiome(currentbiome, biomeslist.getString(i));
 		}
+		heightdata.finished();
 	}
 	public String getbiometype(String dimensionname, int height, int temp, double weardness){
 		return "plains";

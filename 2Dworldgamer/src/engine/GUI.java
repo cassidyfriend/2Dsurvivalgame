@@ -341,20 +341,24 @@ public class GUI {
 	}
 	public void render(Graphics g) {
 		for(Object current : GUIs) {
-			if(current instanceof textbox) {
-				((textbox) current).render(g);
-			}
-			if(current instanceof textbutton) {
-				((textbutton) current).render(g);
-			}
-			if(current instanceof image) {
-				((image) current).render(g);
-			}
-			if(current instanceof statusbar) {
-				((statusbar) current).render(g);
-			}
-			if(current instanceof fillintextbox) {
-				((fillintextbox) current).render(g);
+			switch(current.getClass().getSimpleName()) {
+				case "textbox":
+					((textbox) current).render(g);
+					break;
+				case "textbutton":
+					((textbutton) current).render(g);
+					break;
+				case "image":
+					((image) current).render(g);
+					break;
+				case "statusbar":
+					((statusbar) current).render(g);
+					break;
+				case "fillintextbox":
+					((fillintextbox) current).render(g);
+					break;
+				default:
+					break;
 			}
 		}
 		GUIs.clear();

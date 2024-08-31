@@ -88,7 +88,7 @@ public class ScrollingBlocks {
 		}
 		//print(BW.worlddata.requestatx(x+64, 0).biomeid);
 		renderoverlays(g,blocksizex,blocksizey);
-		int devidesize = 2;
+		int devidesize = 3;
 		if(!lockmovement) {
 			if(kl.up) {
 				smally += blocksizey/devidesize;
