@@ -7,6 +7,7 @@
 		"maxheight":650,
 		"temp":5,
 		"temprange":1,
+		"weardness":30,
 		"surfaceblockid":1,
 		"fillblockid":0,
 		"fillheight":10

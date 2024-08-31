@@ -92,7 +92,7 @@ public class buildworld {
 		output.fillBlock = current.fillBlock;
 		output.fillAir = current.fillAir;
 		output.requestmoreinfo = current.requestmoreinfo;
-		output.biomeid = biomedata.getbiometype(500, 5, 0.5);
+		output.biomeid = biomedata.getbiometype(currentdmtypeID, 500, 5, 0.5);
 		return output;
 	}
 	@SuppressWarnings("static-access")

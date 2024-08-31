@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.*;
 
@@ -13,21 +15,19 @@ public class loadbiomedata {
 	
 	public static  JSONObject biomedata;
 	public static ArrayList<biomesindemtypes> demtypes = new ArrayList<biomesindemtypes>();
+	public static biomesindemtypes biomedemdata;
 	
 	public class biomesindemtypes{
-		ArrayList<temperatures> types = new ArrayList<temperatures>();
-		String name;
-		public biomesindemtypes(String name){
-			this.name = name;
-		}
-		public int hashCode(){
-			return name.hashCode();
-		}
-		public boolean equals(Object o){
-			if(o.hashCode() == this.hashCode()){
-				return true;
+		Map<String, ArrayList<String>> demandbiomematching = new HashMap<>();
+		void addbiome(JSONObject currentdata, String name){
+			if(demandbiomematching.containsKey(currentdata.getString("relivent demension"))){
+				demandbiomematching.get(currentdata.getString("relivent demension")).add(name);
 			}
-			return false;
+			else{
+				demandbiomematching.put(currentdata.getString("relivent demension"), new ArrayList<String>());
+				demandbiomematching.get(currentdata.getString("relivent demension")).add(name);
+			}
+			print(demandbiomematching);
 		}
 	}
 	
@@ -86,11 +86,13 @@ public class loadbiomedata {
 		JSONArray biomeslist = biomedata.getJSONArray("biomes");
 		//tempsorder = new String[11][biomeslist.length()];
 		JSONObject currentbiome = biomedata.getJSONObject(biomeslist.getString(0));
+		biomedemdata = new biomesindemtypes();
 		for(int i = 0; i < biomeslist.length(); i++) {
 			currentbiome = biomedata.getJSONObject(biomeslist.getString(i));
+			biomedemdata.addbiome(currentbiome, biomeslist.getString(i));
 		}
 	}
-	public String getbiometype(int height, int temp, double weardness){
+	public String getbiometype(String dimensionname, int height, int temp, double weardness){
 		return "plains";
 	}
 }
