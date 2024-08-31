@@ -12,7 +12,7 @@ public class Loaddimensions {
 	public Loaddimensions() {
 		String content = "";
 		try {
-			content = new Scanner(new File("src/Files/dimensions.json")).useDelimiter("\\Z").next();
+			content = new Scanner(new File("resources/json data/game data jsons/dimensions.json")).useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

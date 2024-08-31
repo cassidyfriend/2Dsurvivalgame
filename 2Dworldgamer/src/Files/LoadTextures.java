@@ -21,7 +21,7 @@ public class LoadTextures {
 	public LoadTextures() throws IOException {
 		String content = "";
 		try {
-			content = new Scanner(new File("src/Files/texturepaths.json")).useDelimiter("\\Z").next();
+			content = new Scanner(new File("resources/json data/texturepaths.json")).useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

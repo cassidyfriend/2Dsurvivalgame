@@ -27,7 +27,9 @@ public class loadbiomedata {
 				demandbiomematching.put(currentdata.getString("relivent demension"), new ArrayList<String>());
 				demandbiomematching.get(currentdata.getString("relivent demension")).add(name);
 			}
-			print(demandbiomematching);
+		}
+		String[] getbiomebydemtype(String demtype){
+			return demandbiomematching.get(demtype).toArray(new String[0]);
 		}
 	}
 	
@@ -78,7 +80,7 @@ public class loadbiomedata {
 	public loadbiomedata(){
 		String content = "";
 		try {
-			content = new Scanner(new File("src/Files/biomedata.json")).useDelimiter("\\Z").next();
+			content = new Scanner(new File("resources/json data/game data jsons/biomedata.json")).useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
