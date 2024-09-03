@@ -70,6 +70,7 @@ public class TwoD extends JPanel {
 		MaI.updatemenus();
 		gui.update(frame.getWidth(), frame.getHeight(), KL.lastkeypress);
 		gui.render(g);
+		//print(ML.button);
 	}
 	public void startframes(String framename, LoadTextures LT) {
 		this.LT = LT;

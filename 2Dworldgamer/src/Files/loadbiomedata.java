@@ -47,9 +47,10 @@ public class loadbiomedata {
 			}
 		}
 		void finished(){
-			heights = heightpackage.keySet().stream().mapToInt(i->i).toArray();
+			heights = heightpackage.keySet().stream().mapToInt((Integer i)->i).toArray();
 		}
-		String[] getbiomebydemtype(int height){
+		String[] getbiomebyheight(int height){
+			height = findClosestFloor(heights, height);
 			return heightpackage.get(height).toArray(new String[0]);
 		}
 	}

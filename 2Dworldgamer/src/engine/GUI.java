@@ -50,6 +50,7 @@ public class GUI {
 		}
 		@SuppressWarnings("static-access")
 		public boolean isClicked(){
+			//print(ML.button);
 			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0);
 		}
 		@SuppressWarnings("static-access")
@@ -366,8 +367,10 @@ public class GUI {
 	public boolean getbuttonclicked(Object o) {
 		for(Object current : GUIs) {
 			if(current.hashCode() == o.hashCode())
-				if(current instanceof textbutton)
+				if(current instanceof textbutton) {
+					//print(ML.button);
 					return ((textbutton)current).isClicked();
+				}
 		}
 		return false;
 	}

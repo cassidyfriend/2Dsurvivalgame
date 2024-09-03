@@ -36,10 +36,8 @@ public class buildworld {
 	loadbiomedata biomedata = new loadbiomedata();
 	
 	
-	public class column{
-		public  String biomeid, currentdemname;
-		public int height, fillBlock, fillAir;
-		public boolean requestmoreinfo;
+	public record column(String biomeid, String currentdemname, int height, int fillBlock, int fillAir, boolean requestmoreinfo) {
+		
 	}
 	class dimension{
 		int fillBlock, fillAir,height;
@@ -86,13 +84,13 @@ public class buildworld {
 	}
 	
 	public column requestatx(int x, int xmax) {
-		column output = new column();
 		dimension current = getdimension(x);
-		output.height = current.height;
-		output.fillBlock = current.fillBlock;
-		output.fillAir = current.fillAir;
-		output.requestmoreinfo = current.requestmoreinfo;
-		output.biomeid = biomedata.getbiometype(currentdmtypeID, 500, 5, 0.5);
+		column output = new column("plains",
+				biomedata.getbiometype(currentdmtypeID, 500, 5, 0.5),
+				current.height,
+				current.fillBlock,
+				current.fillAir,
+				current.requestmoreinfo);
 		return output;
 	}
 	@SuppressWarnings("static-access")

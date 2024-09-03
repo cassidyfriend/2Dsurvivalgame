@@ -44,7 +44,7 @@ public class ScrollingBlocks {
 		this.startingframex = startingframex;
 		this.startingframey = startingframey;
 		this.LT = LT;
-		y = BW.requestatx(x + 64, 0).height + 37;
+		y = BW.requestatx(x + 64, 0).height() + 37;
 	}
 	public ScrollingBlocks(){}
 	void print(Object o){
@@ -52,7 +52,7 @@ public class ScrollingBlocks {
 	}
 	
 	public void updateY() {
-		y = BW.requestatx(x + 64, 0).height + 37;
+		y = BW.requestatx(x + 64, 0).height() + 37;
 	}
 	@SuppressWarnings("static-access")
 	public void Blocks(Graphics g, int framesizex, int framesizey) {
@@ -125,22 +125,24 @@ public class ScrollingBlocks {
 	@SuppressWarnings({ "static-access"})
 	int gettexture(int x, int y, int drawx, int drawy, int lastblock) {
 		JSONObject currentbiomedata = null;
-		int currentoutput = y > currentculum.height? currentculum.fillAir : currentculum.fillBlock;
+		int currentoutput = y > currentculum.height()? currentculum.fillAir() : currentculum.fillBlock();
 		//print(currentoutput);
 		try {
-				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid);
-		} catch(Exception e){}
+				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid());
+		} catch(Exception e){
+			print(e);
+		}
 		
 		if(isInMenu) 
 			return settings.settingsdata.getInt("backgroundblock");
 		
-		if(y == currentculum.height) {
+		if(y == currentculum.height()) {
 			try {
-				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid);
+				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid());
 				currentoutput = (int) currentbiomedata.get("surfaceblockid") * 2;
 			} catch(Exception e){}
 		}
-		if(y < currentculum.height && y > currentculum.height - currentbiomedata.getInt("fillheight")) {
+		if(y < currentculum.height() && y > currentculum.height() - currentbiomedata.getInt("fillheight")) {
 			currentoutput = currentbiomedata.getInt("fillblockid");
 		}
 		//if(currentoutput == -4 && y < 450)
@@ -162,7 +164,7 @@ public class ScrollingBlocks {
 			overlayblocks.add(drawy);
 			currentoutput = 4;
 		}
-		currentoutput = currentoutput == -4? currentculum.fillAir : currentoutput;
+		currentoutput = currentoutput == -4? currentculum.fillAir() : currentoutput;
 		return currentoutput;
 	}
 	@SuppressWarnings("static-access")

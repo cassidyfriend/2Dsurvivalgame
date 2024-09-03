@@ -29,6 +29,9 @@ public class Manager {
 	public static buildworld BW = new buildworld();
 	public static Map<String,Short> overrightblocks = new HashMap<String,Short>();
 	public static Map<String,Short> playeroverrightblocks = new HashMap<String,Short>();
+	static void print(Object o) {
+		System.out.println(o);
+	}
 	@SuppressWarnings("static-access")
 	public static void onstartup() {
 		try {
@@ -58,6 +61,7 @@ public class Manager {
 			String currentworldpos = Integer.toString(ScrollingBlocks.x + 64) + " " + Integer.toString(ScrollingBlocks.y - 37);
 			playeroverrightblocks.put(currentworldpos,(short) 38);
 		}
+		//print(ML.button);
 		ML.onupdate();
 	}
 	@SuppressWarnings("static-access")

@@ -40,8 +40,8 @@ public class MouseListerner {
     @SuppressWarnings("static-access")
 	public MouseListerner() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-
         TD.frame.addMouseListener(new MouseListener() {
+        	//System.out.println(button);
             public void mousePressed(MouseEvent mouseinput) {
                 if (mouseinput.getButton() == MouseEvent.BUTTON1) {
                     button = 1;
