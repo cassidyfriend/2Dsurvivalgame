@@ -41,10 +41,10 @@ public class GUI {
 		boolean background;
 		textbutton(String text, int lox, int locy, int sizex, int sizey, boolean background){
 			this.text = text;
-			this.lox = lox;
-			this.locy = locy;
-			this.sizex = sizex;
-			this.sizey = sizey;
+			this.lox = applydifx(lox);
+			this.locy = applydify(locy);
+			this.sizex = applydifx(sizex);
+			this.sizey = applydify(sizey);
 			this.background = background;
 			GUIs.add(this);
 		}
@@ -59,10 +59,6 @@ public class GUI {
 		}
 		@SuppressWarnings("static-access")
 		void render(Graphics g){
-			lox = applydifx(lox);
-			locy = applydify(locy);
-			sizex = applydifx(sizex);
-			sizey = applydify(sizey);
 			if(background) {
 				@SuppressWarnings("unused")
 				int backgroundcolor = 200, blocklightlevel = backgroundcolor/2;
@@ -100,18 +96,14 @@ public class GUI {
 		boolean background;
 		textbox(String text, int lox, int locy, int sizex, int sizey, boolean background){
 			this.text = text;
-			this.lox = lox;
-			this.locy = locy;
-			this.sizex = sizex;
-			this.sizey = sizey;
+			this.lox = applydifx(lox);
+			this.locy = applydify(locy);
+			this.sizex = applydifx(sizex);
+			this.sizey = applydify(sizey);
 			this.background = background;
 			GUIs.add(this);
 		}
 		void render(Graphics g){
-			lox = applydifx(lox);
-			locy = applydify(locy);
-			sizex = applydifx(sizex);
-			sizey = applydify(sizey);
 			if(background) {
 				Map<Integer, BufferedImage> lightmap = textures.get(26);
 				g.setColor(new Color(200,200,200));
@@ -143,8 +135,8 @@ public class GUI {
 		int posx, posy;
 		BufferedImage image;
 		public image(int posx, int posy, BufferedImage image) {
-			this.posx = posx;
-			this.posy = posy;
+			this.posx = applydifx(posx);
+			this.posy = applydify(posy);
 			this.image = image;
 			GUIs.add(this);
 		}
@@ -233,10 +225,10 @@ public class GUI {
 		String name;
 		int xpos, ypos, xsize, ysize;
 		public fillintextbox(int xpos, int ypos, int xsize, int ysize, String name) {
-			this.xpos = xpos;
-			this.ypos = ypos;
-			this.xsize = xsize;
-			this.ysize = ysize;
+			this.xpos = applydifx(xpos);
+			this.ypos = applydify(ypos);
+			this.xsize = applydifx(xsize);
+			this.ysize = applydify(ysize);
 			this.name = name;
 			GUIs.add(this);
 		}
@@ -249,10 +241,6 @@ public class GUI {
 			return (ML.mouseonframex > xpos && ML.mouseonframey > ypos && ML.mouseonframex < xsize + xpos && ML.mouseonframey < ysize + ypos && ML.button != 0 ? ML.button : ML.button);
 		}
 		void render(Graphics g) {
-			xpos = applydifx(xpos);
-			ypos = applydify(ypos);
-			xsize = applydifx(xsize);
-			ysize = applydify(ysize);
 			if(clickedID() == 1) {
 				if(!stringinnputs.contains(new textstoredininput(name, false)))
 					new textstoredininput(name, true);

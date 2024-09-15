@@ -162,7 +162,7 @@ public class loadbiomedata {
 		}
 		return null;
 	}
-	public String getbiometype(String dimensionname, int height, int temp, double weardness){
+	public String getbiometype(String dimensionname, int height, int temp, double weirdness){
 		ArrayList<String> possiblebiomes = new ArrayList<String>(Arrays.asList(biomedemdata.getbiomebydemtype(dimensionname)));
 		if(possiblebiomes.size() == 1){
 			return possiblebiomes.get(0);
@@ -172,9 +172,11 @@ public class loadbiomedata {
 		}
 		ArrayList<String> currentheightbiomes = new ArrayList<String>(Arrays.asList(heightdata.getbiomebyheight(height)));
 		currentheightbiomes.retainAll(possiblebiomes);
-		//print(currentheightbiomes + " " + height);
 		if(currentheightbiomes.size() == 1){
 			return currentheightbiomes.get(0);
+		}
+		if(currentheightbiomes.size() == 0){
+			return applyweardness(possiblebiomes, weirdness);
 		}
 		possiblebiomes = currentheightbiomes;
 		ArrayList<String> currenttempbiomes = new ArrayList<String>(Arrays.asList(temperaturedata.getbiomebytemp(temp)));
@@ -182,8 +184,10 @@ public class loadbiomedata {
 		if(currenttempbiomes.size() == 1){
 			return currenttempbiomes.get(0);
 		}
+		if(currenttempbiomes.size() == 0){
+			return applyweardness(possiblebiomes, weirdness);
+		}
 		possiblebiomes = currenttempbiomes;
-		return applyweardness(possiblebiomes, weardness);
-		//return "plains";
+		return applyweardness(possiblebiomes, weirdness);
 	}
 }

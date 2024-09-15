@@ -40,8 +40,9 @@ public class buildworld {
 		
 	}
 	class dimension{
-		int fillBlock, fillAir,height;
+		int fillBlock, fillAir,height, temp;
 		boolean requestmoreinfo = false;
+		double weirdness;
 	}
 	public enum dimensionstypes{
 		stack,
@@ -52,7 +53,7 @@ public class buildworld {
 		int minHeight, maxHeight, divider[], times, seed, fillBlock, fillAir;
 		double scaleoffsets[];
 		boolean requestmoreinfo;
-		simnoise sn;
+		simnoise sn, temp, weirdness;
 		stack(int seed, int minHeight, int maxHeight, int divider[], double scaleoffsets[], int fillblock, int fillair, boolean requestmoreinfo) {
 			if(divider.length != scaleoffsets.length) {
 				System.out.println("lenghts of divider and scaleoffsets are not equal");
@@ -67,6 +68,8 @@ public class buildworld {
 			this.fillAir = fillair;
 			this.requestmoreinfo = requestmoreinfo;
 			sn = new simnoise(seed);
+			temp = new simnoise(seed + 1);
+			weirdness = new simnoise(seed + 2);
 		}
 		public int getheight(int x) {
 			double output = 0;
@@ -78,6 +81,12 @@ public class buildworld {
 			}
 			return (int)Math.round(output);
 		}
+		public int gettemp(int x) {
+			return (int) Math.round(temp.getnoise(x, 0.0004, 0, 10));
+		}
+		public double getweirdness(int x) {
+			return weirdness.getnoise(x, 0.0004, 0, 1);
+		}
 		public void update(int maxHeight) {
 			this.maxHeight = maxHeight;
 		}
@@ -85,13 +94,13 @@ public class buildworld {
 	
 	public column requestatx(int x, int xmax) {
 		dimension current = getdimension(x);
-		column output = new column(biomedata.getbiometype(currentdmtypeID, current.height, 5, 0.5),
+		column output = new column(biomedata.getbiometype(currentdmtypeID, current.height, current.temp, current.weirdness),
 				currentdmtypeID,
 				current.height,
 				current.fillBlock,
 				current.fillAir,
 				current.requestmoreinfo);
-		//print(biomedata.getbiometype(currentdmtypeID, current.height, 5, 0.5) + " height: " + current.height);
+		print(output.biomeid() + " height: " + current.height);
 		return output;
 	}
 	@SuppressWarnings("static-access")
@@ -102,6 +111,8 @@ public class buildworld {
 			output.fillBlock = ((stack)currentdm).fillBlock;
 			output.fillAir = ((stack)currentdm).fillAir;
 			output.requestmoreinfo = ((stack)currentdm).requestmoreinfo;
+			output.weirdness = ((stack)currentdm).getweirdness((int)Math.round(x));
+			output.temp = ((stack)currentdm).gettemp((int)Math.round(x));
 		}
 		return output;
     }
