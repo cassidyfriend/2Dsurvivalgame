@@ -1,5 +1,5 @@
 {
-	"biomes":["plains"],
+	"biomes":["plains", "mountains", "ocean"],
 	"defaultbiome":"plains",
 	"plains":{
 		"relivent demension":"overworld",
@@ -9,6 +9,28 @@
 		"temprange":1,
 		"weardness":30,
 		"surfaceblockid":1,
+		"fillblockid":0,
+		"fillheight":10
+	},
+	"mountains":{
+		"relivent demension":"overworld",
+		"minheight":650,
+		"maxheight":1500,
+		"temp":5,
+		"temprange":1,
+		"weardness":30,
+		"surfaceblockid":3,
+		"fillblockid":3,
+		"fillheight":10
+	},
+	"ocean":{
+		"relivent demension":"overworld",
+		"minheight":10,
+		"maxheight":450,
+		"temp":5,
+		"temprange":1,
+		"weardness":30,
+		"surfaceblockid":0,
 		"fillblockid":0,
 		"fillheight":10
 	}

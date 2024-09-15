@@ -134,16 +134,13 @@ public class ScrollingBlocks {
 		}
 		
 		if(isInMenu) 
-			return settings.settingsdata.getInt("backgroundblock");
+			return settings.settingsdata.getInt("backgroundblock") * 2;
 		
 		if(y == currentculum.height()) {
-			try {
-				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid());
-				currentoutput = (int) currentbiomedata.get("surfaceblockid") * 2;
-			} catch(Exception e){}
+			currentoutput = currentbiomedata.getInt("surfaceblockid") * 2;
 		}
 		if(y < currentculum.height() && y > currentculum.height() - currentbiomedata.getInt("fillheight")) {
-			currentoutput = currentbiomedata.getInt("fillblockid");
+			currentoutput = currentbiomedata.getInt("fillblockid") * 2;
 		}
 		//if(currentoutput == -4 && y < 450)
 			//currentoutput = 18;

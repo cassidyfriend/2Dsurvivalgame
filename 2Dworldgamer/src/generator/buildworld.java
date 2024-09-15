@@ -85,12 +85,13 @@ public class buildworld {
 	
 	public column requestatx(int x, int xmax) {
 		dimension current = getdimension(x);
-		column output = new column("plains",
-				biomedata.getbiometype(currentdmtypeID, 500, 5, 0.5),
+		column output = new column(biomedata.getbiometype(currentdmtypeID, current.height, 5, 0.5),
+				currentdmtypeID,
 				current.height,
 				current.fillBlock,
 				current.fillAir,
 				current.requestmoreinfo);
+		//print(biomedata.getbiometype(currentdmtypeID, current.height, 5, 0.5) + " height: " + current.height);
 		return output;
 	}
 	@SuppressWarnings("static-access")

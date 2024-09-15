@@ -21,7 +21,7 @@ public class loadbiomedata {
 	public static weardness weardnessdata;
 	
 	public class biomesindemtypes{
-		static Map<String, ArrayList<String>> demandbiomematching = new HashMap<>();
+		Map<String, ArrayList<String>> demandbiomematching = new HashMap<>();
 		void addbiome(JSONObject currentdata, String name){
 			if(demandbiomematching.containsKey(currentdata.getString("relivent demension"))){
 				demandbiomematching.get(currentdata.getString("relivent demension")).add(name);
@@ -37,8 +37,8 @@ public class loadbiomedata {
 	}
 	
 	public class heights{
-		static Map<Integer, ArrayList<String>> heightpackage = new HashMap<>();
-		static int[] heights;
+		Map<Integer, ArrayList<String>> heightpackage = new HashMap<>();
+		int[] heights;
 		void addbiome(JSONObject currentdata, String name){
 			if(heightpackage.containsKey(currentdata.getInt("minheight"))){
 				heightpackage.get(currentdata.getInt("minheight")).add(name);
@@ -58,8 +58,8 @@ public class loadbiomedata {
 	}
 	
 	public class temperatures{
-		static Map<Integer, ArrayList<String>> temperaturepackage = new HashMap<>();
-		static int[] temperatures;
+		Map<Integer, ArrayList<String>> temperaturepackage = new HashMap<>();
+		int[] temperatures;
 		void addbiome(Integer currenttemp, String name){
 			if(temperaturepackage.containsKey(currenttemp)){
 				temperaturepackage.get(currenttemp).add(name);
@@ -72,15 +72,15 @@ public class loadbiomedata {
 		void finished(){
 			temperatures = temperaturepackage.keySet().stream().mapToInt((Integer i)->i).toArray();
 		}
-		String[] getbiomebyheight(int temp){
+		String[] getbiomebytemp(int temp){
 			temp = findClosestFloor(temperatures, temp);
 			return temperaturepackage.get(temp).toArray(new String[0]);
 		}
 	}
 	
 	public class weardness{
-		static Map<String, Integer> weardpackage = new HashMap<>();
-		static int[] weardnesses;
+		Map<String, Integer> weardpackage = new HashMap<>();
+		int[] weardnesses;
 		void addbiome(Integer currentweardness, String name){
 			if(!weardpackage.containsKey(name)){
 				weardpackage.put(name, currentweardness);
@@ -140,7 +140,50 @@ public class loadbiomedata {
 		temperaturedata.finished();
 		weardnessdata.finished();
 	}
+	public static ArrayList<String> cloneList(ArrayList<String> list) {
+		ArrayList<String> clone = new ArrayList<String>(list.size());
+	    for (String item : list) clone.add(item);
+	    return clone;
+	}
+	String applyweardness(ArrayList<String> names, double weardness){
+		double currentweardness = 0;
+		int[] weardnesses = new int[names.size()];
+		for(int i = 0; i < names.size(); i++){
+			weardnesses[i] = weardnessdata.getweardnessbyname(names.get(i));
+			currentweardness += weardnesses[i];
+		}
+		currentweardness *= weardness;
+		int currentoffset = 0;
+		for(int i = 0; i < names.size(); i++){
+			currentoffset += weardnesses[i];
+			if(currentoffset > currentweardness){
+				return names.get(i);
+			}
+		}
+		return null;
+	}
 	public String getbiometype(String dimensionname, int height, int temp, double weardness){
-		return "plains";
+		ArrayList<String> possiblebiomes = new ArrayList<String>(Arrays.asList(biomedemdata.getbiomebydemtype(dimensionname)));
+		if(possiblebiomes.size() == 1){
+			return possiblebiomes.get(0);
+		}
+		if(possiblebiomes.size() == 0){
+			return "plains";
+		}
+		ArrayList<String> currentheightbiomes = new ArrayList<String>(Arrays.asList(heightdata.getbiomebyheight(height)));
+		currentheightbiomes.retainAll(possiblebiomes);
+		//print(currentheightbiomes + " " + height);
+		if(currentheightbiomes.size() == 1){
+			return currentheightbiomes.get(0);
+		}
+		possiblebiomes = currentheightbiomes;
+		ArrayList<String> currenttempbiomes = new ArrayList<String>(Arrays.asList(temperaturedata.getbiomebytemp(temp)));
+		currenttempbiomes.retainAll(possiblebiomes);
+		if(currenttempbiomes.size() == 1){
+			return currenttempbiomes.get(0);
+		}
+		possiblebiomes = currenttempbiomes;
+		return applyweardness(possiblebiomes, weardness);
+		//return "plains";
 	}
 }
