@@ -1,10 +1,24 @@
 {
-	"feature's names" : ["forest oak trees"],
+	"feature's names" : ["short grass", "forest oak trees", "tall grass"],
 	"forest oak trees" : {
 		"type" : "stack",
-		"scale amount": 30,
+		"scale amount": 20,
 		"relevant biomes" : ["plains"],
 		"block id" : 6,
+		"replaceable blocks": [2]
+	},
+	"short grass" : {
+		"type" : "stack",
+		"scale amount": 200,
+		"relevant biomes" : ["plains"],
+		"block id" : 16,
+		"replaceable blocks": [2]
+	},
+	"tall grass" : {
+		"type" : "stack",
+		"scale amount": 100,
+		"relevant biomes" : ["plains"],
+		"block id" : 15,
 		"replaceable blocks": [2]
 	}
 }

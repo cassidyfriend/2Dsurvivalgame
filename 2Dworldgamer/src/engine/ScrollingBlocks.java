@@ -89,7 +89,7 @@ public class ScrollingBlocks {
 		}
 		//print(BW.worlddata.requestatx(x+64, 0).biomeid);
 		renderoverlays(g,blocksizex,blocksizey);
-		int devidesize = 3;
+		int devidesize = 6;
 		if(!lockmovement) {
 			if(kl.up) {
 				smally += blocksizey/devidesize;
@@ -177,9 +177,10 @@ public class ScrollingBlocks {
 				break;
 			}
 			Map<Integer, BufferedImage> lightmap = LT.textures.get(overlayblocks.get(i * 3));
+			//print((blocksizex * 5.0)/2.7);
 			switch(overlayblocks.get(i * 3)) {
 			case 12:
-				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int) ((int)overlayblocks.get((i * 3) + 1) - (int)(Math.round(blocksizex)) + ((int)(Math.round(blocksizex) / 1.3))), (int) (overlayblocks.get((i * 3) + 2) - (blocksizey * 4)), (int)(Math.round(blocksizex) * 5), (int)(Math.round(blocksizey) * 5), null);
+				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)((int)overlayblocks.get((i * 3) + 1) - ((blocksizex * 5.0)/2.7)), (int) (overlayblocks.get((i * 3) + 2) - (blocksizey * 4)), (int)(Math.round(blocksizex) * 5), (int)(Math.round(blocksizey) * 5), null);
 				break;
 			case 18:
 				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get((i * 3) + 1), (overlayblocks.get((i * 3) + 2) + 5), (int)Math.round(blocksizex), (int)Math.round(blocksizey) - 5, null);
