@@ -19,6 +19,7 @@ public class loadbiomedata {
 	public static heights heightdata;
 	public static temperatures temperaturedata;
 	public static weardness weardnessdata;
+	public static HashMap<String, Double> openness = new HashMap<String, Double>();
 	
 	public class biomesindemtypes{
 		Map<String, ArrayList<String>> demandbiomematching = new HashMap<>();
@@ -135,6 +136,7 @@ public class loadbiomedata {
 				temperaturedata.addbiome(ix, biomeslist.getString(i));
 			}
 			weardnessdata.addbiome(currentbiome.getInt("weardness"), biomeslist.getString(i));
+			openness.put(biomeslist.getString(i), currentbiome.getDouble("open spread percentage"));
 		}
 		heightdata.finished();
 		temperaturedata.finished();

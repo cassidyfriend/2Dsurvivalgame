@@ -52,7 +52,7 @@ public class startgame extends JPanel
 	static JFrame f = new JFrame("Window");
 	static buildworld b = new buildworld();
 	static Update update = new Update();
-	static TwoD TD = new TwoD();
+	static TwoD TD = new TwoD(4);
 	static Manager M = new Manager();
 	static boolean up;
 	static boolean down;

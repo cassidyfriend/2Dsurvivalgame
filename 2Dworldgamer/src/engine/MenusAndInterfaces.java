@@ -18,7 +18,8 @@ public class MenusAndInterfaces {
 	GUI gui;
 	static ArrayList<menutypes> menutypelist = new ArrayList<menutypes>();
 	static ScrollingBlocks SB;
-	buildworld BW = Manager.BW;
+	static buildworld BW = Manager.BW;
+	static SpawnFeatures SF = new SpawnFeatures();
 	static TwoD TD;
 	enum menutypes{
 		MAINMENU,
@@ -61,13 +62,18 @@ public class MenusAndInterfaces {
 				BW.seed = Math.abs(gui.stringinnputs.get(gui.stringinnputs.indexOf(gui.new textstoredininput("seed:", false))).input.hashCode())/100000;
 				print(BW.seed);
 				if(BW.seed > 1) {
-					BW.updatenoise();
+					BW.updatenoise(Loaddimensions.dimensionsdata.getString("starting dimension"));
+					SF.updatenoise(Loaddimensions.dimensionsdata.getString("starting dimension"), BW.seed);
 				}
-				else
-					BW.updatenoise();
+				else {
+					BW.updatenoise(Loaddimensions.dimensionsdata.getString("starting dimension"));
+					SF.updatenoise(Loaddimensions.dimensionsdata.getString("starting dimension"), BW.seed);
+				}
 			}
-			else
-				BW.updatenoise();
+			else {
+				BW.updatenoise(Loaddimensions.dimensionsdata.getString("starting dimension"));
+				SF.updatenoise(Loaddimensions.dimensionsdata.getString("starting dimension"), BW.seed);
+			}
 			SB.updateY();
 			menutypelist.remove(menutypes.NEWWORLD);
 			SB.lockmovement = false;

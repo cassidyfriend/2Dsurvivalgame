@@ -100,7 +100,7 @@ public class buildworld {
 				current.fillBlock,
 				current.fillAir,
 				current.requestmoreinfo);
-		print(output.biomeid() + " height: " + current.height);
+		//print(output.biomeid() + " height: " + current.height);
 		return output;
 	}
 	@SuppressWarnings("static-access")
@@ -132,8 +132,8 @@ public class buildworld {
 			return destMin + (value - srcMin) * (destMax - destMin) / (srcMax - srcMin);
 		}
 	}
-	public void updatenoise() {
-		updatedimension(Loaddimensions.dimensionsdata.getString("starting dimension"));
+	public void updatenoise(String id) {
+		updatedimension(id);
 	}
 	public void updatedimension(String id) {
 		currentdmtypeID = id;

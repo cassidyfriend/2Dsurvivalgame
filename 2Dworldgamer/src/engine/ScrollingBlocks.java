@@ -30,6 +30,7 @@ public class ScrollingBlocks {
 	static Keylistener kl = new Keylistener();
 	static Player player = new Player();
 	static LoadSettings settings = new LoadSettings();
+	static SpawnFeatures SF = new SpawnFeatures();
 	buildworld.column currentculum = null;
 	loadbiomedata biomedata = new loadbiomedata();
 	public static int startingframex, startingframey;
@@ -141,6 +142,10 @@ public class ScrollingBlocks {
 		}
 		if(y < currentculum.height() && y > currentculum.height() - currentbiomedata.getInt("fillheight")) {
 			currentoutput = currentbiomedata.getInt("fillblockid") * 2;
+		}
+		if(y == currentculum.height() + 1) {
+			int current = SF.getBlockIDStackAtX(x, currentoutput, currentculum.biomeid());
+			currentoutput = current != -1 ? current : currentoutput;
 		}
 		//if(currentoutput == -4 && y < 450)
 			//currentoutput = 18;

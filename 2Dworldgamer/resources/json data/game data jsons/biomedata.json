@@ -10,7 +10,8 @@
 		"weardness":30,
 		"surfaceblockid":1,
 		"fillblockid":0,
-		"fillheight":10
+		"fillheight":10,
+		"open spread percentage":0.5
 	},
 	"mountains":{
 		"relivent demension":"overworld",
@@ -21,7 +22,8 @@
 		"weardness":30,
 		"surfaceblockid":3,
 		"fillblockid":3,
-		"fillheight":10
+		"fillheight":10,
+		"open spread percentage":0.5
 	},
 	"ocean":{
 		"relivent demension":"overworld",
@@ -32,7 +34,8 @@
 		"weardness":30,
 		"surfaceblockid":0,
 		"fillblockid":0,
-		"fillheight":10
+		"fillheight":10,
+		"open spread percentage":0.5
 	},
 	"snowfield":{
 		"relivent demension":"overworld",
@@ -43,7 +46,8 @@
 		"weardness":30,
 		"surfaceblockid":14,
 		"fillblockid":0,
-		"fillheight":10
+		"fillheight":10,
+		"open spread percentage":0.5
 	},
 	"dessert":{
 		"relivent demension":"overworld",
@@ -54,7 +58,8 @@
 		"weardness":30,
 		"surfaceblockid":8,
 		"fillblockid":8,
-		"fillheight":10
+		"fillheight":10,
+		"open spread percentage":0.5
 	},
 	"snowy mountains":{
 		"relivent demension":"overworld",
@@ -65,6 +70,7 @@
 		"weardness":30,
 		"surfaceblockid":14,
 		"fillblockid":3,
-		"fillheight":10
+		"fillheight":10,
+		"open spread percentage":0.5
 	}
 }

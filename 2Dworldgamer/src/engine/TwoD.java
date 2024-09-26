@@ -11,6 +11,7 @@ import player.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
@@ -34,9 +35,17 @@ public class TwoD extends JPanel {
     long lastLoopTime = System.nanoTime();
     static ArrayList<Map<Integer, BufferedImage>> textures;
     static MenusAndInterfaces MaI;
+    static BufferStrategy bufferStrategy;
+    static int bufferoffset = 0;
     void print(Object o) {
     	System.out.println(o);
     }
+    
+    TwoD(){
+    	bufferStrategy = frame.getBufferStrategy();
+    }
+    public TwoD(int ags){}
+    
 	@SuppressWarnings("static-access")
 	@Override
 	public void paint(Graphics g) {
@@ -44,7 +53,7 @@ public class TwoD extends JPanel {
         long updateLength = now - lastLoopTime;
         lastLoopTime = now;
         double delta = updateLength / ((double) OPTIMAL_TIME);
-		g.drawRect(ML.mouseonframex, ML.mouseonframey, 1, 1);
+		//g.drawRect(ML.mouseonframex, ML.mouseonframey, 1, 1);
 		player.framex = framesizex;
 		player.framey = framesizey;
 		framex = frame.getX();
@@ -59,7 +68,19 @@ public class TwoD extends JPanel {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        drawingorder(g);
+        
+        
+
+		
+			if (bufferStrategy == null) {
+				//frame.createBufferStrategy(3);
+				//bufferStrategy = frame.getBufferStrategy();
+			}
+		    //g = bufferStrategy.getDrawGraphics();
+		    drawingorder(g);
+		    //g.dispose();
+		    //bufferStrategy.show();
+        
 		frame.repaint();
 	}
 	@SuppressWarnings("static-access")
@@ -67,7 +88,8 @@ public class TwoD extends JPanel {
 		SB.Blocks(g, framesizex, framesizey);
 		M.eachframe();
 		player.drawplayer(g);
-		MaI.updatemenus();
+		if(MaI != null)
+			MaI.updatemenus();
 		gui.update(frame.getWidth(), frame.getHeight(), KL.lastkeypress);
 		gui.render(g);
 		//print(ML.button);
@@ -84,6 +106,8 @@ public class TwoD extends JPanel {
 		frame.setVisible(true);
 		frame.setTitle(framename);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.createBufferStrategy(2);
+		frame.setIconImage(LT.textures.get(2).get(100).getScaledInstance(36, 36, Image.SCALE_DEFAULT));
 		MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
 	}
 }

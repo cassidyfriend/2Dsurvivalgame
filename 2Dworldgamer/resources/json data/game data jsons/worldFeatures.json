@@ -1,0 +1,10 @@
+{
+	"feature's names" : ["forest oak trees"],
+	"forest oak trees" : {
+		"type" : "stack",
+		"scale amount": 30,
+		"relevant biomes" : ["plains"],
+		"block id" : 6,
+		"replaceable blocks": [2]
+	}
+}

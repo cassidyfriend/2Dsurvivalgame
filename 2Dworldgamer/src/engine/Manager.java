@@ -41,8 +41,9 @@ public class Manager {
 			e.printStackTrace();
 		}
 		new Loaddimensions();
-		new loadbiomedata();
-		new LoadSettings();
+		//new loadbiomedata();
+		//new LoadSettings();
+		new LoadFeatures();
 		BB.makebuttonlists(500);
 		//TD.loadframe();
 		newworld();
