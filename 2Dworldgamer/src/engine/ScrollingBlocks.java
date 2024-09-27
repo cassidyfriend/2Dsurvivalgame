@@ -177,7 +177,6 @@ public class ScrollingBlocks {
 				break;
 			}
 			Map<Integer, BufferedImage> lightmap = LT.textures.get(overlayblocks.get(i * 3));
-			//print((blocksizex * 5.0)/2.7);
 			switch(overlayblocks.get(i * 3)) {
 			case 12:
 				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)((int)overlayblocks.get((i * 3) + 1) - ((blocksizex * 5.0)/2.7)), (int) (overlayblocks.get((i * 3) + 2) - (blocksizey * 4)), (int)(Math.round(blocksizex) * 5), (int)(Math.round(blocksizey) * 5), null);
