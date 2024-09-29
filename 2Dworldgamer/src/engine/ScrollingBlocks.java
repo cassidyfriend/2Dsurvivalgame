@@ -25,6 +25,9 @@ import javax.sound.sampled.*;
 
 @SuppressWarnings("unused")
 public class ScrollingBlocks {
+	
+	record overlayblock(int blockID, int x, int y){}
+	
 	LoadTextures LT;
 	public static buildworld BW = Manager.BW;
 	static Keylistener kl = new Keylistener();
@@ -37,7 +40,7 @@ public class ScrollingBlocks {
 	public static int x = 0, y = 550;
 	public static double smallx = 0, smally = 0;
 	public static boolean isInMenu = true, lockmovement = true;
-	public static ArrayList<Integer> overlayblocks = new ArrayList<Integer>();
+	public static ArrayList<overlayblock> overlayblocks = new ArrayList<overlayblock>();
 	static int darknesslevel = 0;
 	
 	@SuppressWarnings("static-access")
@@ -57,7 +60,7 @@ public class ScrollingBlocks {
 	}
 	@SuppressWarnings("static-access")
 	public void Blocks(Graphics g, int framesizex, int framesizey) {
-		overlayblocks = new ArrayList<Integer>();
+		overlayblocks = new ArrayList<overlayblock>();
 		int blockaccrossframex = 110, blockaccrossframey = 63;
 		double blocksizex = Math.round(framesizex/blockaccrossframex);
 		double blocksizey = Math.round(framesizey/blockaccrossframey);
@@ -161,9 +164,7 @@ public class ScrollingBlocks {
 		
 		int[] overlayblockscheck = {12, 30, 32};
 		if(Arrays.binarySearch(overlayblockscheck, currentoutput) >= 0) {
-			overlayblocks.add(currentoutput);
-			overlayblocks.add(drawx);
-			overlayblocks.add(drawy);
+			overlayblocks.add(new overlayblock(currentoutput, drawx, drawy));
 			currentoutput = 4;
 		}
 		currentoutput = currentoutput == -4? currentculum.fillAir() : currentoutput;
@@ -172,23 +173,23 @@ public class ScrollingBlocks {
 	@SuppressWarnings("static-access")
 	void renderoverlays(Graphics g, double blocksizex, double blocksizey) {
 		int i = 0;
-		while(i < (overlayblocks.size() / 3)) {
-			if(i * 3 > overlayblocks.size() || overlayblocks.get(i * 3) > LT.textures.size()) {
+		while(i < (overlayblocks.size())) {
+			if(i > overlayblocks.size()) {
 				break;
 			}
-			Map<Integer, BufferedImage> lightmap = LT.textures.get(overlayblocks.get(i * 3));
-			switch(overlayblocks.get(i * 3)) {
+			Map<Integer, BufferedImage> lightmap = LT.textures.get(overlayblocks.get(i).blockID);
+			switch(overlayblocks.get(i).blockID) {
 			case 12:
-				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)((int)overlayblocks.get((i * 3) + 1) - ((blocksizex * 5.0)/2.7)), (int) (overlayblocks.get((i * 3) + 2) - (blocksizey * 4)), (int)(Math.round(blocksizex) * 5), (int)(Math.round(blocksizey) * 5), null);
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)((int)overlayblocks.get(i).x - ((blocksizex * 5.0)/2.7)), (int) (overlayblocks.get(i).y - (blocksizey * 4)), (int)(Math.round(blocksizex) * 5), (int)(Math.round(blocksizey) * 5), null);
 				break;
 			case 18:
-				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get((i * 3) + 1), (overlayblocks.get((i * 3) + 2) + 5), (int)Math.round(blocksizex), (int)Math.round(blocksizey) - 5, null);
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).x, (overlayblocks.get(i).y + 5), (int)Math.round(blocksizex), (int)Math.round(blocksizey) - 5, null);
 				break;
 			case 30:
-				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get((i * 3) + 1), overlayblocks.get((i * 3) + 2), (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).x, overlayblocks.get(i).y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
 				break;
 			case 32:
-				g.drawImage(lightmap.get(overlayblocks.get(i * 3) % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get((i * 3) + 1), overlayblocks.get((i * 3) + 2), (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).x, overlayblocks.get(i).y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
 				break;
 			}
 			i++;
