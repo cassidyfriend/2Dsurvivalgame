@@ -2,6 +2,7 @@ package engine;
 
 
 import generator.*;
+import physics.Point2D;
 import datareader.*;
 import update.*;
 import Files.*;
@@ -77,6 +78,7 @@ public class TwoD extends JPanel {
 				//bufferStrategy = frame.getBufferStrategy();
 			}
 		    //g = bufferStrategy.getDrawGraphics();
+			SB.buttonlisten();
 		    drawingorder(g);
 		    //g.dispose();
 		    //bufferStrategy.show();
@@ -90,10 +92,12 @@ public class TwoD extends JPanel {
 		player.drawplayer(g);
 		if(MaI != null)
 			MaI.updatemenus();
+		new Point2D(g).setcurrentframesize(framesizex, framesizey);
 		gui.update(frame.getWidth(), frame.getHeight(), KL.lastkeypress);
 		gui.render(g);
 		//print(ML.button);
 	}
+	@SuppressWarnings("static-access")
 	public void startframes(String framename, LoadTextures LT) {
 		this.LT = LT;
 		SB = new ScrollingBlocks(LT, startingframex, startingframey);
@@ -103,6 +107,7 @@ public class TwoD extends JPanel {
 		frame.add(new TwoD());
 		frame.setSize(startingframex, startingframey);
 		gui = new GUI(startingframex, startingframey, LT);
+		new Point2D(startingframex, startingframey, false);
 		frame.setVisible(true);
 		frame.setTitle(framename);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -210,6 +210,7 @@ public class GUI {
 		public int hashCode() {
 			return label.hashCode();
 		}
+		@SuppressWarnings("unlikely-arg-type")
 		public boolean equals(Object o) {
 			if(o instanceof statusbar)
 				if(o.hashCode() == this.hashCode())
@@ -266,6 +267,7 @@ public class GUI {
 		public int hashCode() {
 			return name.hashCode();
 		}
+		@SuppressWarnings("unlikely-arg-type")
 		public boolean equals(Object o) {
 			if(o instanceof fillintextbox)
 				if(o.hashCode() == this.hashCode())

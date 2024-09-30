@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import datareader.datareadermain;
 import gamelog.GameStatusLog;
 
-@SuppressWarnings("unused")
 public class LoadTextures {
 	static datareadermain dr = new datareadermain();
 	static GameStatusLog gamelog = new GameStatusLog();

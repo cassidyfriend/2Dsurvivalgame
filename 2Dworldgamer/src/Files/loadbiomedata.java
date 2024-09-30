@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.json.*;
 
-import Files.*;
-
 public class loadbiomedata {
 	
 	public static  JSONObject biomedata;

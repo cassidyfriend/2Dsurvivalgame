@@ -97,7 +97,7 @@ public class startgame extends JPanel
   	
   // block size rule 18 on both x and y
  
-  @SuppressWarnings({ "deprecation", "unused", "static-access" })
+  @SuppressWarnings({ "deprecation"})
 public void paintComponent(Graphics g)
   {
 	  
@@ -131,7 +131,6 @@ public void paintComponent(Graphics g)
 		bluetree = ImageIO.read(new File("src/testtextures/bluefruittree.png"));
 		invintory = ImageIO.read(new File("src/testtextures/invintory_slot.png"));
 	} catch (IOException e1) {
-		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
    	backgrounddirt = new RescaleOp(0.25f, 0.0f, null);
@@ -195,7 +194,6 @@ public void paintComponent(Graphics g)
    		 //System.out.println(blocks.size());
    		 out.close();
    	 } catch (FileNotFoundException e) {
-   		 // TODO Auto-generated catch block
    		 e.printStackTrace();
    	 }
    	 
@@ -209,7 +207,6 @@ public void paintComponent(Graphics g)
    		 
    		 //System.out.println(ghgh);
    	 } catch (FileNotFoundException e) {
-   		 // TODO Auto-generated catch block
    		 e.printStackTrace();
    	 }*/
         	//Scanner inFile = new Scanner(fr);
@@ -438,7 +435,6 @@ public void paintComponent(Graphics g)
 	try {
 		Thread.sleep((System.currentTimeMillis() - start) + 8);
 	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
@@ -446,7 +442,7 @@ public void paintComponent(Graphics g)
 
 
 
-  @SuppressWarnings({ "deprecation", "static-access" })
+  @SuppressWarnings({ "static-access" })
 public static void main(String [] args){
 	  //System.out.println("test");
       M.onstartup();
@@ -454,15 +450,12 @@ public static void main(String [] args){
 
 
 
-@SuppressWarnings("unused")
 private void play(String audioFilePath) {
-    // TODO Auto-generated method stub
     
 }
 
 private void moveBall() throws InterruptedException   {
 
-	// TODO Auto-generated method stub
 
 	//x = x + 1;
 
@@ -479,7 +472,6 @@ private void moveBall() throws InterruptedException   {
 
 }
 
-@SuppressWarnings("unused")
 private void callupdate() {
     //checkblockx + 36000 + checkblocky - 22
     int which = 0;
@@ -512,7 +504,6 @@ private void callupdate() {
    	 }
     }
 }
-@SuppressWarnings("unused")
 private void makesound(){
     try {
    	 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
@@ -524,13 +515,10 @@ private void makesound(){
    	 
    	 
     } catch (UnsupportedAudioFileException e1) {
-   	 // TODO Auto-generated catch block
    	 e1.printStackTrace();
     } catch (IOException e1) {
-   	 // TODO Auto-generated catch block
    	 e1.printStackTrace();
 	 } catch (LineUnavailableException e) {
-   	 // TODO Auto-generated catch block
    	 e.printStackTrace();
     }
 }

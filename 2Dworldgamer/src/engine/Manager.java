@@ -32,12 +32,10 @@ public class Manager {
 	static void print(Object o) {
 		System.out.println(o);
 	}
-	@SuppressWarnings("static-access")
 	public static void onstartup() {
 		try {
 			LT = new LoadTextures();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		new Loaddimensions();
@@ -59,13 +57,12 @@ public class Manager {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-			String currentworldpos = Integer.toString(ScrollingBlocks.x + 64) + " " + Integer.toString(ScrollingBlocks.y - 37);
+			String currentworldpos = Integer.toString((int)ScrollingBlocks.x + 64) + " " + Integer.toString((int)ScrollingBlocks.y - 37);
 			playeroverrightblocks.put(currentworldpos,(short) 38);
 		}
 		//print(ML.button);
 		ML.onupdate();
 	}
-	@SuppressWarnings("static-access")
 	public static void newworld() {
 		BW.gencolomes();
 	}

@@ -92,7 +92,7 @@ public class buildworld {
 		}
 	}
 	
-	public column requestatx(int x, int xmax) {
+	public column requestatx(int x) {
 		dimension current = getdimension(x);
 		column output = new column(biomedata.getbiometype(currentdmtypeID, current.height, current.temp, current.weirdness),
 				currentdmtypeID,
@@ -103,7 +103,6 @@ public class buildworld {
 		//print(output.biomeid() + " height: " + current.height);
 		return output;
 	}
-	@SuppressWarnings("static-access")
 	public dimension getdimension(double x) {
 		dimension output = new dimension();
 		if(currentdm instanceof stack) {
