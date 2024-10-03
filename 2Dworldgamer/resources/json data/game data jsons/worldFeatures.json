@@ -15,7 +15,7 @@
 		"replaceable blocks": [2]
 	},
 	"tall grass" : {
-		"type" : "stack",
+		"type" : "stack", 
 		"scale amount": 100,
 		"relevant biomes" : ["plains"],
 		"block id" : 15,
