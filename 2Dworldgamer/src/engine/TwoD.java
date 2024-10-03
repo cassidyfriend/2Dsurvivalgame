@@ -27,7 +27,7 @@ public class TwoD extends JPanel {
 	static BuildButtons BB = new BuildButtons();
 	static Keylistener KL;
 	static ScrollingBlocks SB;
-	static Player player = new Player();
+	static Player player = new Player(null);
 	static GUI gui;
 	LoadTextures LT = null;
 	static int framex, framey,framesizex,framesizey;

@@ -8,7 +8,7 @@ public class Point2D {
 
 	public int x = 0, y = 0;
 	public static int statingframex = 0, statingframey = 0, currentframex = 0, currentframey = 0;
-	public static boolean showPoints = true;
+	public static boolean showPoints = false;
 	public static HashMap<Point2D, Point2D> pointslist = new HashMap<Point2D, Point2D>();
 	public Point2D(int x, int y) {
 		this.x = x;

@@ -38,7 +38,7 @@ public class SpawnFeatures {
 		for(String current : currenttypes)
 			finalmax += LoadFeatures.stackfeatures.get(current).scaleamount();
 		int finalnoisemax = finalmax + (int)Math.round((finalmax + 0.0) * loadbiomedata.openness.get(biome));
-		int randomout = (int) Math.round(currentstacknoise.getnoise(x, 1, 0, finalnoisemax));
+		int randomout = (int) Math.round(currentstacknoise.getnoise(x, 5, 0, finalnoisemax));
 		if(randomout < finalnoisemax - finalmax)
 			return -1;
 		int current = 0;

@@ -44,7 +44,7 @@
 		"temp":2,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":14,
+		"surfaceblockid":13,
 		"fillblockid":0,
 		"fillheight":10,
 		"open spread percentage":0.5
@@ -68,7 +68,7 @@
 		"temp":2,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":14,
+		"surfaceblockid":13,
 		"fillblockid":3,
 		"fillheight":10,
 		"open spread percentage":0.5

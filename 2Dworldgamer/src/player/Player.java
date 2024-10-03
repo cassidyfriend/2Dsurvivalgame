@@ -19,7 +19,29 @@ import javax.sound.sampled.*;
 
 @SuppressWarnings("unused")
 public class Player {
+	
+	public enum Location{
+		MENU,
+		INGAME
+	}
+	
 	public static int drawplayerx, drawplayery,framex,framey,smalldrawx,smalldrawy,blocksizex,blocksizey;
+	
+	void print(Object o) {
+		System.out.println(o);
+	}
+	
+	public Player() {}
+	public Player(Location type) {
+		if(type == null) {
+			return;
+		}
+		if(type == Location.MENU) {
+			//print("test");
+			new ReadAndWritePlayerDesign();
+		}
+	}
+	
 	public static void drawplayer(Graphics g) {
 		g.fillRect(drawplayerx,drawplayery,Math.round(framex / 70),Math.round(framey / 40));
 		//g.fillRect(drawplayerx - blocksizex,drawplayery,Math.round(framex / 70),Math.round(framey / 40));

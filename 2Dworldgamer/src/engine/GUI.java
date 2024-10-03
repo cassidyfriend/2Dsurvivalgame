@@ -8,9 +8,15 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 import Files.LoadTextures;
 
+@SuppressWarnings("unused")
 public class GUI {
 
 	static ArrayList<Object> GUIs = new ArrayList<Object>();
@@ -60,7 +66,6 @@ public class GUI {
 		@SuppressWarnings("static-access")
 		void render(Graphics g){
 			if(background) {
-				@SuppressWarnings("unused")
 				int backgroundcolor = 200, blocklightlevel = backgroundcolor/2;
 				backgroundcolor = ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy ? 100 : 200;
 				g.setColor(new Color(backgroundcolor,backgroundcolor,backgroundcolor));
@@ -241,12 +246,19 @@ public class GUI {
 		int clickedID() {
 			return (ML.mouseonframex > xpos && ML.mouseonframey > ypos && ML.mouseonframex < xsize + xpos && ML.mouseonframey < ysize + ypos && ML.button != 0 ? ML.button : ML.button);
 		}
+		@SuppressWarnings("static-access")
+		public boolean isClickedInvertedly(){
+			return ((ML.mouseonframex < xpos || ML.mouseonframey < ypos || ML.mouseonframex > xsize + xpos || ML.mouseonframey > ysize + ypos) && ML.button != 0);
+		}
 		void render(Graphics g) {
 			if(clickedID() == 1) {
 				if(!stringinnputs.contains(new textstoredininput(name, false)))
 					new textstoredininput(name, true);
 				else
 					stringinnputs.get(stringinnputs.indexOf(new textstoredininput(name, false))).isactive = true;
+			}
+			if(isClickedInvertedly() && stringinnputs.contains(new textstoredininput(name, false))) {
+				stringinnputs.get(stringinnputs.indexOf(new textstoredininput(name, false))).isactive = false;
 			}
 			Map<Integer, BufferedImage> lightmap = textures.get(26);
 			g.setColor(new Color(200,200,200));
@@ -260,9 +272,6 @@ public class GUI {
 				g.drawString(stringinnputs.get(stringinnputs.indexOf(new textstoredininput(name, false))).input, xpos + applydifx(6), ypos + (ysize/2) + ((metrics.getHeight()/2)/2));
 			else
 				g.drawString(name, xpos + applydifx(6), ypos + (ysize/2) + ((metrics.getHeight()/2)/2));
-		}
-		void update() {
-			
 		}
 		public int hashCode() {
 			return name.hashCode();
@@ -278,12 +287,60 @@ public class GUI {
 			return false;
 		}
 	}
+	
+	public class targetbox {
+		String name;
+		int lox, locy, sizex, sizey;
+		boolean invisible;
+		BufferedImage background;
+		targetbox(String name, int lox, int locy, int sizex, int sizey, boolean invisible, BufferedImage background){
+			this.name = name;
+			this.lox = applydifx(lox);
+			this.locy = applydify(locy);
+			this.sizex = applydifx(sizex);
+			this.sizey = applydify(sizey);
+			this.invisible = invisible;
+			this.background = background;
+			GUIs.add(this);
+		}
+		@SuppressWarnings("static-access")
+		public boolean isClicked(){
+			//print(ML.button);
+			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0);
+		}
+		@SuppressWarnings("static-access")
+		int clickedID() {
+			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0 ? ML.button : ML.button);
+		}
+		void render(Graphics g){
+			if(!invisible) {
+				Map<Integer, BufferedImage> lightmap = textures.get(26);
+				g.drawImage(lightmap.get(100), lox, locy, sizex, sizey, null);
+				g.drawImage(background, lox + applydifx(3), locy + applydify(3), sizex - applydifx(6), sizey - applydify(6), null);
+			}
+		}
+		public int hashCode() {
+			return name.hashCode();
+		}
+		public boolean equals(Object o) {
+			if(o instanceof targetbox)
+				if(o.hashCode() == this.hashCode())
+					return true;
+			if(o instanceof String)
+				if(((String)o).equals(name))
+					return true;
+			if(o.hashCode() == name.hashCode())
+				return true;
+			return false;
+		}
+	}
+	
 	class textstoredininput{
 		String name, input = "";
 		boolean isactive = false;
 		textstoredininput(String name, boolean add){
 			this.name = name;
-			isactive = true;
+			//isactive = true;
 			if(add)
 				stringinnputs.add(this);
 		}
@@ -347,6 +404,9 @@ public class GUI {
 					break;
 				case "fillintextbox":
 					((fillintextbox) current).render(g);
+					break;
+				case "targetbox":
+					((targetbox) current).render(g);
 					break;
 				default:
 					break;
