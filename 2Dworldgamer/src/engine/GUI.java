@@ -24,6 +24,7 @@ public class GUI {
 	public static ArrayList<textstoredininput> stringinnputs = new ArrayList<textstoredininput>();
 	static MouseListerner ML = new MouseListerner();
 	LoadTextures LT;
+	BufferedImage framelight, framedark;
 	int starterframesizex, starterframesizey;
 	int currentframesizex, currentframesizey;
 	public int fontsize = 25, textsize = 5, lastkey = -1;
@@ -34,11 +35,26 @@ public class GUI {
 		this.starterframesizey = framesizey;
 		this.LT = LT;
 		textures = LT.textures;
+		Map<Integer, BufferedImage> lightmap = textures.get(24);
+		framelight = lightmap.get(100);
+		framedark = lightmap.get(50);
 	}
 	public GUI() {}
 	
 	static void print(Object o) {
 		System.out.println(o);
+	}
+	
+	BufferedImage createoutline(int width, int height, boolean islight) {
+		BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics g = output.getGraphics();
+		if(islight) {
+			
+		}
+		else {
+			
+		}
+		return output;
 	}
 	
 	public class textbutton {
@@ -69,7 +85,7 @@ public class GUI {
 				int backgroundcolor = 200, blocklightlevel = backgroundcolor/2;
 				backgroundcolor = ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy ? 100 : 200;
 				g.setColor(new Color(backgroundcolor,backgroundcolor,backgroundcolor));
-				Map<Integer, BufferedImage> lightmap = textures.get(26);
+				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.drawImage(lightmap.get(backgroundcolor/2), lox, locy, sizex, sizey, null);
 				g.fillRect(lox + applydifx(3), locy + applydify(3), sizex - applydifx(6), sizey - applydify(6));
 			}
@@ -110,7 +126,7 @@ public class GUI {
 		}
 		void render(Graphics g){
 			if(background) {
-				Map<Integer, BufferedImage> lightmap = textures.get(26);
+				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.setColor(new Color(200,200,200));
 				g.fillRect(lox, locy, sizex, sizey);
 				g.drawImage(lightmap.get(100), lox, locy, sizex, sizey, null);
@@ -204,7 +220,7 @@ public class GUI {
 		void render(Graphics g) {
 			if(fittype == imagebarfit.BARTOIMAGE) {
 				g.drawImage(label, applydifx(posx), applydify(posy), applydifx(label.getWidth()), applydify(label.getHeight()), null);
-				Map<Integer, BufferedImage> lightmap = textures.get(26);
+				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.drawImage(lightmap.get(100), applydifx(posx + label.getWidth() + 10), applydify(posy), applydifx(sizex), applydify(label.getHeight()), null);
 				g.setColor(new Color(127,127,127));
 				g.fillRect(applydifx(posx + label.getWidth() + 13), applydify(posy + 1), applydifx(sizex - 6.0), applydify(label.getHeight() - 2));
@@ -260,7 +276,7 @@ public class GUI {
 			if(isClickedInvertedly() && stringinnputs.contains(new textstoredininput(name, false))) {
 				stringinnputs.get(stringinnputs.indexOf(new textstoredininput(name, false))).isactive = false;
 			}
-			Map<Integer, BufferedImage> lightmap = textures.get(26);
+			Map<Integer, BufferedImage> lightmap = textures.get(24);
 			g.setColor(new Color(200,200,200));
 			g.drawImage(lightmap.get(100), xpos, ypos, xsize, ysize, null);
 			g.fillRect(xpos + applydifx(3), ypos + applydify(3), xsize - applydifx(6), ysize - applydify(6));
@@ -313,8 +329,9 @@ public class GUI {
 			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0 ? ML.button : ML.button);
 		}
 		void render(Graphics g){
+			print("test");
 			if(!invisible) {
-				Map<Integer, BufferedImage> lightmap = textures.get(26);
+				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.drawImage(lightmap.get(100), lox, locy, sizex, sizey, null);
 				g.drawImage(background, lox + applydifx(3), locy + applydify(3), sizex - applydifx(6), sizey - applydify(6), null);
 			}

@@ -5,7 +5,10 @@ import datareader.*;
 import update.*;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import Files.*;
 import engine.*;
@@ -17,10 +20,12 @@ import player.*;
 public class MenusAndInterfaces {
 	GUI gui;
 	static ArrayList<menutypes> menutypelist = new ArrayList<menutypes>();
+	static ArrayList<Map<Integer, BufferedImage>> textures;
 	static ScrollingBlocks SB;
 	static buildworld BW = Manager.BW;
 	static SpawnFeatures SF = new SpawnFeatures();
 	static TwoD TD;
+	LoadTextures LT;
 	static double playerscale = 50;
 	enum menutypes{
 		MAINMENU,
@@ -35,8 +40,15 @@ public class MenusAndInterfaces {
 	@SuppressWarnings("static-access")
 	public MenusAndInterfaces(menutypes toadd, GUI gui, ScrollingBlocks SB) {
 		menutypelist.add(toadd);
+		textures = LT.textures;
 		this.gui = gui;
 		this.SB = SB;
+		try {
+			LT = new LoadTextures();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public MenusAndInterfaces() {}
 	
@@ -50,6 +62,9 @@ public class MenusAndInterfaces {
 				gui.new textbutton("Multiplayer", 645, 280, 240, 80, true);
 				gui.new textbutton("Costume Room", 645, 380, 240, 80, true);
 				gui.new textbutton("Exit", 520, 480, 240, 80, true);
+				Map<Integer, BufferedImage> lightmap = textures.get(24);
+				//lightmap.get(100)
+				gui.new targetbox("test", 0, 0, 100, 100, false, lightmap.get(100));
 				break;
 			case NEWWORLD:
 				gui.new textbutton("Create World", 520, 400, 240, 80, true);
