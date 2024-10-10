@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
 import java.awt.*;
@@ -38,11 +39,10 @@ public class ScrollingBlocks {
 	loadbiomedata biomedata = new loadbiomedata();
 	public static int startingframex = 0, startingframey = 0, currentframex = 0, currentframey = 0;
 	public static final int blocksize = 18;
-	public static double x = 0, y = 550;
+	public static double x, y;
 	public static boolean isInMenu = true, lockmovement = true;
 	public static ArrayList<overlayblock> overlayblocks = new ArrayList<overlayblock>();
 	static int darknesslevel = 0;
-	
 	@SuppressWarnings("static-access")
 	public ScrollingBlocks(LoadTextures LT, int startingframex, int startingframey) {
 		this.startingframex = startingframex;
@@ -104,7 +104,7 @@ public class ScrollingBlocks {
 	}
 	@SuppressWarnings("static-access")
 	public void buttonlisten() {
-		double movementamount = 0.2;
+		double movementamount = 2;
 		if(!lockmovement) {
 			if(kl.up) {
 				y += movementamount;

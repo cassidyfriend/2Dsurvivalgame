@@ -107,7 +107,7 @@ public class loadbiomedata {
                      .boxed() // Converts int to Integer
                      .filter(x -> x <= target) // Only consider values less than or equal to the target
                      .max(Integer::compare) // Find the maximum value among the remaining ones
-                     .orElseThrow(() -> new IllegalArgumentException("No values less than or equal to target"));
+                     .orElse(Integer.MIN_VALUE);
     }
 	
 	@SuppressWarnings("resource")
@@ -163,6 +163,7 @@ public class loadbiomedata {
 		return null;
 	}
 	public String getbiometype(String dimensionname, int height, int temp, double weirdness){
+		temp = temp == 0 ? 1 : temp;
 		ArrayList<String> possiblebiomes = new ArrayList<String>(Arrays.asList(biomedemdata.getbiomebydemtype(dimensionname)));
 		if(possiblebiomes.size() == 1){
 			return possiblebiomes.get(0);

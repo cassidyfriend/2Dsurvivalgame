@@ -25,8 +25,7 @@ public class GUI {
 	static MouseListerner ML = new MouseListerner();
 	LoadTextures LT;
 	BufferedImage framelight, framedark;
-	int starterframesizex, starterframesizey;
-	int currentframesizex, currentframesizey;
+	int starterframesizex, starterframesizey, currentframesizex, currentframesizey;
 	public int fontsize = 25, textsize = 5, lastkey = -1;
 	
 	@SuppressWarnings("static-access")
@@ -35,7 +34,7 @@ public class GUI {
 		this.starterframesizey = framesizey;
 		this.LT = LT;
 		textures = LT.textures;
-		Map<Integer, BufferedImage> lightmap = textures.get(24);
+		Map<Integer, BufferedImage> lightmap = LT.textures.get(24);
 		framelight = lightmap.get(100);
 		framedark = lightmap.get(50);
 	}
@@ -46,13 +45,59 @@ public class GUI {
 	}
 	
 	BufferedImage createoutline(int width, int height, boolean islight) {
-		BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		width = width == 0? 10 : width;
+		height = height == 0? 10 : height;
+		BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = output.getGraphics();
 		if(islight) {
-			
+			double countheight = height/framelight.getHeight();
+			double increasefor = (int)Math.floor(width/framelight.getWidth());
+			double countwidth = 0;
+			double firstincreasewith = width/increasefor;
+			for(int i = 0; i < increasefor; i++) {
+				g.drawImage(framelight.getSubimage(0,0, framelight.getWidth(), 2), (int)countwidth, 0, (int)Math.ceil(firstincreasewith), 2, null);
+				countwidth += width/increasefor;
+			}
+			countwidth = 0;
+			for(int i = 0; i < countheight; i++) {
+				g.drawImage(framelight.getSubimage(0,0, 2, framelight.getHeight()), 0, (int)countwidth, 2, (int)Math.ceil(height/countheight), null);
+				countwidth += height/countheight;
+			}
+			countwidth = 0;
+			for(int i = 0; i < increasefor; i++) {
+				g.drawImage(framelight.getSubimage(0,0, framelight.getWidth(), 2), (int)countwidth, height - 2, (int)Math.ceil(firstincreasewith), 2, null);
+				countwidth += width/increasefor;
+			}
+			countwidth = 0;
+			for(int i = 0; i < countheight; i++) {
+				g.drawImage(framelight.getSubimage(0,0, 2, framelight.getHeight()), width - 2, (int)countwidth, 2, (int)Math.ceil(height/countheight), null);
+				countwidth += height/countheight;
+			}
 		}
 		else {
-			
+			double countheight = height/framedark.getHeight();
+			double increasefor = (int)Math.floor(width/framedark.getWidth());
+			double countwidth = 0;
+			double firstincreasewith = width/increasefor;
+			for(int i = 0; i < increasefor; i++) {
+				g.drawImage(framedark.getSubimage(0,0, framedark.getWidth(), 2), (int)countwidth, 0, (int)Math.ceil(firstincreasewith), 2, null);
+				countwidth += width/increasefor;
+			}
+			countwidth = 0;
+			for(int i = 0; i < countheight; i++) {
+				g.drawImage(framedark.getSubimage(0,0, 2, framedark.getHeight()), 0, (int)countwidth, 2, (int)Math.ceil(height/countheight), null);
+				countwidth += height/countheight;
+			}
+			countwidth = 0;
+			for(int i = 0; i < increasefor; i++) {
+				g.drawImage(framedark.getSubimage(0,0, framedark.getWidth(), 2), (int)countwidth, height - 2, (int)Math.ceil(firstincreasewith), 2, null);
+				countwidth += width/increasefor;
+			}
+			countwidth = 0;
+			for(int i = 0; i < countheight; i++) {
+				g.drawImage(framedark.getSubimage(0,0, 2, framedark.getHeight()), width - 2, (int)countwidth, 2, (int)Math.ceil(height/countheight), null);
+				countwidth += height/countheight;
+			}
 		}
 		return output;
 	}
@@ -328,12 +373,30 @@ public class GUI {
 		int clickedID() {
 			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0 ? ML.button : ML.button);
 		}
+		@SuppressWarnings("static-access")
+		int[] getlocationclicked(){
+			int output[] = {-1, -1};
+			if(isClicked()){
+				output[0] = ML.mouseonframex - lox;
+				output[1] = ML.mouseonframey - locy;
+			}
+			return output;
+		}
+		@SuppressWarnings("static-access")
+		int[] getlocationclickedbyID(){
+			int output[] = {-1, -1, 0};
+			if(isClicked()){
+				output[0] = ML.mouseonframex - lox;
+				output[1] = ML.mouseonframey - locy;
+				output[2] = clickedID();
+			}
+			return output;
+		}
 		void render(Graphics g){
-			print("test");
 			if(!invisible) {
 				Map<Integer, BufferedImage> lightmap = textures.get(24);
-				g.drawImage(lightmap.get(100), lox, locy, sizex, sizey, null);
-				g.drawImage(background, lox + applydifx(3), locy + applydify(3), sizex - applydifx(6), sizey - applydify(6), null);
+				g.drawImage(createoutline(sizex, sizey, true), lox, locy, sizex, sizey, null);
+				g.drawImage(background, lox + applydifx(2), locy + applydifx(2), sizex - applydifx(4), sizey - applydifx(4), null);
 			}
 		}
 		public int hashCode() {
@@ -438,6 +501,10 @@ public class GUI {
 					//print(ML.button);
 					return ((textbutton)current).isClicked();
 				}
+				else if(current instanceof targetbox) {
+					//print(ML.button);
+					return ((targetbox)current).isClicked();
+				}
 		}
 		return false;
 	}
@@ -447,6 +514,23 @@ public class GUI {
 				return ((textbutton)current).clickedID();
 		}
 		return 0;
+	}
+	public int[] gettargetboxclicked(Object o) {
+		for(Object current : GUIs) {
+			if(current.hashCode() == o.hashCode())
+				if(current instanceof targetbox) {
+					//print(ML.button);
+					return ((targetbox)current).getlocationclicked();
+				}
+		}
+		return null;
+	}
+	public int[] gettatgetboxclickedID(Object o) {
+		for(Object current : GUIs) {
+			if(getbuttonclicked(o))
+				return ((targetbox)current).getlocationclickedbyID();
+		}
+		return null;
 	}
 	Font getfont(String name, int style) {
 		if(name == null || name.equals(null))

@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import Files.*;
@@ -40,15 +41,9 @@ public class MenusAndInterfaces {
 	@SuppressWarnings("static-access")
 	public MenusAndInterfaces(menutypes toadd, GUI gui, ScrollingBlocks SB) {
 		menutypelist.add(toadd);
-		textures = LT.textures;
+		textures = LoadTextures.textures;
 		this.gui = gui;
 		this.SB = SB;
-		try {
-			LT = new LoadTextures();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	public MenusAndInterfaces() {}
 	
@@ -62,9 +57,9 @@ public class MenusAndInterfaces {
 				gui.new textbutton("Multiplayer", 645, 280, 240, 80, true);
 				gui.new textbutton("Costume Room", 645, 380, 240, 80, true);
 				gui.new textbutton("Exit", 520, 480, 240, 80, true);
-				Map<Integer, BufferedImage> lightmap = textures.get(24);
+				Map<Integer, BufferedImage> lightmap = textures.get(12);
 				//lightmap.get(100)
-				gui.new targetbox("test", 0, 0, 100, 100, false, lightmap.get(100));
+				//gui.new targetbox("test", 30, 30, 245, 123, false, lightmap.get(100));
 				break;
 			case NEWWORLD:
 				gui.new textbutton("Create World", 520, 400, 240, 80, true);
@@ -86,6 +81,9 @@ public class MenusAndInterfaces {
 		}
 		if(gui.getbuttonclickedID("Exit") == 1) {
 			System.exit(0);
+		}
+		if(gui.getbuttonclickedID("test") == 1) {
+			print(Arrays.toString(gui.gettargetboxclicked("test")));
 		}
 		if(gui.getbuttonclickedID("Create World") == 1) {
 			if(gui.stringinnputs.contains(gui.new textstoredininput("seed:", false))) {

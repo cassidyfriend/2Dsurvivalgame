@@ -113,6 +113,7 @@ public class buildworld {
 			output.weirdness = ((stack)currentdm).getweirdness((int)Math.round(x));
 			output.temp = ((stack)currentdm).gettemp((int)Math.round(x));
 		}
+		//print(output.temp);
 		return output;
     }
 	
