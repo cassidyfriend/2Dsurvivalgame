@@ -58,8 +58,9 @@ public class MenusAndInterfaces {
 				gui.new textbutton("Costume Room", 645, 380, 240, 80, true);
 				gui.new textbutton("Exit", 520, 480, 240, 80, true);
 				Map<Integer, BufferedImage> lightmap = textures.get(12);
-				//lightmap.get(100)
+				//lightmap.get(100);
 				//gui.new targetbox("test", 30, 30, 245, 123, false, lightmap.get(100));
+				gui.new slidingbar("test", lightmap.get(100), 30, 30, 245, 123, 0, 50, 10);
 				break;
 			case NEWWORLD:
 				gui.new textbutton("Create World", 520, 400, 240, 80, true);

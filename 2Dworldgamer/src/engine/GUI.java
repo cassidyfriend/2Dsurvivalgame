@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -15,6 +16,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import Files.LoadTextures;
+import engine.GUI.locationinslidingbar;
 
 @SuppressWarnings("unused")
 public class GUI {
@@ -415,6 +417,111 @@ public class GUI {
 		}
 	}
 	
+	public class slidingbar {
+		String name;
+		int locx, locy, width, height, minvalue, maxvalue, blocksize;
+		BufferedImage image;
+		locationinslidingbar locationinslidingbar;
+		public slidingbar(String name, BufferedImage image, int locx, int locy, int width, int height, int minvalue, int maxvalue, int blocksize) {
+			if(width <= 0)
+				return;
+			 this.name = name;
+			 this.locx = applydifx(locx);
+			 this.locy = applydify(locy);
+			 this.width = applydifx(width);
+			 this.height = applydify(height);
+			 this.minvalue = minvalue;
+			 this.maxvalue = maxvalue;
+			 this.blocksize = blocksize;
+			 this.image = image;
+			 GUIs.add(this);
+			 locationinslidingbar = new locationinslidingbar(this);
+		}
+		void render(Graphics g) {
+			Map<Integer, BufferedImage> lightmap = textures.get(24);
+			g.drawImage(createoutline(width, height, true), locx, locy, width, height, null);
+			g.drawImage(image, locx + applydifx(2), locy + applydifx(2), width - applydifx(4), height - applydifx(4), null);
+			g.drawImage(framelight.getSubimage(0,0, framelight.getWidth(), 2), (int)getblocklocation(), locy + applydify(1.5), applydifx(blocksize), height - applydify(2), null);
+			//g.fillRect(locx + applydifx(2), locy, (int)getdifference(), height);
+		}
+		
+		int getblocklocation() {
+			return (int) ((locationinslidingbar.getvalue(this)/(maxvalue-minvalue)) * getdifference()) + locx + applydifx(2);
+		}
+		
+		double getdifference() {
+			return width - applydifx(blocksize + 2);
+		}
+
+		@SuppressWarnings("static-access")
+		boolean isClicked(){
+			//print(ML.button);
+			return (ML.mouseonframex > locx && ML.mouseonframey > locy && ML.mouseonframex < width + locx && ML.mouseonframey < height + locy && ML.button != 0);
+		}
+
+		@SuppressWarnings("static-access")
+		int clickedID() {
+			return (ML.mouseonframex > locx && ML.mouseonframey > locy && ML.mouseonframex < width + locx && ML.mouseonframey < height + locy && ML.button != 0 ? ML.button : ML.button);
+		}
+
+		@SuppressWarnings("static-access")
+		int[] getlocationclickedbyID(){
+			int output[] = {-1, -1, 0};
+			if(isClicked()){
+				output[0] = ML.mouseonframex - locx;
+				output[1] = ML.mouseonframey - locy;
+				output[2] = clickedID();
+			}
+			return output;
+		}
+		public int hashCode() {
+			return name.hashCode();
+		}
+		public boolean equals(Object o) {
+			if(o instanceof slidingbar)
+				if(o.hashCode() == this.hashCode())
+					return true;
+			if(o instanceof String)
+				if(((String)o).equals(name))
+					return true;
+			if(o.hashCode() == name.hashCode())
+				return true;
+			return false;
+		}
+	}
+	
+	class locationinslidingbar{
+		static HashMap<slidingbar, Double> slidingbarinputs = new HashMap<slidingbar, Double>();
+		locationinslidingbar(slidingbar o){
+			addtoslidingbar(o);
+		}
+		locationinslidingbar(){}
+		boolean contains(slidingbar o) {
+			return slidingbarinputs.containsKey(o);
+		}
+		double getvalue(slidingbar o) {
+			if(slidingbarinputs.containsKey(o))
+			return slidingbarinputs.get(o);
+			return 0.0;
+		}
+		void addtoslidingbar(slidingbar o) {
+			if(!slidingbarinputs.containsKey(o) && o.width > 0) {
+				slidingbarinputs.put(o, (o.maxvalue+o.minvalue)/2.0);
+			}
+		}
+		void update() {
+			for(slidingbar current : slidingbarinputs.keySet()) {
+				if(current.width == 0)
+					slidingbarinputs.remove(current);
+				if(current.clickedID() == 1) {
+					double input = ((current.getlocationclickedbyID()[0] + 0.0)/(current.width + 0.0))*current.maxvalue;
+					slidingbarinputs.remove(current);
+					slidingbarinputs.put(current, input);
+				}
+			}
+		}
+	}
+	
 	class textstoredininput{
 		String name, input = "";
 		boolean isactive = false;
@@ -466,6 +573,8 @@ public class GUI {
 		for(textstoredininput current : stringinnputs) {
 			current.update();
 		}
+		locationinslidingbar locationinslidingbar = new locationinslidingbar();
+		locationinslidingbar.update();
 	}
 	public void render(Graphics g) {
 		for(Object current : GUIs) {
@@ -487,6 +596,9 @@ public class GUI {
 					break;
 				case "targetbox":
 					((targetbox) current).render(g);
+					break;
+				case "slidingbar":
+					((slidingbar) current).render(g);
 					break;
 				default:
 					break;
@@ -563,6 +675,9 @@ public class GUI {
 		return (int)Math.round((input + 0.0) * getframedifx());
 	}
 	int applydify(int input) {
+		return (int)Math.round((input + 0.0) * getframedify());
+	}
+	int applydify(double input) {
 		return (int)Math.round((input + 0.0) * getframedify());
 	}
 }
