@@ -19,6 +19,9 @@
 	"resources/textures/grass2.png",
 	"resources/textures/coalstone.png",
 	"resources/textures/dirtcoal.png",
-	"resources/textures/stoneiron.png"
+	"resources/textures/stoneiron.png",
+	"resources/textures/shortcactus.png",
+	"resources/textures/pinkcactus.png",
+	"resources/textures/redflowersmall.png"
 	]
 }

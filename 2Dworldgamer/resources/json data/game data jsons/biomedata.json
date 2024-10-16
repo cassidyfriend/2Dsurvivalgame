@@ -1,5 +1,5 @@
 {
-	"biomes":["plains", "mountains", "ocean", "snowfield", "dessert", "snowy mountains"],
+	"biomes":["plains", "mountains", "ocean", "snowfield", "Desert", "snowy mountains"],
 	"defaultbiome":"plains",
 	"plains":{
 		"relivent demension":"overworld",
@@ -49,7 +49,7 @@
 		"fillheight":10,
 		"open spread percentage":0.5
 	},
-	"dessert":{
+	"Desert":{
 		"relivent demension":"overworld",
 		"minheight":450,
 		"maxheight":550,
@@ -59,7 +59,7 @@
 		"surfaceblockid":8,
 		"fillblockid":8,
 		"fillheight":10,
-		"open spread percentage":0.5
+		"open spread percentage":0.99
 	},
 	"snowy mountains":{
 		"relivent demension":"overworld",

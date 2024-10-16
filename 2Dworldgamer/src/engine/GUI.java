@@ -379,8 +379,9 @@ public class GUI {
 		int[] getlocationclicked(){
 			int output[] = {-1, -1};
 			if(isClicked()){
-				output[0] = ML.mouseonframex - lox;
-				output[1] = ML.mouseonframey - locy;
+				//getframedifx()
+				output[0] = ML.mouseonframex;
+				output[1] = ML.mouseonframey;
 			}
 			return output;
 		}
@@ -388,8 +389,8 @@ public class GUI {
 		int[] getlocationclickedbyID(){
 			int output[] = {-1, -1, 0};
 			if(isClicked()){
-				output[0] = ML.mouseonframex - lox;
-				output[1] = ML.mouseonframey - locy;
+				output[0] = applydifx(ML.mouseonframex) - lox;
+				output[1] = applydify(ML.mouseonframey) - locy;
 				output[2] = clickedID();
 			}
 			return output;
@@ -399,6 +400,7 @@ public class GUI {
 				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.drawImage(createoutline(sizex, sizey, true), lox, locy, sizex, sizey, null);
 				g.drawImage(background, lox + applydifx(2), locy + applydifx(2), sizex - applydifx(4), sizey - applydifx(4), null);
+				g.fillRect(ML.mouseonframex, ML.mouseonframey, 20, 20);
 			}
 		}
 		public int hashCode() {
@@ -442,11 +444,14 @@ public class GUI {
 			g.drawImage(createoutline(width, height, true), locx, locy, width, height, null);
 			g.drawImage(image, locx + applydifx(2), locy + applydifx(2), width - applydifx(4), height - applydifx(4), null);
 			g.drawImage(framelight.getSubimage(0,0, framelight.getWidth(), 2), (int)getblocklocation(), locy + applydify(1.5), applydifx(blocksize), height - applydify(2), null);
-			//g.fillRect(locx + applydifx(2), locy, (int)getdifference(), height);
+			//g.fillRect((int) (ML.mouseonframex / getframedifx()), (int) (ML.mouseonframey / getframedify()), 20, 20);
 		}
 		
 		int getblocklocation() {
-			return (int) ((locationinslidingbar.getvalue(this)/(maxvalue-minvalue)) * getdifference()) + locx + applydifx(2);
+			int currentvalue = (int) locationinslidingbar.getvalue(this);
+			this.locy = applydify(locy);
+			currentvalue = (currentvalue > locx + 2 ? currentvalue : locx + applydifx(2));
+			return currentvalue + applydifx(4) > 5? currentvalue : locx + width + applydifx(2);
 		}
 		
 		double getdifference() {
@@ -467,12 +472,21 @@ public class GUI {
 		@SuppressWarnings("static-access")
 		int[] getlocationclickedbyID(){
 			int output[] = {-1, -1, 0};
+			this.locx = applydifx(locx);
+			 this.locy = applydify(locy);
+			 this.width = applydifx(width);
+			 this.height = applydify(height);
 			if(isClicked()){
-				output[0] = ML.mouseonframex - locx;
-				output[1] = ML.mouseonframey - locy;
+				print(getslideramount());
+				output[0] = (int) (ML.mouseonframex - locx);
+				output[1] = (int) (ML.mouseonframey - locy);
 				output[2] = clickedID();
 			}
 			return output;
+		}
+		@SuppressWarnings("static-access")
+		public int getslideramount() {
+			return (int) Math.round((ML.mouseonframex - locx) / ((width + 0.0)/(maxvalue - minvalue + 0.0)));
 		}
 		public int hashCode() {
 			return name.hashCode();
@@ -501,7 +515,7 @@ public class GUI {
 		}
 		double getvalue(slidingbar o) {
 			if(slidingbarinputs.containsKey(o))
-			return slidingbarinputs.get(o);
+				return slidingbarinputs.get(o);
 			return 0.0;
 		}
 		void addtoslidingbar(slidingbar o) {
@@ -514,7 +528,8 @@ public class GUI {
 				if(current.width == 0)
 					slidingbarinputs.remove(current);
 				if(current.clickedID() == 1) {
-					double input = ((current.getlocationclickedbyID()[0] + 0.0)/(current.width + 0.0))*current.maxvalue;
+					//((current.getlocationclickedbyID()[0] + 0.0)/(current.width + 0.0))*current.maxvalue
+					double input = current.getlocationclickedbyID()[0] + current.locx;
 					slidingbarinputs.remove(current);
 					slidingbarinputs.put(current, input);
 				}
@@ -637,12 +652,19 @@ public class GUI {
 		}
 		return null;
 	}
-	public int[] gettatgetboxclickedID(Object o) {
+	public int[] gettargetboxclickedID(Object o) {
 		for(Object current : GUIs) {
 			if(getbuttonclicked(o))
 				return ((targetbox)current).getlocationclickedbyID();
 		}
 		return null;
+	}
+	public int getslideramount(Object o) {
+		for(Object current : locationinslidingbar.slidingbarinputs.keySet()) {
+			if(current.hashCode() == o.hashCode())
+				return ((slidingbar)current).getslideramount();
+		}
+		return 0;
 	}
 	Font getfont(String name, int style) {
 		if(name == null || name.equals(null))

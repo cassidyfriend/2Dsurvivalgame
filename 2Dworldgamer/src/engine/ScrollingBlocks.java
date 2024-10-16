@@ -104,7 +104,7 @@ public class ScrollingBlocks {
 	}
 	@SuppressWarnings("static-access")
 	public void buttonlisten() {
-		double movementamount = 2;
+		double movementamount = 10;
 		if(!lockmovement) {
 			if(kl.up) {
 				y += movementamount;
@@ -156,7 +156,7 @@ public class ScrollingBlocks {
 		
 		
 		
-		int[] overlayblockscheck = {12, 30, 32};
+		int[] overlayblockscheck = {12, 30, 32, 40, 42, 44};
 		if(Arrays.binarySearch(overlayblockscheck, currentoutput) >= 0) {
 			overlayblocks.add(new overlayblock(currentoutput, new Point2D(drawx, drawy)));
 			currentoutput = 4;
@@ -189,6 +189,21 @@ public class ScrollingBlocks {
 				overlayblocks.get(i).location.remove();
 				break;
 			case 32:
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
+				overlayblocks.get(i).location.render(g);
+				overlayblocks.get(i).location.remove();
+				break;
+			case 40:
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
+				overlayblocks.get(i).location.render(g);
+				overlayblocks.get(i).location.remove();
+				break;
+			case 42:
+				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
+				overlayblocks.get(i).location.render(g);
+				overlayblocks.get(i).location.remove();
+				break;
+			case 44:
 				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
 				overlayblocks.get(i).location.render(g);
 				overlayblocks.get(i).location.remove();

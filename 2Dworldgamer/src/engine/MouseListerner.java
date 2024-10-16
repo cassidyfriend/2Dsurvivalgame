@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import java.awt.*;
 import java.awt.event.*;
 
+@SuppressWarnings("static-access")
 public class MouseListerner {
 
     static TwoD TD = new TwoD();
@@ -21,7 +22,7 @@ public class MouseListerner {
 
     // Counter to track how many frames the button has been held
     public static int holdCounter = 0;
-    public static final int HOLD_THRESHOLD = 1;  // Threshold for holding more than one frame
+    public static final int HOLD_THRESHOLD = 10;  // Threshold for holding more than one frame
 
     static {
         scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -40,7 +41,7 @@ public class MouseListerner {
 
                 // Schedule button reset after the timeout
                 scheduler.schedule(() -> {
-                    if (holdCounter == 0) {
+                    if (holdCounter == 10) {
                         button = 0;
                     }
                 }, mouseclickstimeout, TimeUnit.MILLISECONDS);
@@ -61,7 +62,7 @@ public class MouseListerner {
         });
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation"})
     public static void onupdate() {
         p = MouseInfo.getPointerInfo().getLocation();
         mousex = p.x;
