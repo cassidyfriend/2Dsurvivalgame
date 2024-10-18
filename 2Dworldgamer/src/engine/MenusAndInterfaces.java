@@ -60,7 +60,8 @@ public class MenusAndInterfaces {
 				Map<Integer, BufferedImage> lightmap = textures.get(12);
 				//lightmap.get(100);
 				//gui.new targetbox("test", 30, 30, 245, 123, false, lightmap.get(100));
-				gui.new slidingbar("test", lightmap.get(100), 30, 30, 245, 123, 0, 50, 10);
+				//gui.new slidingbar("test", lightmap.get(100), 30, 30, 245, 123, 0, 50, 10);
+				//print(gui.getslideramount("test"));
 				break;
 			case NEWWORLD:
 				gui.new textbutton("Create World", 520, 400, 240, 80, true);
