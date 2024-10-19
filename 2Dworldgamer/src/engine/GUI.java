@@ -108,7 +108,7 @@ public class GUI {
 		String text;
 		int lox, locy, sizex, sizey;
 		boolean background;
-		textbutton(String text, int lox, int locy, int sizex, int sizey, boolean background){
+		public textbutton(String text, int lox, int locy, int sizex, int sizey, boolean background){
 			this.text = text;
 			this.lox = applydifx(lox);
 			this.locy = applydify(locy);
@@ -353,15 +353,17 @@ public class GUI {
 	
 	public class targetbox {
 		String name;
-		int lox, locy, sizex, sizey;
+		int lox, locy, sizex, sizey, relevantXSize, relevantYSize;
 		boolean invisible;
 		BufferedImage background;
-		targetbox(String name, int lox, int locy, int sizex, int sizey, boolean invisible, BufferedImage background){
+		targetbox(String name, int lox, int locy, int sizex, int sizey, int relevantXSize, int relevantYSize, boolean invisible, BufferedImage background){
 			this.name = name;
 			this.lox = applydifx(lox);
 			this.locy = applydify(locy);
 			this.sizex = applydifx(sizex);
 			this.sizey = applydify(sizey);
+			this.relevantXSize = relevantXSize;
+			this.relevantYSize = relevantYSize;
 			this.invisible = invisible;
 			this.background = background;
 			GUIs.add(this);
@@ -395,13 +397,11 @@ public class GUI {
 			}
 			return output;
 		}
-		@SuppressWarnings("static-access")
 		void render(Graphics g){
 			if(!invisible) {
 				Map<Integer, BufferedImage> lightmap = textures.get(24);
-				g.drawImage(createoutline(sizex, sizey, true), lox, locy, sizex, sizey, null);
+				g.drawImage(createoutline((int)(sizex / getframedifx()), (int)(sizey / getframedify()), true), lox, locy, sizex, sizey, null);
 				g.drawImage(background, lox + applydifx(2), locy + applydifx(2), sizex - applydifx(4), sizey - applydifx(4), null);
-				g.fillRect(ML.mouseonframex, ML.mouseonframey, 20, 20);
 			}
 		}
 		public int hashCode() {
@@ -480,7 +480,6 @@ public class GUI {
 			}
 			return output;
 		}
-		@SuppressWarnings("static-access")
 		public int getslideramount() {
 			return (int) (locationinslidingbar.getvalue(this) * (maxvalue - minvalue));
 		}

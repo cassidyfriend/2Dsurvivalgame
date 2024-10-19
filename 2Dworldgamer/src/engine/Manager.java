@@ -27,11 +27,16 @@ public class Manager {
 	static MouseListerner ML = new MouseListerner();
 	static BuildButtons BB = new BuildButtons();
 	public static buildworld BW = new buildworld();
+	static MenusAndInterfaces MaI;
+	static Keylistener KL;
+	static GUI gui;
+	static ScrollingBlocks SB = new ScrollingBlocks();
 	public static Map<String,Short> overrightblocks = new HashMap<String,Short>();
 	public static Map<String,Short> playeroverrightblocks = new HashMap<String,Short>();
 	static void print(Object o) {
 		System.out.println(o);
 	}
+	@SuppressWarnings("static-access")
 	public static void onstartup() {
 		try {
 			LT = new LoadTextures();
@@ -42,11 +47,11 @@ public class Manager {
 		//new loadbiomedata();
 		//new LoadSettings();
 		new LoadFeatures();
-		BB.makebuttonlists(500);
 		//TD.loadframe();
 		newworld();
 		TD.startframes("game name", LT);
-		eachframe();
+		KL = new Keylistener();
+		gui = new GUI(TD.startingframex, TD.startingframey, LT);
 	}
 	@SuppressWarnings("static-access")
 	public static void eachframe() {
@@ -60,8 +65,15 @@ public class Manager {
 			String currentworldpos = Integer.toString((int)ScrollingBlocks.x + 64) + " " + Integer.toString((int)ScrollingBlocks.y - 37);
 			playeroverrightblocks.put(currentworldpos,(short) 38);
 		}
-		//print(ML.button);
 		ML.onupdate();
+		if(gui == null)
+			gui = new GUI(TD.startingframex, TD.startingframey, LT);
+		if(gui != null)
+			gui.update(TD.frame.getWidth(), TD.frame.getHeight(), KL.lastkeypress);
+		if(MaI == null)
+			MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
+		if(MaI != null && gui != null)
+			MaI.updatemenus();
 	}
 	public static void newworld() {
 		BW.gencolomes();

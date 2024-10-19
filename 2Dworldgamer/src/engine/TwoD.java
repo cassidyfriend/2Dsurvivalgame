@@ -27,7 +27,7 @@ public class TwoD extends JPanel {
 	static BuildButtons BB = new BuildButtons();
 	static Keylistener KL;
 	static ScrollingBlocks SB;
-	static Player player = new Player(null);
+	static Player player;
 	static GUI gui;
 	LoadTextures LT = null;
 	static int framex, framey,framesizex,framesizey;
@@ -88,14 +88,10 @@ public class TwoD extends JPanel {
 	@SuppressWarnings("static-access")
 	void drawingorder(Graphics g) {
 		SB.Blocks(g, framesizex, framesizey);
-		M.eachframe();
 		player.drawplayer(g);
-		if(MaI != null)
-			MaI.updatemenus();
 		new Point2D(g).setcurrentframesize(framesizex, framesizey);
-		gui.update(frame.getWidth(), frame.getHeight(), KL.lastkeypress);
 		gui.render(g);
-		//print(ML.button);
+		M.eachframe();
 	}
 	@SuppressWarnings("static-access")
 	public void startframes(String framename, LoadTextures LT) {
@@ -107,6 +103,7 @@ public class TwoD extends JPanel {
 		frame.add(new TwoD());
 		frame.setSize(startingframex, startingframey);
 		gui = new GUI(startingframex, startingframey, LT);
+		player = new Player(gui);
 		new Point2D(startingframex, startingframey, false);
 		frame.setVisible(true);
 		frame.setTitle(framename);

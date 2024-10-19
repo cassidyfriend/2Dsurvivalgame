@@ -6,6 +6,7 @@ import datareader.*;
 import update.*;
 import Files.*;
 import engine.*;
+import engine.GUI.textbutton;
 
 import javax.swing.*;
 import java.io.*;
@@ -25,27 +26,26 @@ public class Player {
 		INGAME
 	}
 	
-	public static int drawplayerx, drawplayery,framex,framey,smalldrawx,smalldrawy,blocksizex,blocksizey;
+	public static int drawplayerx, drawplayery, framex, framey, smalldrawx, smalldrawy, blocksizex, blocksizey;
+	GUI gui = new GUI();
 	
 	void print(Object o) {
 		System.out.println(o);
 	}
 	
-	public Player() {}
-	public Player(Location type) {
-		if(type == null) {
-			return;
-		}
-		if(type == Location.MENU) {
-			//print("test");
-			new ReadAndWritePlayerDesign();
-		}
+	public Player(GUI gui) {
+		this.gui = gui;
 	}
+	public Player() {}
 	
 	public static void drawplayer(Graphics g) {
 		g.fillRect(drawplayerx,drawplayery,Math.round(framex / 70),Math.round(framey / 40));
 		//g.fillRect(drawplayerx - blocksizex,drawplayery,Math.round(framex / 70),Math.round(framey / 40));
 		g.setColor(new Color(100,0,0));
 		g.fillRect(drawplayerx - smalldrawx,drawplayery - smalldrawy,Math.round(framex / 110),Math.round(framey / 65));
+	}
+	BufferedImage constructplayer() {
+		BufferedImage output = new BufferedImage(18, 18, BufferedImage.TYPE_INT_ARGB);
+		return output;
 	}
 }

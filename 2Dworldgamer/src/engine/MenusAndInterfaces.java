@@ -26,6 +26,7 @@ public class MenusAndInterfaces {
 	static buildworld BW = Manager.BW;
 	static SpawnFeatures SF = new SpawnFeatures();
 	static TwoD TD;
+	static Player player = new Player();
 	LoadTextures LT;
 	static double playerscale = 50;
 	enum menutypes{
@@ -59,7 +60,7 @@ public class MenusAndInterfaces {
 				gui.new textbutton("Exit", 520, 480, 240, 80, true);
 				Map<Integer, BufferedImage> lightmap = textures.get(12);
 				//lightmap.get(100);
-				//gui.new targetbox("test", 30, 30, 245, 123, false, lightmap.get(100));
+				gui.new targetbox("test", 30, 30, 245, 123, 50, 50, false, lightmap.get(100));
 				//gui.new slidingbar("test", lightmap.get(100), 30, 30, 245, 123, 0, 50, 10);
 				//print(gui.getslideramount("test"));
 				break;
@@ -68,6 +69,9 @@ public class MenusAndInterfaces {
 				gui.new fillintextbox(505, 280, 280, 50, "seed:");
 				break;
 			case COSTUME:
+				gui.new textbutton("return to main menu", 520, 570, 240, 80, true);
+				break;
+			default:
 				break;
 			}
 		}
@@ -86,6 +90,10 @@ public class MenusAndInterfaces {
 		}
 		if(gui.getbuttonclickedID("test") == 1) {
 			print(Arrays.toString(gui.gettargetboxclicked("test")));
+		}
+		if(gui.getbuttonclickedID("return to main menu") == 1) {
+			menutypelist.remove(menutypes.COSTUME);
+			menutypelist.add(menutypes.MAINMENU);
 		}
 		if(gui.getbuttonclickedID("Create World") == 1) {
 			if(gui.stringinnputs.contains(gui.new textstoredininput("seed:", false))) {
@@ -112,7 +120,6 @@ public class MenusAndInterfaces {
 		if(gui.getbuttonclickedID("Costume Room") == 1) {
 			menutypelist.remove(menutypes.MAINMENU);
 			menutypelist.add(menutypes.COSTUME);
-			new Player(Player.Location.MENU);
 		}
 	}
 }

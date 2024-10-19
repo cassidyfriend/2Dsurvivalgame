@@ -32,7 +32,7 @@ public class ScrollingBlocks {
 	LoadTextures LT;
 	public static buildworld BW = Manager.BW;
 	static Keylistener kl = new Keylistener();
-	static Player player = new Player(null);
+	static Player player = new Player();
 	static LoadSettings settings = new LoadSettings();
 	static SpawnFeatures SF = new SpawnFeatures();
 	buildworld.column currentculum = null;
