@@ -7,7 +7,7 @@ import update.Update;
 import Files.LoadSettings;
 import Files.LoadTextures;
 import Files.loadbiomedata;
-import engine.*;
+//import engine.*;
 import datawriter.DataWriter;
 import player.*;
 
@@ -37,10 +37,19 @@ public class ScrollingBlocks {
 	static SpawnFeatures SF = new SpawnFeatures();
 	buildworld.column currentculum = null;
 	loadbiomedata biomedata = new loadbiomedata();
-	public static int startingframex = 0, startingframey = 0, currentframex = 0, currentframey = 0;
+	public static int startingframex = 0, startingframey = 0, currentframex, currentframey;
 	public static final int blocksize = 18;
 	public static double x, y;
-	public static boolean isInMenu = true, lockmovement = true;
+	static double blocksizex;
+	static double blocksizey;
+	static int blockaccrossframex, blockaccrossframey;
+	static int strartingposx;
+	static int strartingposy;
+	//print(Math.round(applydifx((blocksize * -6.0) + (blocksize *(x - Math.floor(x))))));
+	//print(Math.round(applydifx((blocksize * -6.0) + ((x + 0.0) - Math.floor(x)))));
+	static double currentblockdrawx;
+	static double currentblockdrawy;
+	public static boolean isInMenu = true;
 	public static ArrayList<overlayblock> overlayblocks = new ArrayList<overlayblock>();
 	static int darknesslevel = 0;
 	@SuppressWarnings("static-access")
@@ -65,60 +74,50 @@ public class ScrollingBlocks {
 	public void Blocks(Graphics g, int framesizex, int framesizey) {
 		currentframex = framesizex;
 		currentframey = framesizey;
-		int blockaccrossframex = (currentframex/blocksize) + 20, blockaccrossframey = (currentframey/blocksize) + 20;
 		overlayblocks = new ArrayList<overlayblock>();
-		double blocksizex = applydifx(blocksize);
-		double blocksizey = applydify(blocksize);
-		int strartingposx = (int) fullfloor(applydifx((blocksize * -6.0) - (blocksize *(x - fullfloor(x)))));
-		int strartingposy = (int) fullfloor(applydify((blocksize * -6.0) + (blocksize *(y - fullfloor(y)))));
+		blocksizex = applydifx(blocksize);
+		blocksizey = applydify(blocksize);
 		//print(Math.round(applydifx((blocksize * -6.0) + (blocksize *(x - Math.floor(x))))));
 		//print(Math.round(applydifx((blocksize * -6.0) + ((x + 0.0) - Math.floor(x)))));
-		double currentblockdrawx = strartingposx;
-		double currentblockdrawy = strartingposy;
+		currentblockdrawx = strartingposx;
+		currentblockdrawy = strartingposy;
 		int lastblock = 0;
 		int currentx = fullfloor(x);
 		currentculum = BW.requestatx(currentx);
 		//player.blocksizex = blocksizex;
 		//player.blocksizey = blocksizey;
 		//System.out.println(y-37);
-		//print(y);
+		//print(blockaccrossframex);
 		for(int i = 0; i < blockaccrossframex; i++) {
 			for(int ix = 0; ix < blockaccrossframey; ix++) {
 				int currentblock = gettexture(currentx+i,(int)fullfloor(y-ix), (int)fullfloor(currentblockdrawx), (int)fullfloor(currentblockdrawy), lastblock);
 				Map<Integer, BufferedImage> lightmap = LT.textures.get(currentblock);
 				g.drawImage(lightmap.get(currentblock % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)Math.round(currentblockdrawx), (int)Math.round(currentblockdrawy), (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
-				//player.drawplayerx = x+i == x+64?currentblockdrawx:player.drawplayerx;
-				//player.drawplayery = y-ix == y-37?currentblockdrawy:player.drawplayery;
-				//player.smalldrawx = (int) smallx;
-				//player.smalldrawy = (int) smally;
+				if(ix == (blockaccrossframey/2))
+					player.ingameplayerdrawy = (int) currentblockdrawy;
 				currentblockdrawy += blocksizey;
 				lastblock = currentblock;
 			}
+			if(i == (blockaccrossframex/2))
+				player.ingameplayerdrawx = (int) currentblockdrawx;
 			currentblockdrawx += blocksizex;
 			currentculum = BW.requestatx(currentx+i);
 			currentblockdrawy = strartingposy;
 		}
 		renderoverlays(g,blocksizex,blocksizey);
-		
 		return;
 	}
 	@SuppressWarnings("static-access")
-	public void buttonlisten() {
-		double movementamount = 10;
-		if(!lockmovement) {
-			if(kl.up) {
-				y += movementamount;
-			}
-			if(kl.down) {
-				y -= movementamount;
-			}
-			if(kl.left) {
-				x -= movementamount;
-			}
-			if(kl.right) {
-				x += movementamount;
-			}
-		}
+	public void updaterenderingpos() {
+		int allowedoverlay = 20;
+		blockaccrossframex = (int) (currentframex/blocksizex) + (allowedoverlay*2);
+		blockaccrossframey = (int) (currentframey/blocksizey) + (allowedoverlay*2);
+		x = player.playerX - ((blockaccrossframex/2));
+		y = player.playerY + ((blockaccrossframey/2));
+		strartingposx = (int) fullfloor(applydifx((blocksize * (allowedoverlay * -1.0)) - (blocksize *(x - fullfloor(x)))));
+		strartingposy = (int) fullfloor(applydify((blocksize * (allowedoverlay * -1.0)) + (blocksize *(y - fullfloor(y)))));
+		player.blockoffsetx = (int) (blocksize *(x - fullfloor(x)));
+		player.blockoffsety = (int) (blocksize *(y - fullfloor(y)));
 	}
 	@SuppressWarnings({ "static-access"})
 	int gettexture(int x, int y, int drawx, int drawy, int lastblock) {

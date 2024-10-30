@@ -23,11 +23,20 @@ public class Player {
 	
 	public enum Location{
 		MENU,
-		INGAME
+		INGAME,
+		HIDE
 	}
 	
-	public static int drawplayerx, drawplayery, framex, framey, smalldrawx, smalldrawy, blocksizex, blocksizey;
+	public static int startingframex, startingframey, currentframesizex, currentframesizey, ingameplayerdrawx, ingameplayerdrawy, blockoffsetx = 0, blockoffsety = 0;
+	static final int defaultmenuplayersize = 200;
+	public static final int defaultgameplayersize = ScrollingBlocks.blocksize + 6;
+	public static double playerX, playerY = 500;
+	public static boolean lockmovement = true, isFacingLeft = true;
 	GUI gui = new GUI();
+	public static Location location = Location.HIDE;
+	public static Color skincolor = new Color(219, 193, 161), eyecolor = new Color(23, 151, 196), shirtcolor = new Color(196, 30, 23), pantscolor = new Color(0, 0, 0), shoecolor = new Color(52, 52, 52);
+	public static BufferedImage playeroverlay = null;
+	static Keylistener kl = new Keylistener();
 	
 	void print(Object o) {
 		System.out.println(o);
@@ -35,17 +44,102 @@ public class Player {
 	
 	public Player(GUI gui) {
 		this.gui = gui;
+		playeroverlay = new BufferedImage(defaultgameplayersize, defaultgameplayersize, BufferedImage.TYPE_INT_ARGB);
 	}
 	public Player() {}
 	
-	public static void drawplayer(Graphics g) {
-		g.fillRect(drawplayerx,drawplayery,Math.round(framex / 70),Math.round(framey / 40));
-		//g.fillRect(drawplayerx - blocksizex,drawplayery,Math.round(framex / 70),Math.round(framey / 40));
-		g.setColor(new Color(100,0,0));
-		g.fillRect(drawplayerx - smalldrawx,drawplayery - smalldrawy,Math.round(framex / 110),Math.round(framey / 65));
+	public void drawplayer(Graphics g) {
+		switch(location) {
+		case HIDE:
+			return;
+		case INGAME:
+			g.drawImage(constructplayer(), (ingameplayerdrawx) - applydifx(4) + applydifx(blockoffsetx), (ingameplayerdrawy) - applydify(6) - applydify(blockoffsety), applydifx(defaultgameplayersize), applydify(defaultgameplayersize), null);
+			break;
+		case MENU:
+			g.drawImage(constructplayer(), (currentframesizex / 2) - applydifx(defaultmenuplayersize / 2), (currentframesizey / 2) - applydify(defaultmenuplayersize / 2), applydifx(defaultmenuplayersize), applydify(defaultmenuplayersize), null);
+			break;
+		default:
+			return;
+		}
 	}
 	BufferedImage constructplayer() {
 		BufferedImage output = new BufferedImage(18, 18, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = output.getGraphics();
+		g.setColor(shirtcolor);
+		g.fillRect(4, 10, 10, 5);
+		g.setColor(pantscolor);
+		g.fillRect(4, 15, 10, 1);
+		g.fillRect(5, 16, 2, 1);
+		g.fillRect(10, 16, 2, 1);
+		g.setColor(shoecolor);
+		g.fillRect(5, 17, 2, 1);
+		g.fillRect(10, 17, 2, 1);
+		g.setColor(skincolor);
+		g.fillRect(5, 5, 8, 1);
+		g.fillRect(4, 6, 10, 4);
+		g.fillRect(9, 12, 2, 2);
+		g.setColor(eyecolor);
+		g.fillRect(6, 7, 1, 1);
+		g.fillRect(9, 7, 1, 1);
+		if(!(playeroverlay == null))
+			g.drawImage(playeroverlay, 0, 0, 18, 18, null);
+		g.dispose();
+		if(!isFacingLeft)
+			output = flipImage(output, true);
 		return output;
+	}
+	
+	@SuppressWarnings("static-access")
+	public void updatepos() {
+		double movementamount = 0.2;
+		if(!lockmovement) {
+			if(kl.up) {
+				playerY += movementamount;
+			}
+			if(kl.down) {
+				playerY -= movementamount;
+			}
+			if(kl.left) {
+				playerX -= movementamount;
+				isFacingLeft = true;
+			}
+			if(kl.right) {
+				playerX += movementamount;
+				isFacingLeft = false;
+			}
+		}
+	}
+	
+	public static BufferedImage flipImage(BufferedImage image, boolean horizontal) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        BufferedImage flippedImage = new BufferedImage(width, height, image.getType());
+        Graphics2D g = flippedImage.createGraphics();
+        if (horizontal) {
+            g.drawImage(image, 0, 0, width, height, width, 0, 0, height, null);
+        } else {
+            g.drawImage(image, 0, 0, width, height, 0, height, width, 0, null);
+        }
+        g.dispose();
+        return flippedImage;
+    }
+	
+	double getframedifx() {
+		return (currentframesizex + 0.0)/(startingframex + 0.0);
+	}
+	double getframedify() {
+		return (currentframesizey + 0.0)/(startingframey + 0.0);
+	}
+	int applydifx(int input) {
+		return (int)Math.round((input + 0.0) * getframedifx());
+	}
+	int applydifx(double input) {
+		return (int)Math.round((input + 0.0) * getframedifx());
+	}
+	int applydify(int input) {
+		return (int)Math.round((input + 0.0) * getframedify());
+	}
+	int applydify(double input) {
+		return (int)Math.round((input + 0.0) * getframedify());
 	}
 }

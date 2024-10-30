@@ -3,6 +3,7 @@ package engine;
 
 import generator.buildworld;
 import generator.spawnstructures;
+import player.Player;
 import datareader.datareadermain;
 import update.Update;
 import Files.*;
@@ -31,6 +32,7 @@ public class Manager {
 	static Keylistener KL;
 	static GUI gui;
 	static ScrollingBlocks SB = new ScrollingBlocks();
+	static Player player = new Player();
 	public static Map<String,Short> overrightblocks = new HashMap<String,Short>();
 	public static Map<String,Short> playeroverrightblocks = new HashMap<String,Short>();
 	static void print(Object o) {
@@ -62,7 +64,7 @@ public class Manager {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-			String currentworldpos = Integer.toString((int)ScrollingBlocks.x + 64) + " " + Integer.toString((int)ScrollingBlocks.y - 37);
+			String currentworldpos = Integer.toString((int)(player.playerX<-0.1?player.playerX-1.0:player.playerX)) + " " + Integer.toString((int)(player.playerY<-0.1?player.playerY-1.0:player.playerY));
 			playeroverrightblocks.put(currentworldpos,(short) 38);
 		}
 		ML.onupdate();
@@ -74,6 +76,8 @@ public class Manager {
 			MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
 		if(MaI != null && gui != null)
 			MaI.updatemenus();
+		SB.updaterenderingpos();
+		player.updatepos();
 	}
 	public static void newworld() {
 		BW.gencolomes();

@@ -21,7 +21,7 @@ import java.util.Map;
 @SuppressWarnings({ "serial", "unused" })
 public class TwoD extends JPanel {
 	static String theframename;
-	static JFrame frame = new JFrame(theframename);
+	public static JFrame frame = new JFrame(theframename);
 	static MouseListerner ML = new MouseListerner();
 	static Manager M = new Manager();
 	static BuildButtons BB = new BuildButtons();
@@ -50,17 +50,17 @@ public class TwoD extends JPanel {
 	@SuppressWarnings("static-access")
 	@Override
 	public void paint(Graphics g) {
+		framesizex = frame.getWidth();
+		framesizey = frame.getHeight();
 		long now = System.nanoTime();
         long updateLength = now - lastLoopTime;
         lastLoopTime = now;
         double delta = updateLength / ((double) OPTIMAL_TIME);
 		//g.drawRect(ML.mouseonframex, ML.mouseonframey, 1, 1);
-		player.framex = framesizex;
-		player.framey = framesizey;
+		player.currentframesizex = framesizex;
+		player.currentframesizey = framesizey;
 		framex = frame.getX();
 		framey = frame.getY();
-		framesizex = frame.getWidth();
-		framesizey = frame.getHeight();
         try {
             long sleepTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
             if (sleepTime > 0) {
@@ -78,7 +78,7 @@ public class TwoD extends JPanel {
 				//bufferStrategy = frame.getBufferStrategy();
 			}
 		    //g = bufferStrategy.getDrawGraphics();
-			SB.buttonlisten();
+			//SB.buttonlisten();
 		    drawingorder(g);
 		    //g.dispose();
 		    //bufferStrategy.show();
@@ -88,10 +88,11 @@ public class TwoD extends JPanel {
 	@SuppressWarnings("static-access")
 	void drawingorder(Graphics g) {
 		SB.Blocks(g, framesizex, framesizey);
+		//print(frame.getWidth());
 		player.drawplayer(g);
 		new Point2D(g).setcurrentframesize(framesizex, framesizey);
-		gui.render(g);
 		M.eachframe();
+		gui.render(g);
 	}
 	@SuppressWarnings("static-access")
 	public void startframes(String framename, LoadTextures LT) {
@@ -111,5 +112,7 @@ public class TwoD extends JPanel {
 		frame.createBufferStrategy(2);
 		frame.setIconImage(LT.textures.get(2).get(100).getScaledInstance(36, 36, Image.SCALE_DEFAULT));
 		MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
+		player.startingframex = startingframex;
+		player.startingframey = startingframey;
 	}
 }

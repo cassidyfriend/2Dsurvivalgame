@@ -25,10 +25,10 @@ public class GUI {
 	static ArrayList<Map<Integer, BufferedImage>> textures;
 	public static ArrayList<textstoredininput> stringinnputs = new ArrayList<textstoredininput>();
 	static MouseListerner ML = new MouseListerner();
-	LoadTextures LT;
-	BufferedImage framelight, framedark;
-	int starterframesizex, starterframesizey, currentframesizex, currentframesizey;
-	public int fontsize = 25, textsize = 5, lastkey = -1;
+	static LoadTextures LT;
+	static BufferedImage framelight, framedark;
+	static int starterframesizex, starterframesizey, currentframesizex, currentframesizey;
+	public static int fontsize = 25, textsize = 5, lastkey = -1;
 	
 	@SuppressWarnings("static-access")
 	public GUI(int framesizex, int framesizey, LoadTextures LT) {
@@ -200,18 +200,18 @@ public class GUI {
 	}
 	
 	public class image {
-		int posx, posy;
+		int posx, posy, sizex, sizey;
 		BufferedImage image;
-		public image(int posx, int posy, BufferedImage image) {
+		public image(int posx, int posy, int sizex, int sizey, BufferedImage image) {
 			this.posx = applydifx(posx);
 			this.posy = applydify(posy);
+			this.sizex = applydifx(sizex);
+			this.sizey = applydify(sizey);
 			this.image = image;
 			GUIs.add(this);
 		}
 		void render(Graphics g){
-			posx = applydifx(posx);
-			posy = applydify(posy);
-			g.drawImage(image, posx, posy, (int)Math.round(image.getWidth() * getframedifx()), (int)Math.round(image.getHeight() * getframedify()), null);
+			g.drawImage(image, posx, posy, sizex, sizey, null);
 		}
 
 		public int hashCode() {
@@ -307,7 +307,7 @@ public class GUI {
 		}
 		@SuppressWarnings("static-access")
 		int clickedID() {
-			return (ML.mouseonframex > xpos && ML.mouseonframey > ypos && ML.mouseonframex < xsize + xpos && ML.mouseonframey < ysize + ypos && ML.button != 0 ? ML.button : ML.button);
+			return (ML.mouseonframex > xpos && ML.mouseonframey > ypos && ML.mouseonframex < xsize + xpos && ML.mouseonframey < ysize + ypos && ML.button != 0 ? ML.button : 0);
 		}
 		@SuppressWarnings("static-access")
 		public boolean isClickedInvertedly(){
@@ -358,10 +358,10 @@ public class GUI {
 		BufferedImage background;
 		targetbox(String name, int lox, int locy, int sizex, int sizey, int relevantXSize, int relevantYSize, boolean invisible, BufferedImage background){
 			this.name = name;
-			this.lox = applydifx(lox);
-			this.locy = applydify(locy);
-			this.sizex = applydifx(sizex);
-			this.sizey = applydify(sizey);
+			this.lox = (lox);
+			this.locy = (locy);
+			this.sizex = (sizex);
+			this.sizey = (sizey);
 			this.relevantXSize = relevantXSize;
 			this.relevantYSize = relevantYSize;
 			this.invisible = invisible;
@@ -369,21 +369,30 @@ public class GUI {
 			GUIs.add(this);
 		}
 		@SuppressWarnings("static-access")
-		public boolean isClicked(){
-			//print(ML.button);
-			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0);
+		boolean isClicked(){
+			return (ML.mouseonframex > applydifx(lox) &&
+					ML.mouseonframey > applydify(locy) &&
+					ML.mouseonframex < applydifx(sizex + lox) &&
+					ML.mouseonframey < applydify(sizey + locy) &&
+					ML.button != 0);
 		}
+
 		@SuppressWarnings("static-access")
 		int clickedID() {
-			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0 ? ML.button : ML.button);
+			return (ML.mouseonframex > applydifx(lox) &&
+					ML.mouseonframey > applydify(locy) &&
+					ML.mouseonframex < applydifx(sizex + lox) &&
+					ML.mouseonframey < applydify(sizey + locy) &&
+					ML.button != 0 ? ML.button : 0);
 		}
 		@SuppressWarnings("static-access")
 		int[] getlocationclicked(){
 			int output[] = {-1, -1};
 			if(isClicked()){
-				//getframedifx()
-				output[0] = ML.mouseonframex;
-				output[1] = ML.mouseonframey;
+				output[0] = (int) (ML.mouseonframex - applydifx(lox));
+				output[1] = (int) (ML.mouseonframey - applydify(locy));
+				output[0] = (int) ((output[0] / getframedifx()) / (sizex + 0.0) * relevantXSize);
+				output[1] = (int) ((output[1] / getframedify()) / (sizey + 0.0) * relevantYSize);
 			}
 			return output;
 		}
@@ -391,8 +400,10 @@ public class GUI {
 		int[] getlocationclickedbyID(){
 			int output[] = {-1, -1, 0};
 			if(isClicked()){
-				output[0] = applydifx(ML.mouseonframex) - lox;
-				output[1] = applydify(ML.mouseonframey) - locy;
+				output[0] = (int) (ML.mouseonframex - applydifx(lox));
+				output[1] = (int) (ML.mouseonframey - applydify(locy));
+				output[0] = (int) ((output[0] / getframedifx()) / (sizex + 0.0) * relevantXSize);
+				output[1] = (int) ((output[1] / getframedify()) / (sizey + 0.0) * relevantYSize);
 				output[2] = clickedID();
 			}
 			return output;
@@ -400,8 +411,8 @@ public class GUI {
 		void render(Graphics g){
 			if(!invisible) {
 				Map<Integer, BufferedImage> lightmap = textures.get(24);
-				g.drawImage(createoutline((int)(sizex / getframedifx()), (int)(sizey / getframedify()), true), lox, locy, sizex, sizey, null);
-				g.drawImage(background, lox + applydifx(2), locy + applydifx(2), sizex - applydifx(4), sizey - applydifx(4), null);
+				g.drawImage(createoutline(sizex, sizey, true), applydifx(lox), applydify(locy), applydifx(sizex), applydify(sizey), null);
+				g.drawImage(background, applydifx(lox + 2), applydify(locy + 2), applydifx(sizex - 2), applydify(sizey - 2), null);
 			}
 		}
 		public int hashCode() {
@@ -438,7 +449,7 @@ public class GUI {
 			 this.blocksize = blocksize;
 			 this.image = image;
 			 GUIs.add(this);
-			 locationinslidingbar = new locationinslidingbar(this);
+			 locationinslidingbar = new locationinslidingbar(name, this);
 		}
 		
 		void render(Graphics g) {
@@ -449,7 +460,7 @@ public class GUI {
 		}
 		
 		int getblocklocation() {
-			return applydifx(2) + (int) (applydifx(locx) + (applydifx(width - 12) * locationinslidingbar.getvalue(this)));
+			return applydifx(2) + (int) (applydifx(locx) + (applydifx(width - 12) * locationinslidingbar.getvalue(name)));
 		}
 
 		@SuppressWarnings("static-access")
@@ -467,7 +478,7 @@ public class GUI {
 					ML.mouseonframey > applydify(locy) &&
 					ML.mouseonframex < applydifx(width + locx) &&
 					ML.mouseonframey < applydify(height + locy) &&
-					ML.button != 0 ? ML.button : ML.button);
+					ML.button != 0 ? ML.button : 0);
 		}
 
 		@SuppressWarnings("static-access")
@@ -481,7 +492,7 @@ public class GUI {
 			return output;
 		}
 		public int getslideramount() {
-			return (int) (locationinslidingbar.getvalue(this) * (maxvalue - minvalue));
+			return (int) (locationinslidingbar.getvalue(name) * (maxvalue - minvalue));
 		}
 		public int hashCode() {
 			return name.hashCode();
@@ -500,34 +511,37 @@ public class GUI {
 	}
 	
 	class locationinslidingbar{
-		static HashMap<slidingbar, Double> slidingbarinputs = new HashMap<slidingbar, Double>();
-		locationinslidingbar(slidingbar o){
-			addtoslidingbar(o);
+		static HashMap<String, Double> slidingbarinputs = new HashMap<String, Double>();
+		static ArrayList<slidingbar> slidingbars = new ArrayList<slidingbar>();
+		locationinslidingbar(String name, slidingbar value){
+			addtoslidingbar(name);
+			slidingbars.add(value);
 		}
 		locationinslidingbar(){}
-		boolean contains(slidingbar o) {
-			return slidingbarinputs.containsKey(o);
+		boolean contains(String name) {
+			return slidingbarinputs.containsKey(name);
 		}
-		double getvalue(slidingbar o) {
-			if(slidingbarinputs.containsKey(o))
-				return slidingbarinputs.get(o);
+		double getvalue(String name) {
+			if(slidingbarinputs.containsKey(name))
+				return slidingbarinputs.get(name);
 			return 0.0;
 		}
-		void addtoslidingbar(slidingbar o) {
-			if(!slidingbarinputs.containsKey(o) && applydifx(o.width) > 0) {
-				slidingbarinputs.put(o, 0.5);
+		void addtoslidingbar(String name) {
+			if(!slidingbarinputs.containsKey(name)) {
+				slidingbarinputs.put(name, 0.5);
 			}
 		}
+		@SuppressWarnings("unlikely-arg-type")
 		void update() {
-			for(slidingbar current : slidingbarinputs.keySet()) {
+			for(slidingbar current : slidingbars) {
 				if(applydifx(current.width) == 0)
 					slidingbarinputs.remove(current);
 				if(current.clickedID() == 1) {
 					double input = (current.getlocationclickedbyID()[0] / getframedifx()) / (current.width + 0.0);
-					slidingbarinputs.remove(current);
-					slidingbarinputs.put(current, input);
+					slidingbarinputs.replace(current.name, input);
 				}
 			}
+			slidingbars.clear();
 		}
 	}
 	
@@ -573,6 +587,7 @@ public class GUI {
 		}
 	}
 	
+	@SuppressWarnings("static-access")
 	public void update(int framex, int framey, int lastkeypress) {
 		this.currentframesizex = framex;
 		this.currentframesizey = framey;
@@ -656,7 +671,11 @@ public class GUI {
 	public int getslideramount(Object o) {
 		for(Object current : locationinslidingbar.slidingbarinputs.keySet()) {
 			if(current.hashCode() == o.hashCode())
-				return ((slidingbar)current).getslideramount();
+				for(Object current2 : GUIs) {
+					if(current2 instanceof slidingbar && ((slidingbar)current2).equals(current))
+						return ((slidingbar)current2).getslideramount();
+				}
+				//return ((slidingbar)current).getslideramount();
 		}
 		return 0;
 	}
