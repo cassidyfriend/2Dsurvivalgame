@@ -8,8 +8,8 @@
 		"temp":5,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":1,
-		"fillblockid":0,
+		"surfaceblockid":"grass",
+		"fillblockid":"dirt",
 		"fillheight":10,
 		"open spread percentage":0.5
 	},
@@ -20,8 +20,8 @@
 		"temp":5,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":3,
-		"fillblockid":3,
+		"surfaceblockid":"stone",
+		"fillblockid":"stone",
 		"fillheight":10,
 		"open spread percentage":0.5
 	},
@@ -32,8 +32,8 @@
 		"temp":5,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":0,
-		"fillblockid":0,
+		"surfaceblockid":"dirt",
+		"fillblockid":"dirt",
 		"fillheight":10,
 		"open spread percentage":0.5
 	},
@@ -44,8 +44,8 @@
 		"temp":2,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":13,
-		"fillblockid":0,
+		"surfaceblockid":"snow",
+		"fillblockid":"dirt",
 		"fillheight":10,
 		"open spread percentage":0.5
 	},
@@ -56,8 +56,8 @@
 		"temp":9,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":8,
-		"fillblockid":8,
+		"surfaceblockid":"sand",
+		"fillblockid":"sand",
 		"fillheight":10,
 		"open spread percentage":0.99
 	},
@@ -68,8 +68,8 @@
 		"temp":2,
 		"temprange":1,
 		"weardness":30,
-		"surfaceblockid":13,
-		"fillblockid":3,
+		"surfaceblockid":"snow",
+		"fillblockid":"stone",
 		"fillheight":10,
 		"open spread percentage":0.5
 	}

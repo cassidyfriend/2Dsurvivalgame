@@ -8,8 +8,8 @@
 		"max Height":1000,
 		"divider":[1, 70, 240, 30, 10],
 		"scaleoffsets":[0.0001, 0.0005, 0.001, 0.01, 0.03],
-		"fill Block":6,
-		"fill Air":4,
+		"fill Block":"stone",
+		"fill Air":"sky",
 		"request more info":false
 	}
 }

@@ -7,8 +7,10 @@ import update.Update;
 import Files.LoadSettings;
 import Files.LoadTextures;
 import Files.loadbiomedata;
-//import engine.*;
 import datawriter.DataWriter;
+import gameMechanics.Tags.Overlay;
+import gameMechanics.Tags.tagdata;
+import gameMechanics.Tags.tagtype;
 import player.*;
 
 import org.json.JSONObject;
@@ -27,7 +29,7 @@ import javax.sound.sampled.*;
 @SuppressWarnings("unused")
 public class ScrollingBlocks {
 	
-	record overlayblock(int blockID, Point2D location){}
+	record overlayblock(String blockID, int x, int y, double xoffset, double yoffset, double xsize, double ysize){}
 	
 	LoadTextures LT;
 	public static buildworld BW = Manager.BW;
@@ -37,6 +39,7 @@ public class ScrollingBlocks {
 	static SpawnFeatures SF = new SpawnFeatures();
 	buildworld.column currentculum = null;
 	loadbiomedata biomedata = new loadbiomedata();
+	gameMechanics.Blocks block = new gameMechanics.Blocks();
 	public static int startingframex = 0, startingframey = 0, currentframex, currentframey;
 	public static final int blocksize = 18;
 	public static double x, y;
@@ -57,7 +60,7 @@ public class ScrollingBlocks {
 		this.startingframex = startingframex;
 		this.startingframey = startingframey;
 		this.LT = LT;
-		y = BW.requestatx((int)Math.round(x + 64)).height() + 37;
+		y = BW.requestatx((int)Math.round(x)).height();
 	}
 	public ScrollingBlocks(){}
 	void print(Object o){
@@ -68,7 +71,7 @@ public class ScrollingBlocks {
 	}
 	
 	public void updateY() {
-		y = BW.requestatx((int)Math.round(x + 64)).height() + 37;
+		player.playerY = BW.requestatx((int)Math.round(player.playerX)).height();
 	}
 	@SuppressWarnings("static-access")
 	public void Blocks(Graphics g, int framesizex, int framesizey) {
@@ -77,22 +80,17 @@ public class ScrollingBlocks {
 		overlayblocks = new ArrayList<overlayblock>();
 		blocksizex = applydifx(blocksize);
 		blocksizey = applydify(blocksize);
-		//print(Math.round(applydifx((blocksize * -6.0) + (blocksize *(x - Math.floor(x))))));
-		//print(Math.round(applydifx((blocksize * -6.0) + ((x + 0.0) - Math.floor(x)))));
 		currentblockdrawx = strartingposx;
 		currentblockdrawy = strartingposy;
-		int lastblock = 0;
+		String lastblock = "";
 		int currentx = fullfloor(x);
 		currentculum = BW.requestatx(currentx);
-		//player.blocksizex = blocksizex;
-		//player.blocksizey = blocksizey;
-		//System.out.println(y-37);
-		//print(blockaccrossframex);
 		for(int i = 0; i < blockaccrossframex; i++) {
 			for(int ix = 0; ix < blockaccrossframey; ix++) {
-				int currentblock = gettexture(currentx+i,(int)fullfloor(y-ix), (int)fullfloor(currentblockdrawx), (int)fullfloor(currentblockdrawy), lastblock);
-				Map<Integer, BufferedImage> lightmap = LT.textures.get(currentblock);
-				g.drawImage(lightmap.get(currentblock % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)Math.round(currentblockdrawx), (int)Math.round(currentblockdrawy), (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
+				String currentblock = gettexture(currentx+i,(int)fullfloor(y-ix), (int)fullfloor(currentblockdrawx), (int)fullfloor(currentblockdrawy), lastblock);
+				Map<Integer, BufferedImage> lightmap = LT.texturemap.get(currentblock).lightTextureMap();
+				//currentblock % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel
+				g.drawImage(lightmap.get(100 - darknesslevel), (int)Math.round(currentblockdrawx), (int)Math.round(currentblockdrawy), (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
 				if(ix == (blockaccrossframey/2))
 					player.ingameplayerdrawy = (int) currentblockdrawy;
 				currentblockdrawy += blocksizey;
@@ -120,9 +118,9 @@ public class ScrollingBlocks {
 		player.blockoffsety = (int) (blocksize *(y - fullfloor(y)));
 	}
 	@SuppressWarnings({ "static-access"})
-	int gettexture(int x, int y, int drawx, int drawy, int lastblock) {
+	String gettexture(int x, int y, int drawx, int drawy, String lastblock) {
 		JSONObject currentbiomedata = null;
-		int currentoutput = y > currentculum.height()? currentculum.fillAir() : currentculum.fillBlock();
+		String currentoutput = y > currentculum.height()? currentculum.fillAir() : currentculum.fillBlock();
 		//print(currentoutput);
 		try {
 				currentbiomedata = (JSONObject) biomedata.biomedata.get(currentculum.biomeid());
@@ -131,20 +129,18 @@ public class ScrollingBlocks {
 		}
 		
 		if(isInMenu) 
-			return settings.settingsdata.getInt("backgroundblock") * 2;
+			return settings.settingsdata.getString("backgroundblock");
 		
 		if(y == currentculum.height()) {
-			currentoutput = currentbiomedata.getInt("surfaceblockid") * 2;
+			currentoutput = currentbiomedata.getString("surfaceblockid");
 		}
 		if(y < currentculum.height() && y > currentculum.height() - currentbiomedata.getInt("fillheight")) {
-			currentoutput = currentbiomedata.getInt("fillblockid") * 2;
+			currentoutput = currentbiomedata.getString("fillblockid");
 		}
 		if(y == currentculum.height() + 1) {
-			int current = SF.getBlockIDStackAtX(x, currentoutput, currentculum.biomeid());
-			currentoutput = current != -1 ? current : currentoutput;
+			String current = SF.getBlockIDStackAtX(x, currentoutput, currentculum.biomeid());
+			currentoutput = current != null ? current : currentoutput;
 		}
-		//if(currentoutput == -4 && y < 450)
-			//currentoutput = 18;
 		
 		
 		
@@ -154,13 +150,19 @@ public class ScrollingBlocks {
 		
 		
 		
-		
-		int[] overlayblockscheck = {12, 30, 32, 40, 42, 44};
-		if(Arrays.binarySearch(overlayblockscheck, currentoutput) >= 0) {
-			overlayblocks.add(new overlayblock(currentoutput, new Point2D(drawx, drawy)));
-			currentoutput = 4;
+		if(block.overlaynames.containsKey(currentoutput)) {
+			double xoffset = 0, yoffset = 0, xsize = 1, ysize = 1;
+			for(int i = 0; i < block.blockMap.get(currentoutput).localtagmap.get(tagtype.overlay).size(); i++) {
+				Overlay t = (Overlay)block.blockMap.get(currentoutput).localtagmap.get(tagtype.overlay).get(i);
+				xoffset = t.XOffset;
+				yoffset = t.YOffset;
+				xsize = t.ScaleX;
+				ysize = t.ScaleY;
+				overlayblocks.add(new overlayblock(currentoutput, drawx, drawy, xoffset, yoffset, xsize, ysize));
+			}
+			currentoutput = block.blockMap.get(currentoutput).texturename;
 		}
-		currentoutput = currentoutput == -4? currentculum.fillAir() : currentoutput;
+		currentoutput = currentoutput == null? currentculum.fillAir() : currentoutput;
 		return currentoutput;
 	}
 	@SuppressWarnings("static-access")
@@ -170,44 +172,13 @@ public class ScrollingBlocks {
 			if(i > overlayblocks.size()) {
 				break;
 			}
-			Map<Integer, BufferedImage> lightmap = LT.textures.get(overlayblocks.get(i).blockID);
-			switch(overlayblocks.get(i).blockID) {
-			case 12:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), (int)((int)overlayblocks.get(i).location.x - ((blocksizex * 5.0)/2.7)), (int) (overlayblocks.get(i).location.y - (blocksizey * 4)), (int)(Math.round(blocksizex) * 5), (int)(Math.round(blocksizey) * 5), null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			case 18:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, (overlayblocks.get(i).location.y + 5), (int)Math.round(blocksizex), (int)Math.round(blocksizey) - 5, null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			case 30:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			case 32:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			case 40:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			case 42:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			case 44:
-				g.drawImage(lightmap.get(overlayblocks.get(i).blockID % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel), overlayblocks.get(i).location.x, overlayblocks.get(i).location.y, (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
-				overlayblocks.get(i).location.render(g);
-				overlayblocks.get(i).location.remove();
-				break;
-			}
+			Map<Integer, BufferedImage> lightmap = LT.texturemap.get(overlayblocks.get(i).blockID).lightTextureMap();
+			g.drawImage(lightmap.get(100 - darknesslevel),
+					overlayblocks.get(i).x - (int)Math.round(blocksizex*overlayblocks.get(i).xoffset),
+					overlayblocks.get(i).y - (int)Math.round(blocksizey*overlayblocks.get(i).yoffset),
+					(int)Math.round(blocksizex*overlayblocks.get(i).xsize),
+					(int)Math.round(blocksizey*overlayblocks.get(i).ysize),
+					null);
 			i++;
 		}
 	}
@@ -215,7 +186,6 @@ public class ScrollingBlocks {
 		return (currentframex + 0.0)/(startingframex + 0.0);
 	}
 	double getframedify() {
-		//statingframey
 		return (currentframey + 0.0)/(startingframey + 0.0);
 	}
 	int applydifx(int input) {

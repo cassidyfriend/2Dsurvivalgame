@@ -30,6 +30,7 @@ public class Player {
 	public static int startingframex, startingframey, currentframesizex, currentframesizey, ingameplayerdrawx, ingameplayerdrawy, blockoffsetx = 0, blockoffsety = 0;
 	static final int defaultmenuplayersize = 200;
 	public static final int defaultgameplayersize = ScrollingBlocks.blocksize + 6;
+	static buildworld BW = Manager.BW;
 	public static double playerX, playerY = 500;
 	public static boolean lockmovement = true, isFacingLeft = true;
 	GUI gui = new GUI();
@@ -53,7 +54,7 @@ public class Player {
 		case HIDE:
 			return;
 		case INGAME:
-			g.drawImage(constructplayer(), (ingameplayerdrawx) - applydifx(4) + applydifx(blockoffsetx), (ingameplayerdrawy) - applydify(6) - applydify(blockoffsety), applydifx(defaultgameplayersize), applydify(defaultgameplayersize), null);
+			g.drawImage(constructplayer(), (ingameplayerdrawx) - applydiffloorX(4) + applydiffloorX(blockoffsetx), (ingameplayerdrawy) - applydiffloorX(6) - applydiffloorY(blockoffsety), applydifx(defaultgameplayersize), applydify(defaultgameplayersize), null);
 			break;
 		case MENU:
 			g.drawImage(constructplayer(), (currentframesizex / 2) - applydifx(defaultmenuplayersize / 2), (currentframesizey / 2) - applydify(defaultmenuplayersize / 2), applydifx(defaultmenuplayersize), applydify(defaultmenuplayersize), null);
@@ -141,5 +142,14 @@ public class Player {
 	}
 	int applydify(double input) {
 		return (int)Math.round((input + 0.0) * getframedify());
+	}
+	int applydiffloorX(int input) {
+		return fullceil((input + 0.0) * getframedifx());
+	}
+	int applydiffloorY(int input) {
+		return fullceil((input + 0.0) * getframedify());
+	}
+	int fullceil(double input) {
+		return (int)Math.round(Math.ceil(input));
 	}
 }

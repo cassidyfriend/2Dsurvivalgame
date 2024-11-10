@@ -26,13 +26,13 @@ public class SpawnFeatures {
 	public SpawnFeatures() {
 		// TODO Auto-generated constructor stub
 	}
-	public int getBlockIDStackAtX(int x, int currentblock, String biome) {
+	public String getBlockIDStackAtX(int x, String currentblock, String biome) {
 		if(currentstacknoise == null || currentdem == null)
-			return -1;
+			return null;
 		ArrayList<String> currenttypes = cloneList(LoadFeatures.FeaturesDatabytype.get(LoadFeatures.featuretypes.STACK));
 		ArrayList<String> currentByBiomes = cloneList(LoadFeatures.FeaturesDatabybiome.get(biome));
 		if(currenttypes == null || currentByBiomes == null || currenttypes.size() == 0 || currentByBiomes.size() == 0)
-			return -1;
+			return null;
 		currenttypes.retainAll(currentByBiomes);
 		int finalmax = 0;
 		for(String current : currenttypes)
@@ -40,14 +40,14 @@ public class SpawnFeatures {
 		int finalnoisemax = finalmax + (int)Math.round((finalmax + 0.0) * loadbiomedata.openness.get(biome));
 		int randomout = (int) Math.round(currentstacknoise.getnoise(x, 5, 0, finalnoisemax));
 		if(randomout < finalnoisemax - finalmax)
-			return -1;
+			return null;
 		int current = 0;
 		for(int i = 0; i < currenttypes.size(); i++) {
 			current += LoadFeatures.stackfeatures.get(currenttypes.get(i)).scaleamount();
 			if(current > randomout && Arrays.binarySearch(LoadFeatures.stackfeatures.get(currenttypes.get(i)).replaceableblocks(), currentblock) >= 0)
-				return LoadFeatures.stackfeatures.get(currenttypes.get(i)).blockid() * 2;
+				return LoadFeatures.stackfeatures.get(currenttypes.get(i)).blockid();
 		}
-		return -1;
+		return null;
 	}
 	public void updatenoise(String currentdemID, int seed) {
 		currentdem = currentdemID;

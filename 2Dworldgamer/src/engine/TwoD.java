@@ -110,7 +110,8 @@ public class TwoD extends JPanel {
 		frame.setTitle(framename);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.createBufferStrategy(2);
-		frame.setIconImage(LT.textures.get(2).get(100).getScaledInstance(36, 36, Image.SCALE_DEFAULT));
+		//LT.textures.get(2).lightTextureMap.get(100).getScaledInstance(36, 36, Image.SCALE_DEFAULT)
+		frame.setIconImage(LT.textures.get(1).lightTextureMap().get(100).getScaledInstance(36, 36, Image.SCALE_DEFAULT));
 		MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
 		player.startingframex = startingframex;
 		player.startingframey = startingframey;

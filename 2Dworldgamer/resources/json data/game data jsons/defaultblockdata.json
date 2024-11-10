@@ -1,0 +1,24 @@
+{
+	"block data" : 
+	[
+		{"name":"dirt", "texture name":"dirt"},
+		{"name":"grass", "texture name":"grass"},
+		{"name":"stone", "texture name":"stone"},
+		{"name":"sky", "texture name":"sky"},
+		{"name":"oaktree", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"oaktree", "XOffset":2, "YOffset":4, "ScaleX":5, "ScaleY":5}  ]},
+		{"name":"oak boards", "texture name":"oak boards"},
+		{"name":"oakwood log", "texture name":"oakwood log"},
+		{"name":"leaves", "texture name":"leaves"},
+		{"name":"sand", "texture name":"sand"},
+		{"name":"water", "texture name":"water"},
+		{"name":"snow", "texture name":"snow"},
+		{"name":"tall grass", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"tall grass", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"short grass", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"short grass", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"coal stone", "texture name":"coal stone"},
+		{"name":"dirt coal", "texture name":"coal dirt"},
+		{"name":"stone iron ore", "texture name":"stone iron"},
+		{"name":"short cactus", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"short cactus", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"pink flowering cactus", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"pink flowering cactus", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"red flower", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"red flower", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]}
+	]
+}

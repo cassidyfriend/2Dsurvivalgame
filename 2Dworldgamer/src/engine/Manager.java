@@ -8,6 +8,7 @@ import datareader.datareadermain;
 import update.Update;
 import Files.*;
 import engine.TwoD;
+import gameMechanics.Tags;
 import engine.MouseListerner;
 import engine.BuildButtons;
 import javax.swing.*;
@@ -33,8 +34,8 @@ public class Manager {
 	static GUI gui;
 	static ScrollingBlocks SB = new ScrollingBlocks();
 	static Player player = new Player();
-	public static Map<String,Short> overrightblocks = new HashMap<String,Short>();
-	public static Map<String,Short> playeroverrightblocks = new HashMap<String,Short>();
+	public static Map<String,String> overrightblocks = new HashMap<String,String>();
+	public static Map<String,String> playeroverrightblocks = new HashMap<String,String>();
 	static void print(Object o) {
 		System.out.println(o);
 	}
@@ -50,6 +51,8 @@ public class Manager {
 		//new LoadSettings();
 		new LoadFeatures();
 		//TD.loadframe();
+		new LoadBlockDefaultData(LT);
+		new Tags(LT);
 		newworld();
 		TD.startframes("game name", LT);
 		KL = new Keylistener();
@@ -65,7 +68,7 @@ public class Manager {
                 e.printStackTrace();
             }
 			String currentworldpos = Integer.toString((int)(player.playerX<-0.1?player.playerX-1.0:player.playerX)) + " " + Integer.toString((int)(player.playerY<-0.1?player.playerY-1.0:player.playerY));
-			playeroverrightblocks.put(currentworldpos,(short) 38);
+			playeroverrightblocks.put(currentworldpos,"stone iron ore");
 		}
 		ML.onupdate();
 		if(gui == null)

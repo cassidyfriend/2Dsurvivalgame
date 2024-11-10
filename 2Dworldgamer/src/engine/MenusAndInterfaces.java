@@ -27,7 +27,6 @@ public class MenusAndInterfaces {
 	static GUI gui;
 	static ArrayList<menutypes> menutypelist = new ArrayList<menutypes>();
 	static pentypes currentpen = pentypes.PEN;
-	static ArrayList<Map<Integer, BufferedImage>> textures;
 	static ScrollingBlocks SB;
 	static buildworld BW = Manager.BW;
 	static SpawnFeatures SF = new SpawnFeatures();
@@ -54,7 +53,6 @@ public class MenusAndInterfaces {
 	@SuppressWarnings("static-access")
 	public MenusAndInterfaces(menutypes toadd, GUI gui, ScrollingBlocks SB) {
 		menutypelist.add(toadd);
-		textures = LoadTextures.textures;
 		this.gui = gui;
 		this.SB = SB;
 		if(colormapimage == null)
@@ -72,7 +70,6 @@ public class MenusAndInterfaces {
 				gui.new textbutton("Multiplayer", 645, 280, 240, 80, true);
 				gui.new textbutton("Costume Room", 645, 380, 240, 80, true);
 				gui.new textbutton("Exit", 520, 480, 240, 80, true);
-				Map<Integer, BufferedImage> lightmap = textures.get(12);
 				//lightmap.get(100);
 				//gui.new targetbox("test", 30, 30, 245, 123, 50, 50, false, lightmap.get(100));
 				//gui.new slidingbar("test", lightmap.get(100), 30, 30, 245, 123, 0, 50, 10);

@@ -22,7 +22,7 @@ import engine.GUI.locationinslidingbar;
 public class GUI {
 
 	static ArrayList<Object> GUIs = new ArrayList<Object>();
-	static ArrayList<Map<Integer, BufferedImage>> textures;
+	static Map<Integer, BufferedImage> textures;
 	public static ArrayList<textstoredininput> stringinnputs = new ArrayList<textstoredininput>();
 	static MouseListerner ML = new MouseListerner();
 	static LoadTextures LT;
@@ -35,8 +35,8 @@ public class GUI {
 		this.starterframesizex = framesizex;
 		this.starterframesizey = framesizey;
 		this.LT = LT;
-		textures = LT.textures;
-		Map<Integer, BufferedImage> lightmap = LT.textures.get(24);
+		textures = LT.textures.get(12).lightTextureMap();
+		Map<Integer, BufferedImage> lightmap = LT.textures.get(12).lightTextureMap();
 		framelight = lightmap.get(100);
 		framedark = lightmap.get(50);
 	}
@@ -132,8 +132,7 @@ public class GUI {
 				int backgroundcolor = 200, blocklightlevel = backgroundcolor/2;
 				backgroundcolor = ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy ? 100 : 200;
 				g.setColor(new Color(backgroundcolor,backgroundcolor,backgroundcolor));
-				Map<Integer, BufferedImage> lightmap = textures.get(24);
-				g.drawImage(lightmap.get(backgroundcolor/2), lox, locy, sizex, sizey, null);
+				g.drawImage(textures.get(backgroundcolor/2), lox, locy, sizex, sizey, null);
 				g.fillRect(lox + applydifx(3), locy + applydify(3), sizex - applydifx(6), sizey - applydify(6));
 			}
 			g.setColor(new Color(0,0,0));
@@ -173,10 +172,9 @@ public class GUI {
 		}
 		void render(Graphics g){
 			if(background) {
-				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.setColor(new Color(200,200,200));
 				g.fillRect(lox, locy, sizex, sizey);
-				g.drawImage(lightmap.get(100), lox, locy, sizex, sizey, null);
+				g.drawImage(textures.get(100), lox, locy, sizex, sizey, null);
 			}
 			g.setColor(new Color(0,0,0));
 			Font currentfont = getfont(null, Font.PLAIN);
@@ -267,8 +265,7 @@ public class GUI {
 		void render(Graphics g) {
 			if(fittype == imagebarfit.BARTOIMAGE) {
 				g.drawImage(label, applydifx(posx), applydify(posy), applydifx(label.getWidth()), applydify(label.getHeight()), null);
-				Map<Integer, BufferedImage> lightmap = textures.get(24);
-				g.drawImage(lightmap.get(100), applydifx(posx + label.getWidth() + 10), applydify(posy), applydifx(sizex), applydify(label.getHeight()), null);
+				g.drawImage(textures.get(100), applydifx(posx + label.getWidth() + 10), applydify(posy), applydifx(sizex), applydify(label.getHeight()), null);
 				g.setColor(new Color(127,127,127));
 				g.fillRect(applydifx(posx + label.getWidth() + 13), applydify(posy + 1), applydifx(sizex - 6.0), applydify(label.getHeight() - 2));
 				g.setColor(fillcolor);
@@ -323,9 +320,8 @@ public class GUI {
 			if(isClickedInvertedly() && stringinnputs.contains(new textstoredininput(name, false))) {
 				stringinnputs.get(stringinnputs.indexOf(new textstoredininput(name, false))).isactive = false;
 			}
-			Map<Integer, BufferedImage> lightmap = textures.get(24);
 			g.setColor(new Color(200,200,200));
-			g.drawImage(lightmap.get(100), xpos, ypos, xsize, ysize, null);
+			g.drawImage(textures.get(100), xpos, ypos, xsize, ysize, null);
 			g.fillRect(xpos + applydifx(3), ypos + applydify(3), xsize - applydifx(6), ysize - applydify(6));
 			g.setColor(new Color(0,0,0));
 			Font currentfont = getfont(null, Font.PLAIN, 20);
@@ -410,7 +406,6 @@ public class GUI {
 		}
 		void render(Graphics g){
 			if(!invisible) {
-				Map<Integer, BufferedImage> lightmap = textures.get(24);
 				g.drawImage(createoutline(sizex, sizey, true), applydifx(lox), applydify(locy), applydifx(sizex), applydify(sizey), null);
 				g.drawImage(background, applydifx(lox + 2), applydify(locy + 2), applydifx(sizex - 2), applydify(sizey - 2), null);
 			}
@@ -453,7 +448,6 @@ public class GUI {
 		}
 		
 		void render(Graphics g) {
-			Map<Integer, BufferedImage> lightmap = textures.get(24);
 			g.drawImage(createoutline(width, height, true), applydifx(locx), applydify(locy), applydifx(width), applydify(height), null);
 			g.drawImage(image, applydifx(locx + 2), applydify(locy + 2), applydifx(width - 4), applydify(height - 4), null);
 			g.drawImage(framelight.getSubimage(0,0, framelight.getWidth(), 2), getblocklocation(), applydify(locy), applydifx(blocksize), applydify(height - 2), null);

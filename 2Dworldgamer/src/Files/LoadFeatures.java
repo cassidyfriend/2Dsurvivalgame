@@ -16,7 +16,7 @@ public class LoadFeatures {
 		STACK,
 	}
 	
-	public record stackfeature(int scaleamount, int blockid, int[] replaceableblocks) {}
+	public record stackfeature(int scaleamount, String blockid, String[] replaceableblocks) {}
 	
 	void print(Object o) {
 		System.out.println(o);
@@ -25,6 +25,14 @@ public class LoadFeatures {
 		int[] output = new int[numberArray.length()];
 		for (int i = 0; i < numberArray.length(); i++) {
 		    output[i] = numberArray.getInt(i) * multiplier;
+		}
+		return output;
+	}
+	
+	static String[] getStringArray(JSONArray stringArray) {
+		String[] output = new String[stringArray.length()];
+		for (int i = 0; i < stringArray.length(); i++) {
+		    output[i] = stringArray.getString(i);
 		}
 		return output;
 	}
@@ -54,11 +62,11 @@ public class LoadFeatures {
 					FeaturesDatabytype.put(featuretypes.STACK, new ArrayList<String>());
 					FeaturesDatabytype.get(featuretypes.STACK).add(Featuresdata.getJSONArray("feature's names").getString(i));
 				}
-				int [] replaceableblocks = getIntArray(currentfeature.getJSONArray("replaceable blocks"), 2);
+				String [] replaceableblocks = getStringArray(currentfeature.getJSONArray("replaceable blocks"));
 				Arrays.sort(replaceableblocks);
 				stackfeatures.put(Featuresdata.getJSONArray("feature's names").getString(i), new stackfeature(
 						currentfeature.getInt("scale amount"),
-						currentfeature.getInt("block id"),
+						currentfeature.getString("block id"),
 						replaceableblocks
 						));
 				break;

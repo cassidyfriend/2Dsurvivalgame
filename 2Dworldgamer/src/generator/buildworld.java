@@ -36,11 +36,12 @@ public class buildworld {
 	loadbiomedata biomedata = new loadbiomedata();
 	
 	
-	public record column(String biomeid, String currentdemname, int height, int fillBlock, int fillAir, boolean requestmoreinfo) {
+	public record column(String biomeid, String currentdemname, int height, String fillBlock, String fillAir, boolean requestmoreinfo) {
 		
 	}
 	class dimension{
-		int fillBlock, fillAir,height, temp;
+		String fillBlock, fillAir;
+		int height, temp;
 		boolean requestmoreinfo = false;
 		double weirdness;
 	}
@@ -50,11 +51,12 @@ public class buildworld {
 		islands
 	}
 	class stack{
-		int minHeight, maxHeight, divider[], times, seed, fillBlock, fillAir;
+		int minHeight, maxHeight, divider[], times, seed;
+		String fillBlock, fillAir;
 		double scaleoffsets[];
 		boolean requestmoreinfo;
 		simnoise sn, temp, weirdness;
-		stack(int seed, int minHeight, int maxHeight, int divider[], double scaleoffsets[], int fillblock, int fillair, boolean requestmoreinfo) {
+		stack(int seed, int minHeight, int maxHeight, int divider[], double scaleoffsets[], String fillblock, String fillair, boolean requestmoreinfo) {
 			if(divider.length != scaleoffsets.length) {
 				System.out.println("lenghts of divider and scaleoffsets are not equal");
 				return;
@@ -146,8 +148,8 @@ public class buildworld {
 					current.getInt("max Height"),
 					getIntArray(current.getJSONArray("divider")),
 					getDoubleArray(current.getJSONArray("scaleoffsets")),
-					current.getInt("fill Block"),
-					current.getInt("fill Air"),
+					current.getString("fill Block"),
+					current.getString("fill Air"),
 					current.getBoolean("request more info")
 					);
 			break;

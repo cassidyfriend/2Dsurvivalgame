@@ -4,44 +4,44 @@
 		"type" : "stack",
 		"scale amount": 20,
 		"relevant biomes" : ["plains"],
-		"block id" : 6,
-		"replaceable blocks": [2]
+		"block id" : "oaktree",
+		"replaceable blocks": ["sky"]
 	},
 	"short grass" : {
 		"type" : "stack",
 		"scale amount": 200,
 		"relevant biomes" : ["plains"],
-		"block id" : 16,
-		"replaceable blocks": [2]
+		"block id" : "short grass",
+		"replaceable blocks": ["sky"]
 	},
 	"tall grass" : {
 		"type" : "stack", 
 		"scale amount": 100,
 		"relevant biomes" : ["plains"],
-		"block id" : 15,
-		"replaceable blocks": [2]
+		"block id" : "tall grass",
+		"replaceable blocks": ["sky"]
 	},
 	"short cactus" : {
 		"type" : "stack", 
 		"scale amount": 200,
 		"relevant biomes" : ["Desert"],
-		"block id" : 20,
-		"replaceable blocks": [2]
+		"block id" : "short cactus",
+		"replaceable blocks": ["sky"]
 	}
 	,
 	"cactus" : {
 		"type" : "stack", 
 		"scale amount": 100,
 		"relevant biomes" : ["Desert"],
-		"block id" : 20,
-		"replaceable blocks": [2]
+		"block id" : "pink flowering cactus",
+		"replaceable blocks": ["sky"]
 	}
 	,
 	"red flower" : {
 		"type" : "stack", 
 		"scale amount": 20,
 		"relevant biomes" : ["plains"],
-		"block id" : 22,
-		"replaceable blocks": [2]
+		"block id" : "red flower",
+		"replaceable blocks": ["sky"]
 	}
 }
