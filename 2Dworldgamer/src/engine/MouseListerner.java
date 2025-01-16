@@ -12,17 +12,15 @@ public class MouseListerner {
     static TwoD TD = new TwoD();
     static Point p = MouseInfo.getPointerInfo().getLocation();
     static BuildButtons BB = new BuildButtons();
-    public static int mousex = p.x;
-    public static int mousey = p.y;
-    static int mouseonframex = 0;
-    static int mouseonframey = 0;
-    public static int button = 0;
-    public static int mouseclickstimeout = 0;
+    public static int mousex = p.x, mousey = p.y, button = 0, mouseclickstimeout = 0, rotation = 0;
+    static int mouseonframex = 0, mouseonframey = 0;
     private static ScheduledExecutorService scheduler;
-
-    // Counter to track how many frames the button has been held
     public static int holdCounter = 0;
-    public static final int HOLD_THRESHOLD = 10;  // Threshold for holding more than one frame
+    public static final int HOLD_THRESHOLD = 10;
+
+    static void print(Object o) {
+        System.out.println(o);
+    }
 
     static {
         scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -38,8 +36,6 @@ public class MouseListerner {
                 } else {
                     button = 0;
                 }
-
-                // Schedule button reset after the timeout
                 scheduler.schedule(() -> {
                     if (holdCounter == 10) {
                         button = 0;
@@ -50,7 +46,7 @@ public class MouseListerner {
             @Override
             public void mouseReleased(MouseEvent mouseinput) {
                 button = 0;
-                holdCounter = 0;  // Reset counter on release
+                holdCounter = 0; // Reset counter on release
             }
 
             @Override
@@ -60,9 +56,19 @@ public class MouseListerner {
             @Override
             public void mouseClicked(MouseEvent mouseinput) {}
         });
+
+        TD.frame.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                rotation = e.getWheelRotation();
+                scheduler.schedule(() -> {
+                    rotation = 0;
+                }, mouseclickstimeout, TimeUnit.MILLISECONDS);
+            }
+        });
     }
 
-    @SuppressWarnings({ "deprecation"})
+    @SuppressWarnings({ "deprecation" })
     public static void onupdate() {
         p = MouseInfo.getPointerInfo().getLocation();
         mousex = p.x;
@@ -81,7 +87,7 @@ public class MouseListerner {
         if (holdCounter > HOLD_THRESHOLD) {
             return button;
         } else {
-            return 0;  // Return 0 if no button is held for more than one frame
+            return 0; // Return 0 if no button is held for more than one frame
         }
     }
 }

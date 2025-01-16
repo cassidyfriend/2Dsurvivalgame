@@ -19,6 +19,11 @@
 		{"name":"stone iron ore", "texture name":"stone iron"},
 		{"name":"short cactus", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"short cactus", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
 		{"name":"pink flowering cactus", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"pink flowering cactus", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
-		{"name":"red flower", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"red flower", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]}
+		{"name":"red flower", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"red flower", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"chest", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"chest", "XOffset":0, "YOffset":0, "ScaleX":2, "ScaleY":1}  ]},
+		{"name":"ground bush", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"groundbush", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"tall bush", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"tall bush", "XOffset":0, "YOffset":0, "ScaleX":1, "ScaleY":1}  ]},
+		{"name":"oak sapling", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"oak sapling", "XOffset":0.5, "YOffset":1, "ScaleX":2, "ScaleY":2}  ]},
+		{"name":"furnace", "texture name":"sky", "tags":[  {"type":"overlay", "texture name":"furnace", "XOffset":0, "YOffset":0, "ScaleX":2, "ScaleY":1}  ]}
 	]
 }

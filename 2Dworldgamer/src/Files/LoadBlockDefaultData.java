@@ -40,11 +40,12 @@ public class LoadBlockDefaultData {
 				for (int j = 0; j < block.getJSONArray("tags").length(); j++) {
 					tags[j] = t.createtagfromJSON(block.getJSONArray("tags").getJSONObject(j));
 				}
-				b.new localblock(block.getString("name"), block.getString("texture name"), tags);
+				b.new defaultblock(block.getString("name"), block.getString("texture name"), tags);
 			}
 			else {
-				b.new localblock(block.getString("name"), block.getString("texture name"));
+				b.new defaultblock(block.getString("name"), block.getString("texture name"));
 			}
 		}
+		
 	}
 }

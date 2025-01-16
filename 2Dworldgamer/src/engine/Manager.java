@@ -41,6 +41,7 @@ public class Manager {
 	}
 	@SuppressWarnings("static-access")
 	public static void onstartup() {
+		BW = new buildworld();
 		try {
 			LT = new LoadTextures();
 		} catch (IOException e) {
@@ -53,6 +54,7 @@ public class Manager {
 		//TD.loadframe();
 		new LoadBlockDefaultData(LT);
 		new Tags(LT);
+		new LoadItems(LT);
 		newworld();
 		TD.startframes("game name", LT);
 		KL = new Keylistener();
@@ -60,15 +62,9 @@ public class Manager {
 	}
 	@SuppressWarnings("static-access")
 	public static void eachframe() {
-		if(Keylistener.space) {
-			System.out.println("space");
-			try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+		if(Keylistener.space && !Player.lockmovement) {
 			String currentworldpos = Integer.toString((int)(player.playerX<-0.1?player.playerX-1.0:player.playerX)) + " " + Integer.toString((int)(player.playerY<-0.1?player.playerY-1.0:player.playerY));
-			playeroverrightblocks.put(currentworldpos,"stone iron ore");
+			playeroverrightblocks.put(currentworldpos, "chest");
 		}
 		ML.onupdate();
 		if(gui == null)

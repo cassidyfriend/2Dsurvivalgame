@@ -3,6 +3,7 @@ package gameMechanics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import Files.LoadSettings;
@@ -12,8 +13,9 @@ import gameMechanics.Tags.tagtype;
 
 public class Blocks {
 	
-	public static HashMap<String, localblock> blockMap = new HashMap<String, localblock>();
-	public static HashMap<String, String> overlaynames = new HashMap<String, String>();
+	public static HashMap<String, defaultblock> blockMap = new HashMap<String, defaultblock>();
+	public static HashSet<String> overlaynames = new HashSet<String>();
+	public static HashMap<Integer, HashMap<Integer, localblock>> blockatdata = new HashMap<Integer, HashMap<Integer, localblock>>();
 	
 	public Blocks() {
 		
@@ -33,6 +35,7 @@ public class Blocks {
 				this.texturename = texturename;
 				this.name = name;
 			}
+			blockMap.put(name, this);
 		}
 		public defaultblock(String name, String texturename, tagdata[] defaulttags) {
 			this(name, texturename);
@@ -41,9 +44,14 @@ public class Blocks {
 					localtagmap.put(t.type(), new ArrayList<Object>());
 				localtagmap.get(t.type()).add(t.tag());
 				if(t.type() == tagtype.overlay) {
-					overlaynames.put(name, name);
+					overlaynames.add(name);
 				}
 			}
+			if(!blockMap.containsKey(name))
+				blockMap.replace(name, this);
+		}
+		public String toString() {
+			return name;
 		}
 	}
 	
@@ -59,5 +67,29 @@ public class Blocks {
 		public void addTag(tagdata tag) {
 			localtagmap.get(tag.type()).add(tag.tag());
 		}
+	}
+	
+	public void setBlock(int x, int y, localblock block) {
+		if(blockatdata.containsKey(x)) {
+			if(blockatdata.get(x).containsKey(y))
+				blockatdata.get(x).replace(y, block);
+			blockatdata.get(x).putIfAbsent(y, block);
+		}
+		else {
+			blockatdata.put(x, new HashMap<Integer, localblock>());
+			if(blockatdata.containsKey(x))
+				blockatdata.get(x).putIfAbsent(y, block);
+		}
+	}
+	
+	public String getBlock(int x, int y) {
+		if(!(blockatdata.containsKey(x) || blockatdata.get(x).containsKey(y)))
+			return null;
+		else
+			return blockatdata.get(x).get(y).texturename;
+	}
+	
+	public boolean containsBlock(int x, int y) {
+		return blockatdata.containsKey(x) && blockatdata.get(x).containsKey(y);
 	}
 }

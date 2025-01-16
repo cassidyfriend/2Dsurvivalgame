@@ -27,14 +27,15 @@ public class Tags {
 	static Blocks b = new Blocks();
 	
 	public enum tagtype {
-		overlay
+		overlay,
+		inventoryBlock
 	}
 	
 	public record tagdata(tagtype type, Object tag) {}
 	
 	
 	public abstract class defaultOverlay {
-		Map<Integer, BufferedImage> Overlayimage = LoadTextures.texturemap.get("error").lightTextureMap();
+		public Map<Integer, BufferedImage> Overlayimage = LoadTextures.texturemap.get("error").lightTextureMap();
 		public double XOffset = 0, YOffset = 0, ScaleX = 1, ScaleY = 1;
 		public defaultOverlay(Map<Integer, BufferedImage> Overlayimage, double XOffset, double YOffset, double ScaleX, double ScaleY) {
 			if(Overlayimage != null) {
@@ -52,6 +53,12 @@ public class Tags {
 		}
 	}
 	
+	public class inventoryBlock{
+		public boolean allowedinInventory = false;
+		public inventoryBlock() {
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public tagdata createTag(tagtype type, Object args[]) {
 		switch (type) {
@@ -65,8 +72,14 @@ public class Tags {
 					Overlay o = new Overlay((Map<Integer, BufferedImage>) args[1], (double)args[2], (double)args[3], (double)args[4], (double)args[5]);
 					return new tagdata(type, o);
 				}
+			case inventoryBlock:
+				if(args[0] instanceof String) {
+					inventoryBlock b = new inventoryBlock();
+					return new tagdata(type, b);
+				}
+			default:
+				return null;
 		}
-		return null;
 	}
 	@SuppressWarnings("static-access")
 	public tagdata createtagfromJSON(JSONObject data) {
@@ -81,6 +94,11 @@ public class Tags {
 						data.getDouble("ScaleY")
 						));
 				return tag;
+			case "notAllowedInInventory":
+				tag = new tagdata(tagtype.inventoryBlock, new inventoryBlock());
+				return tag;
+			default:
+				return null;
 			}
 		}
 		return null;

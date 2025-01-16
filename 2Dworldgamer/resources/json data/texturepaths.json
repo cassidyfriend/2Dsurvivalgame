@@ -23,6 +23,12 @@
 	{"path":"resources/textures/shortcactus.png", "name":"short cactus"},
 	{"path":"resources/textures/pinkcactus.png", "name":"pink flowering cactus"},
 	{"path":"resources/textures/redflowersmall.png", "name":"red flower"},
-	{"path":"resources/textures/error.png", "name":"error"}
+	{"path":"resources/textures/error.png", "name":"error"},
+	{"path":"resources/textures/1x2chest.png", "name":"chest"},
+	{"path":"resources/textures/bush2.png", "name":"groundbush"},
+	{"path":"resources/textures/bush3.png", "name":"tall bush"},
+	{"path":"resources/textures/smalltree1.png", "name":"oak sapling"},
+	{"path":"resources/textures/furnace.png", "name":"furnace"},
+	{"path":"resources/textures/waterbottle.png", "name":"water bottle"}
 	]
 }

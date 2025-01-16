@@ -14,6 +14,10 @@ import gamelog.GameStatusLog;
 
 public class LoadTextures {
 	
+	void print(Object o) {
+		System.out.println(o);
+	}
+	
 	public record renderingdata(
 			Map<Integer, BufferedImage> lightTextureMap,
 			String name) {}

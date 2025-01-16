@@ -1,26 +1,9 @@
 package engine;
 
 
-import generator.buildworld;
-import generator.spawnstructures;
-import datareader.datareadermain;
-import update.Update;
-import Files.LoadTextures;
-import engine.TwoD;
-
-import javax.swing.*;
-
-import java.io.*;
-import java.net.URL;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import javax.imageio.*;
 import java.awt.event.*;
-import javax.sound.sampled.*;
 
 
-@SuppressWarnings("unused")
 public class Keylistener {
 	TwoD TD = new TwoD();
 	public static boolean up;
@@ -28,14 +11,26 @@ public class Keylistener {
 	public static boolean left;
 	public static boolean right;
 	public static boolean space;
+	public static boolean shift;
+	public static boolean ctrl;
+	public static boolean EKey;
+	public static boolean ESCKey;
+	public static boolean EKeyToggle;
+	public static boolean ESCKeyToggle;
 	public static int CurnentHotKey;
 	public static int lastkeypress = -1;
+	public static int EKeyval = 0;
+	public static int ESCKeyval = 0;
+	
+	void print(Object o) {
+		System.out.println(o);
+	}
+	
 	@SuppressWarnings("static-access")
 	public Keylistener() {
 		TD.frame.addKeyListener(new KeyAdapter() {
 	    	public void keyPressed(KeyEvent e) {
 	    		int keyCode = e.getKeyCode();
-	    		//System.out.println((char)keyCode);
 	    		lastkeypress = keyCode;
 	    		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 	    			up = true;
@@ -51,6 +46,23 @@ public class Keylistener {
 	    		}
 	    		if (keyCode == KeyEvent.VK_SPACE) {
 	    			space = true;
+	    		}
+	    		if(keyCode == KeyEvent.VK_SHIFT) {
+	    			shift = true;
+	    		}
+	    		if(keyCode == KeyEvent.VK_CONTROL) {
+	    			ctrl = true;
+	    		}
+	    		if(keyCode == KeyEvent.VK_E) {
+	    			EKey = true;
+	    			if(EKeyval == 0) EKeyToggle = !EKeyToggle;
+	    			EKeyval++;
+	    			//print(EKeyToggle);
+	    		}
+	    		if(keyCode == KeyEvent.VK_ESCAPE) {
+	    			ESCKey = true;
+	    			if(ESCKeyval == 0) ESCKeyToggle = !ESCKeyToggle;
+	    			ESCKeyval++;
 	    		}
 	    		if(e.getKeyCode() - 48 > 0 && e.getKeyCode() - 48 < 10) {
 	      		CurnentHotKey = e.getKeyCode() - 48;
@@ -77,6 +89,20 @@ public class Keylistener {
 	    		if (keyCode == KeyEvent.VK_SPACE) {
 	    			space = false;
 	   		 	}
+	    		if(keyCode == KeyEvent.VK_SHIFT) {
+	    			shift = false;
+	    		}
+	    		if(keyCode == KeyEvent.VK_CONTROL) {
+	    			ctrl = false;
+	    		}
+	    		if(keyCode == KeyEvent.VK_E) {
+	    			EKey = false;
+	    			EKeyval = 0;
+	    		}
+	    		if(keyCode == KeyEvent.VK_ESCAPE) {
+	    			ESCKey = false;
+	    			ESCKeyval = 0;
+	    		}
 	    	}
 	  	});
 	}

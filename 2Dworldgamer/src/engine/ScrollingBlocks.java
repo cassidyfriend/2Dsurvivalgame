@@ -12,6 +12,7 @@ import gameMechanics.Tags.Overlay;
 import gameMechanics.Tags.tagdata;
 import gameMechanics.Tags.tagtype;
 import player.*;
+import gameMechanics.*;
 
 import org.json.JSONObject;
 
@@ -29,17 +30,17 @@ import javax.sound.sampled.*;
 @SuppressWarnings("unused")
 public class ScrollingBlocks {
 	
-	record overlayblock(String blockID, int x, int y, double xoffset, double yoffset, double xsize, double ysize){}
+	record overlayblock(Map<Integer, BufferedImage> textures, int x, int y, double xoffset, double yoffset, double xsize, double ysize){}
 	
 	LoadTextures LT;
-	public static buildworld BW = Manager.BW;
+	public static buildworld BW = new buildworld();
 	static Keylistener kl = new Keylistener();
 	static Player player = new Player();
 	static LoadSettings settings = new LoadSettings();
 	static SpawnFeatures SF = new SpawnFeatures();
 	buildworld.column currentculum = null;
 	loadbiomedata biomedata = new loadbiomedata();
-	gameMechanics.Blocks block = new gameMechanics.Blocks();
+	Blocks block = new Blocks();
 	public static int startingframex = 0, startingframey = 0, currentframex, currentframey;
 	public static final int blocksize = 18;
 	public static double x, y;
@@ -92,12 +93,12 @@ public class ScrollingBlocks {
 				//currentblock % 2 == 0 ? 100 - darknesslevel : 50 - darknesslevel
 				g.drawImage(lightmap.get(100 - darknesslevel), (int)Math.round(currentblockdrawx), (int)Math.round(currentblockdrawy), (int)Math.round(blocksizex), (int)Math.round(blocksizey), null);
 				if(ix == (blockaccrossframey/2))
-					player.ingameplayerdrawy = (int) currentblockdrawy;
+					player.ingameplayerdrawy = (currentblockdrawy);
 				currentblockdrawy += blocksizey;
 				lastblock = currentblock;
 			}
 			if(i == (blockaccrossframex/2))
-				player.ingameplayerdrawx = (int) currentblockdrawx;
+				player.ingameplayerdrawx = (currentblockdrawx);
 			currentblockdrawx += blocksizex;
 			currentculum = BW.requestatx(currentx+i);
 			currentblockdrawy = strartingposy;
@@ -112,8 +113,8 @@ public class ScrollingBlocks {
 		blockaccrossframey = (int) (currentframey/blocksizey) + (allowedoverlay*2);
 		x = player.playerX - ((blockaccrossframex/2));
 		y = player.playerY + ((blockaccrossframey/2));
-		strartingposx = (int) fullfloor(applydifx((blocksize * (allowedoverlay * -1.0)) - (blocksize *(x - fullfloor(x)))));
-		strartingposy = (int) fullfloor(applydify((blocksize * (allowedoverlay * -1.0)) + (blocksize *(y - fullfloor(y)))));
+		strartingposx = (int) Math.round(applydifx((blocksize * (allowedoverlay * -1.0)) - (blocksize *(x - fullfloor(x)))));
+		strartingposy = (int) Math.round(applydify((blocksize * (allowedoverlay * -1.0)) + (blocksize *(y - fullfloor(y)))));
 		player.blockoffsetx = (int) (blocksize *(x - fullfloor(x)));
 		player.blockoffsety = (int) (blocksize *(y - fullfloor(y)));
 	}
@@ -149,8 +150,9 @@ public class ScrollingBlocks {
 		currentoutput =	Manager.playeroverrightblocks.containsKey(currentworldpos) ? Manager.playeroverrightblocks.get(currentworldpos) : currentoutput;
 		
 		
-		
-		if(block.overlaynames.containsKey(currentoutput)) {
+		//if(block.blockMap.containsKey("ground bush"))
+			//print("has ground bush");
+		if(block.overlaynames.contains(currentoutput) && block.blockMap.containsKey(currentoutput)) {
 			double xoffset = 0, yoffset = 0, xsize = 1, ysize = 1;
 			for(int i = 0; i < block.blockMap.get(currentoutput).localtagmap.get(tagtype.overlay).size(); i++) {
 				Overlay t = (Overlay)block.blockMap.get(currentoutput).localtagmap.get(tagtype.overlay).get(i);
@@ -158,7 +160,7 @@ public class ScrollingBlocks {
 				yoffset = t.YOffset;
 				xsize = t.ScaleX;
 				ysize = t.ScaleY;
-				overlayblocks.add(new overlayblock(currentoutput, drawx, drawy, xoffset, yoffset, xsize, ysize));
+				overlayblocks.add(new overlayblock(t.Overlayimage, drawx, drawy, xoffset, yoffset, xsize, ysize));
 			}
 			currentoutput = block.blockMap.get(currentoutput).texturename;
 		}
@@ -172,13 +174,13 @@ public class ScrollingBlocks {
 			if(i > overlayblocks.size()) {
 				break;
 			}
-			Map<Integer, BufferedImage> lightmap = LT.texturemap.get(overlayblocks.get(i).blockID).lightTextureMap();
+			Map<Integer, BufferedImage> lightmap = overlayblocks.get(i).textures();
 			g.drawImage(lightmap.get(100 - darknesslevel),
-					overlayblocks.get(i).x - (int)Math.round(blocksizex*overlayblocks.get(i).xoffset),
-					overlayblocks.get(i).y - (int)Math.round(blocksizey*overlayblocks.get(i).yoffset),
-					(int)Math.round(blocksizex*overlayblocks.get(i).xsize),
-					(int)Math.round(blocksizey*overlayblocks.get(i).ysize),
-					null);
+				overlayblocks.get(i).x - (int)Math.round(blocksizex*overlayblocks.get(i).xoffset),
+				overlayblocks.get(i).y - (int)Math.round(blocksizey*overlayblocks.get(i).yoffset),
+				(int)Math.round(blocksizex*overlayblocks.get(i).xsize),
+				(int)Math.round(blocksizey*overlayblocks.get(i).ysize),
+				null);
 			i++;
 		}
 	}

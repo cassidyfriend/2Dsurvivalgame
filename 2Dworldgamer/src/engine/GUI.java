@@ -21,11 +21,12 @@ import engine.GUI.locationinslidingbar;
 @SuppressWarnings("unused")
 public class GUI {
 
-	static ArrayList<Object> GUIs = new ArrayList<Object>();
+	static HashMap<String, Object> GUIs = new HashMap<String, Object>();
 	static Map<Integer, BufferedImage> textures;
 	public static ArrayList<textstoredininput> stringinnputs = new ArrayList<textstoredininput>();
 	static MouseListerner ML = new MouseListerner();
 	static LoadTextures LT;
+	static scrollinglistdata sld;
 	static BufferedImage framelight, framedark;
 	static int starterframesizex, starterframesizey, currentframesizex, currentframesizey;
 	public static int fontsize = 25, textsize = 5, lastkey = -1;
@@ -115,7 +116,7 @@ public class GUI {
 			this.sizex = applydifx(sizex);
 			this.sizey = applydify(sizey);
 			this.background = background;
-			GUIs.add(this);
+			GUIs.put(text, this);
 		}
 		@SuppressWarnings("static-access")
 		public boolean isClicked(){
@@ -168,7 +169,7 @@ public class GUI {
 			this.sizex = applydifx(sizex);
 			this.sizey = applydify(sizey);
 			this.background = background;
-			GUIs.add(this);
+			GUIs.put(text, this);
 		}
 		void render(Graphics g){
 			if(background) {
@@ -200,16 +201,22 @@ public class GUI {
 	public class image {
 		int posx, posy, sizex, sizey;
 		BufferedImage image;
-		public image(int posx, int posy, int sizex, int sizey, BufferedImage image) {
+		String name;
+		boolean framed;
+		public image(int posx, int posy, int sizex, int sizey, BufferedImage image, String name, boolean framed) {
 			this.posx = applydifx(posx);
 			this.posy = applydify(posy);
 			this.sizex = applydifx(sizex);
 			this.sizey = applydify(sizey);
 			this.image = image;
-			GUIs.add(this);
+			this.name = name;
+			this.framed = framed;
+			GUIs.put(name, this);
 		}
 		void render(Graphics g){
 			g.drawImage(image, posx, posy, sizex, sizey, null);
+			if(framed)
+				g.drawImage(createoutline(sizex, sizey, true), posx, posy, sizex, sizey, null);
 		}
 
 		public int hashCode() {
@@ -232,6 +239,7 @@ public class GUI {
 		imagebarfit fittype;
 		BufferedImage label;
 		Color fillcolor;
+		String name;
 		
 		public enum imagebarfit {
 			IMAGETOBAR,
@@ -239,7 +247,7 @@ public class GUI {
 			LOOSE
 		}
 		
-		public statusbar(BufferedImage label, int posx, int posy, int sizex, int sizey, imagebarfit fittype, int fillpercent, Color fillcolor) {
+		public statusbar(BufferedImage label, int posx, int posy, int sizex, int sizey, imagebarfit fittype, int fillpercent, Color fillcolor, String name) {
 			this.label = label;
 			this.posx = posx;
 			this.posy = posy;
@@ -248,9 +256,10 @@ public class GUI {
 			this.fittype = fittype;
 			this.fillpercent = fillpercent;
 			this.fillcolor = fillcolor;
-			GUIs.add(this);
+			this.name = name;
+			GUIs.put(name, this);
 		}
-		public statusbar(BufferedImage label, int posx, int posy, int sizex, int sizey, int barheight, int fillpercent, Color fillcolor) {
+		public statusbar(BufferedImage label, int posx, int posy, int sizex, int sizey, int barheight, int fillpercent, Color fillcolor, String name) {
 			this.label = label;
 			this.posx = posx;
 			this.posy = posy;
@@ -260,7 +269,8 @@ public class GUI {
 			this.fillpercent = fillpercent;
 			this.fittype = imagebarfit.LOOSE;
 			this.fillcolor = fillcolor;
-			GUIs.add(this);
+			this.name = name;
+			GUIs.put(name, this);
 		}
 		void render(Graphics g) {
 			if(fittype == imagebarfit.BARTOIMAGE) {
@@ -296,7 +306,7 @@ public class GUI {
 			this.xsize = applydifx(xsize);
 			this.ysize = applydify(ysize);
 			this.name = name;
-			GUIs.add(this);
+			GUIs.put(name, this);
 		}
 		@SuppressWarnings("static-access")
 		public boolean isClicked(){
@@ -362,7 +372,7 @@ public class GUI {
 			this.relevantYSize = relevantYSize;
 			this.invisible = invisible;
 			this.background = background;
-			GUIs.add(this);
+			GUIs.put(name, this);
 		}
 		@SuppressWarnings("static-access")
 		boolean isClicked(){
@@ -420,8 +430,8 @@ public class GUI {
 			if(o instanceof String)
 				if(((String)o).equals(name))
 					return true;
-			if(o.hashCode() == name.hashCode())
-				return true;
+			//if(o.hashCode() == name.hashCode())
+				//return true;
 			return false;
 		}
 	}
@@ -443,7 +453,7 @@ public class GUI {
 			 this.maxvalue = maxvalue;
 			 this.blocksize = blocksize;
 			 this.image = image;
-			 GUIs.add(this);
+			 GUIs.put(name, this);
 			 locationinslidingbar = new locationinslidingbar(name, this);
 		}
 		
@@ -501,6 +511,190 @@ public class GUI {
 			if(o.hashCode() == name.hashCode())
 				return true;
 			return false;
+		}
+	}
+	
+	public class scrollingList{
+		String name;
+		String[] textlist;
+		int locX, locY, sizeX, sizeY, elementamount, location;
+		int[] amounts;
+		BufferedImage[] Icons, Iconslist[];
+		public scrollingList(String name, String[] textlist, BufferedImage[] Icons, BufferedImage[][] Iconslist, int amounts[], int locX, int locY, int sizeX, int sizeY, int elementamount) {
+			this.name = name;
+			this.textlist = textlist;
+			this.locX = locX;
+			this.locY = locY;
+			this.sizeX = sizeX;
+			this.sizeY = sizeY;
+			this.elementamount = elementamount;
+			if(Icons != null)
+				this.Icons = Icons;
+			else
+				this.Iconslist = Iconslist;
+			this.amounts = amounts;
+			sld.addtoscrollinglist(this);
+			GUIs.put(name, this);
+			location = sld.getvalue(name);
+			for(int i = 0; i < elementamount; i++) {
+				if(i + 1 > textlist.length || i + location > textlist.length - 1)
+					break;
+				if(i < 0 || i + location < 0)
+					continue;
+				if(Icons == null && Iconslist == null)
+					new textbutton(textlist[i + location], locX, locY + (i * (sizeY/elementamount)), sizeX, sizeY/elementamount, true);
+				else
+					if(Iconslist == null) {
+						new inventoryslot(textlist[i + location], amounts[i + location], locX, locY + (i * (sizeY/elementamount)), sizeX, sizeY/elementamount, Icons[i + location]);
+					} else {
+						new inventoryslot(textlist[i + location], amounts[i + location], locX, locY + (i * (sizeY/elementamount)), sizeX, sizeY/elementamount, Iconslist[i + location]);
+			
+					}
+			}
+		}
+		void render(Graphics g) {
+			g.drawImage(createoutline(sizeX, sizeY, true), applydifx(locX), applydify(locY), applydifx(sizeX), applydify(sizeY), null);
+		}
+		@SuppressWarnings("static-access")
+		boolean isHoveredOver() {
+			return (ML.mouseonframex > applydifx(locX) &&
+					ML.mouseonframey > applydify(locY) &&
+					ML.mouseonframex < applydifx(locX + sizeX) &&
+					ML.mouseonframey < applydify(locY + sizeY));
+		}
+		public int hashCode() {
+			return name.hashCode();
+		}
+		public boolean equals(Object o) {
+			if(o instanceof scrollingList)
+				if(o.hashCode() == this.hashCode())
+					return true;
+			if(o instanceof String)
+				if(((String)o).equals(name))
+					return true;
+			if(o.hashCode() == name.hashCode())
+				return true;
+			return false;
+		}
+	}
+	
+	public class inventoryslot{
+		String text;
+		int lox, locy, sizex, sizey, amount;
+		BufferedImage icons[];
+		public inventoryslot(String text, int amount, int lox, int locy, int sizex, int sizey, BufferedImage icon[]) {
+			this.text = text;
+			this.lox = applydifx(lox);
+			this.locy = applydify(locy);
+			this.sizex = applydifx(sizex);
+			this.sizey = applydify(sizey);
+			this.amount = amount;
+			this.icons = icon;
+			GUIs.put(text, this);
+		}
+		public inventoryslot(String text, int amount, int lox, int locy, int sizex, int sizey, BufferedImage icon) {
+			this.text = text;
+			this.lox = applydifx(lox);
+			this.locy = applydify(locy);
+			this.sizex = applydifx(sizex);
+			this.sizey = applydify(sizey);
+			this.amount = amount;
+			this.icons = new BufferedImage[]{icon};
+			GUIs.put(text, this);
+		}
+		@SuppressWarnings("static-access")
+		public boolean isClicked(){
+			//print(ML.button);
+			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0);
+		}
+		@SuppressWarnings("static-access")
+		int clickedID() {
+			return (ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy && ML.button != 0 ? ML.button : ML.button);
+		}
+		@SuppressWarnings("static-access")
+		void render(Graphics g){
+			int backgroundcolor = 200, blocklightlevel = backgroundcolor/2;
+			backgroundcolor = ML.mouseonframex > lox && ML.mouseonframey > locy && ML.mouseonframex < sizex + lox && ML.mouseonframey < sizey + locy ? 100 : 200;
+			g.setColor(new Color(backgroundcolor,backgroundcolor,backgroundcolor));
+			g.drawImage(createoutline(sizex, sizey, true), lox, locy, sizex, sizey, null);
+			g.fillRect(lox + applydifx(1), locy + applydify(1), sizex - applydifx(2), sizey - applydify(2));
+			g.setColor(new Color(0,0,0));
+			Font currentfont = getfont(null, Font.PLAIN, 20);
+			g.setFont(currentfont);
+			FontMetrics metrics = g.getFontMetrics(currentfont);
+			if (amount < 2)
+				g.drawString(text, lox + applydifx(6), locy + (sizey/2) + ((metrics.getHeight()/2)/2));
+			else {
+				g.drawString("inventory contains: " + Integer.toString(amount) + " of", lox + applydifx(6), locy + (sizey/2) + ((metrics.getHeight()/2)/2));
+				g.drawString(text, lox + applydifx(6), locy + (sizey/2) + metrics.getHeight());
+			}
+			if(icons != null)
+				if(icons.length > 1)
+					for(int i = 0; i < icons.length; i++)
+						g.drawImage(icons[i],
+								i == 0? lox + sizex - sizey : lox + sizex - ((sizey / 2) * (i + 1)) - (sizey),
+								locy + applydify(2),
+								i == 0? sizey - applydify(2) : (sizey / 2) - applydify(2),
+								i == 0? sizey - applydify(4) : (sizey / 2) - applydify(4),
+								null);
+				else
+					g.drawImage(icons[0], lox + sizex - (sizey), locy + applydify(2), sizey - applydify(2), sizey - applydify(4), null);
+		}
+		public int hashCode() {
+			return text.hashCode();
+		}
+		public boolean equals(Object o) {
+			if(o instanceof textbutton)
+				if(o.hashCode() == this.hashCode())
+					return true;
+			if(o instanceof String)
+				if(((String)o).equals(text))
+					return true;
+			if(o.hashCode() == text.hashCode())
+				return true;
+			return false;
+		}
+	}
+	
+	class scrollinglistdata{
+		static HashMap<String, Integer> scrollinglists = new HashMap<String, Integer>();
+		static HashMap<String, scrollingList> scrollinglistdata = new HashMap<String, scrollingList>();
+		static ArrayList<String> scrollinglistsarray = new ArrayList<String>();
+		
+		scrollinglistdata(){}
+		
+		void addtoscrollinglist(scrollingList input) {
+			if(!scrollinglistdata.containsKey(input.name)) {
+				scrollinglists.put(input.name, 0);
+				scrollinglistdata.put(input.name, input);
+				scrollinglistsarray.add(input.name);
+			}
+		}
+		int getvalue(String name) {
+			if(scrollinglists.containsKey(name))
+				return scrollinglists.get(name);
+			return 0;
+		}
+		@SuppressWarnings("static-access")
+		void update() {
+			for(scrollingList current : scrollinglistdata.values()) {
+				if(current.isHoveredOver()) {
+					if(ML.rotation != 0) {
+						int currentamount = scrollinglists.get(current.name) + ML.rotation;
+						if(currentamount > -1 && currentamount < current.textlist.length - current.elementamount + 1) {
+							scrollinglists.remove(current.name);
+							scrollinglists.put(current.name, currentamount);
+						}
+					}
+				}
+			}
+			for(String current : scrollinglistsarray) {
+				if(!scrollinglistdata.containsKey(current)) {
+					scrollinglists.remove(current);
+					scrollinglistdata.remove(current);
+				}
+			}
+			scrollinglistsarray.clear();
 		}
 	}
 	
@@ -590,12 +784,15 @@ public class GUI {
 		//print(lastkeypress);
 		locationinslidingbar locationinslidingbar = new locationinslidingbar();
 		locationinslidingbar.update();
+		if(sld == null)
+			sld = new scrollinglistdata();
+		sld.update();
 		for(textstoredininput current : stringinnputs) {
 			current.update();
 		}
 	}
 	public void render(Graphics g) {
-		for(Object current : GUIs) {
+		for(Object current : GUIs.values()) {
 			switch(current.getClass().getSimpleName()) {
 				case "textbox":
 					((textbox) current).render(g);
@@ -618,6 +815,12 @@ public class GUI {
 				case "slidingbar":
 					((slidingbar) current).render(g);
 					break;
+				case "scrollingList":
+					((scrollingList) current).render(g);
+					break;
+				case "inventoryslot":
+					((inventoryslot) current).render(g);
+					break;
 				default:
 					break;
 			}
@@ -625,53 +828,71 @@ public class GUI {
 		GUIs.clear();
 	}
 	public boolean getbuttonclicked(Object o) {
-		for(Object current : GUIs) {
-			if(current.hashCode() == o.hashCode())
-				if(current instanceof textbutton) {
-					//print(ML.button);
-					return ((textbutton)current).isClicked();
-				}
-				else if(current instanceof targetbox) {
-					//print(ML.button);
-					return ((targetbox)current).isClicked();
-				}
-		}
+		Object current = null;
+		if(GUIs.containsKey(o))
+			current = GUIs.get(o);
+		else
+			return false;
+		if(current.hashCode() == o.hashCode())
+			if(current instanceof textbutton) {
+				//print(ML.button);
+				return ((textbutton)current).isClicked();
+			}
+			else if(current instanceof targetbox) {
+				//print(ML.button);
+				return ((targetbox)current).isClicked();
+			}
+			else if(current instanceof inventoryslot) {
+				//print(ML.button);
+				return ((inventoryslot)current).isClicked();
+			}
 		return false;
 	}
 	public int getbuttonclickedID(Object o) {
-		for(Object current : GUIs) {
-			if(getbuttonclicked(o))
-				return ((textbutton)current).clickedID();
-		}
+		if(getbuttonclicked(o))
+			if(GUIs.get(o) instanceof textbutton)
+				return ((textbutton)GUIs.get(o)).clickedID();
+			else if(GUIs.get(o) instanceof targetbox)
+				return ((targetbox)GUIs.get(o)).clickedID();
+			else if(GUIs.get(o) instanceof inventoryslot)
+				return ((inventoryslot)GUIs.get(o)).clickedID();
 		return 0;
 	}
 	public int[] gettargetboxclicked(Object o) {
-		for(Object current : GUIs) {
-			if(current.hashCode() == o.hashCode())
-				if(current instanceof targetbox) {
-					//print(ML.button);
-					return ((targetbox)current).getlocationclicked();
-				}
-		}
+		Object current = null;
+		if(GUIs.containsKey(o))
+			current = GUIs.get(o);
+		else
+			return null;
+		if(current.hashCode() == o.hashCode())
+			if(current instanceof targetbox) {
+				//print(ML.button);
+				return ((targetbox)current).getlocationclicked();
+			}
 		return null;
 	}
 	public int[] gettargetboxclickedID(Object o) {
-		for(Object current : GUIs) {
-			if(getbuttonclicked(o))
-				return ((targetbox)current).getlocationclickedbyID();
-		}
+		if(getbuttonclicked(o))
+			return ((targetbox)GUIs.get(o)).getlocationclickedbyID();
 		return null;
 	}
 	public int getslideramount(Object o) {
 		for(Object current : locationinslidingbar.slidingbarinputs.keySet()) {
-			if(current.hashCode() == o.hashCode())
-				for(Object current2 : GUIs) {
-					if(current2 instanceof slidingbar && ((slidingbar)current2).equals(current))
-						return ((slidingbar)current2).getslideramount();
-				}
-				//return ((slidingbar)current).getslideramount();
+			if(current.hashCode() == o.hashCode()) {
+				Object current2 = GUIs.get(current);
+				if(current2 instanceof slidingbar && ((slidingbar)current2).equals(current))
+					return ((slidingbar)current2).getslideramount();
+			}
 		}
 		return 0;
+	}
+	public boolean getButtonClickedInScrollingList(String name, int mousecode, String buttonid) {
+		if(name == null || buttonid == null || mousecode == 0)
+			return false;
+		if(GUIs.containsKey(buttonid) && GUIs.containsKey(name) && GUIs.get(name) instanceof scrollingList) {
+			return getbuttonclickedID(buttonid) == mousecode && ((scrollingList)GUIs.get(name)).isHoveredOver();
+		}
+		return false;
 	}
 	Font getfont(String name, int style) {
 		if(name == null || name.equals(null))

@@ -27,11 +27,11 @@ public class Player {
 		HIDE
 	}
 	
-	public static int startingframex, startingframey, currentframesizex, currentframesizey, ingameplayerdrawx, ingameplayerdrawy, blockoffsetx = 0, blockoffsety = 0;
+	public static int startingframex, startingframey, currentframesizex, currentframesizey, blockoffsetx = 0, blockoffsety = 0;
 	static final int defaultmenuplayersize = 200;
 	public static final int defaultgameplayersize = ScrollingBlocks.blocksize + 6;
 	static buildworld BW = Manager.BW;
-	public static double playerX, playerY = 500;
+	public static double playerX, playerY = 500, ingameplayerdrawx, ingameplayerdrawy;
 	public static boolean lockmovement = true, isFacingLeft = true;
 	GUI gui = new GUI();
 	public static Location location = Location.HIDE;
@@ -54,10 +54,13 @@ public class Player {
 		case HIDE:
 			return;
 		case INGAME:
-			g.drawImage(constructplayer(), (ingameplayerdrawx) - applydiffloorX(4) + applydiffloorX(blockoffsetx), (ingameplayerdrawy) - applydiffloorX(6) - applydiffloorY(blockoffsety), applydifx(defaultgameplayersize), applydify(defaultgameplayersize), null);
+			g.drawImage(constructplayer(),
+					fullfloor(ingameplayerdrawx - applydiffloorX(4) + applydiffloorX(blockoffsetx)),
+					fullfloor(ingameplayerdrawy - applydiffloorY(6) - applydiffloorY(blockoffsety)),
+					applydifx(defaultgameplayersize), applydify(defaultgameplayersize), null);
 			break;
 		case MENU:
-			g.drawImage(constructplayer(), (currentframesizex / 2) - applydifx(defaultmenuplayersize / 2), (currentframesizey / 2) - applydify(defaultmenuplayersize / 2), applydifx(defaultmenuplayersize), applydify(defaultmenuplayersize), null);
+			g.drawImage(constructplayer(),(currentframesizex / 2) - applydifx(defaultmenuplayersize / 2), (currentframesizey / 2) - applydify(defaultmenuplayersize / 2), applydifx(defaultmenuplayersize), applydify(defaultmenuplayersize), null);
 			break;
 		default:
 			return;
@@ -92,7 +95,8 @@ public class Player {
 	
 	@SuppressWarnings("static-access")
 	public void updatepos() {
-		double movementamount = 0.2;
+		double movementamount = 0.1;
+		movementamount = movementamount / 0.9;
 		if(!lockmovement) {
 			if(kl.up) {
 				playerY += movementamount;
@@ -144,12 +148,15 @@ public class Player {
 		return (int)Math.round((input + 0.0) * getframedify());
 	}
 	int applydiffloorX(int input) {
-		return fullceil((input + 0.0) * getframedifx());
+		return fullfloor((input + 0.0) * getframedifx());
 	}
 	int applydiffloorY(int input) {
-		return fullceil((input + 0.0) * getframedify());
+		return fullfloor((input + 0.0) * getframedify());
 	}
-	int fullceil(double input) {
-		return (int)Math.round(Math.ceil(input));
+	int fullfloor(double input) {
+		return (int)Math.round(Math.floor(input));
+	}
+	double roundto(double input, int places) {
+		return Math.round(input * Math.pow(10, places)) / Math.pow(10, places);
 	}
 }

@@ -1,5 +1,1 @@
-{
-	"backgroundblock" : "dirt",
-	"mouseclicktimeout" : 20,
-	"error image" : "resources/textures/error.png"
-}
+{"mouseclicktimeout":15,"backgroundblock":"dirt","error image":"resources/textures/error.png"}

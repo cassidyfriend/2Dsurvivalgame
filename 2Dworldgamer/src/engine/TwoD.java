@@ -32,8 +32,8 @@ public class TwoD extends JPanel {
 	LoadTextures LT = null;
 	static int framex, framey,framesizex,framesizey;
 	final static int TARGET_FPS = 80, startingframex = 1280, startingframey = 720;
-    final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-    long lastLoopTime = System.nanoTime();
+    final static long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+    static long lastLoopTime = System.nanoTime();
     static ArrayList<Map<Integer, BufferedImage>> textures;
     static MenusAndInterfaces MaI;
     static BufferStrategy bufferStrategy;
@@ -62,7 +62,8 @@ public class TwoD extends JPanel {
 		framex = frame.getX();
 		framey = frame.getY();
         try {
-            long sleepTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
+            long sleepTime = getsleeptime();
+			//System.out.println("Sleep Time: " + sleepTime);
             if (sleepTime > 0) {
                 Thread.sleep(sleepTime);
             }
@@ -115,5 +116,8 @@ public class TwoD extends JPanel {
 		MaI = new MenusAndInterfaces(MenusAndInterfaces.menutypes.MAINMENU, gui, SB);
 		player.startingframex = startingframex;
 		player.startingframey = startingframey;
+	}
+	public static long getsleeptime() {
+		return (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
 	}
 }
